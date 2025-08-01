@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador de Cliques - LinkZin</title>
+    <link rel="icon" type="image/png" href="LOGO_LINKZIN_005.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="LOGO_LINKZIN_005.png" alt="LinkZin" class="logo-img">
+                    </a>
+                </div>
+                <nav class="nav">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="recursos.html">Recursos</a></li>
+                        <li><a href="qr-code.html">Gerador de QR Code</a></li>
+                        <li><a href="whatsapp.html">Gerador de link WhatsApp</a></li>
+                    </ul>
+                </nav>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Contador de Cliques</h1>
+                    <p class="hero-subtitle">Acompanhe o desempenho dos seus links encurtados</p>
+
+                    <!-- Click Counter Form -->
+                    <div class="click-counter-form">
+                        <div class="input-group">
+                            <input type="url" id="shortUrlInput" placeholder="Cole sua URL curta do LinkZin aqui..."
+                                class="url-input">
+                            <button type="button" id="checkClicksBtn" class="shorten-btn">
+                                <i class="fas fa-chart-line"></i>
+                                Verificar Cliques
+                            </button>
+                        </div>
+                        <div id="clicksResult" class="result-container" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Por que acompanhar seus cliques?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-analytics"></i>
+                        </div>
+                        <h3>Análise de Performance</h3>
+                        <p>Entenda como seus links estão performando e identifique oportunidades de melhoria</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Engajamento</h3>
+                        <p>Monitore o engajamento do seu público e veja quais conteúdos são mais populares</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-target"></i>
+                        </div>
+                        <h3>Estratégia</h3>
+                        <p>Use os dados para refinar suas estratégias de marketing e comunicação</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How to Use Section -->
+        <section class="tools">
+            <div class="container">
+                <h2 class="section-title">Como usar o contador de cliques</h2>
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <h3>1. Encurte seu link</h3>
+                        <p>Use nossa ferramenta de encurtamento para criar um link curto do LinkZin</p>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-share"></i>
+                        </div>
+                        <h3>2. Compartilhe</h3>
+                        <p>Compartilhe o link encurtado em suas redes sociais, emails ou onde desejar</p>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h3>3. Monitore</h3>
+                        <p>Volte aqui e cole o link para ver quantos cliques ele recebeu</p>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3>4. Otimize</h3>
+                        <p>Use os dados para otimizar suas campanhas e melhorar o engajamento</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="LOGO_LINKZIN_005.png" alt="LinkZin Logo" class="footer-logo-img">
+                    <span class="footer-logo-text">LINKZIN</span>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Encurtador</a>
+                    <a href="contador.html">Contador de Cliques</a>
+                    <a href="desencurtar.html">Desencurtar URL</a>
+                    <a href="recursos.html">Por que LINKZIN?</a>
+                    <a href="denunciar.html">Denunciar URL</a>
+                    <a href="termos.html">Termos de Serviço</a>
+                    <a href="privacidade.html">Privacidade</a>
+                    <a href="contato.html">Contato</a>
+                </div>
+                <div class="footer-info">
+                    <p>&copy; 2025 LinkZin - Ferramenta para encurtar link ® Desenvolvido por Bruno Ulrich</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

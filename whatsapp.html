@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Link WhatsApp - LinkZin</title>
+    <link rel="icon" type="image/png" href="LOGO_LINKZIN_005.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="LOGO_LINKZIN_005.png" alt="LinkZin" class="logo-img">
+                    </a>
+                </div>
+                <nav class="nav">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="recursos.html">Recursos</a></li>
+                        <li><a href="qr-code.html">Gerador de QR Code</a></li>
+                        <li><a href="whatsapp.html" class="active">Gerador de link WhatsApp</a></li>
+                    </ul>
+                </nav>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Gerador de Link WhatsApp</h1>
+                    <p class="hero-subtitle">Crie links diretos para o WhatsApp com mensagem personalizada</p>
+
+                    <!-- WhatsApp Link Generator Form -->
+                    <div class="whatsapp-form">
+                        <div class="form-group">
+                            <label for="whatsappNumber">Número de Telefone</label>
+                            <input type="tel" id="whatsappNumber" placeholder="Ex: 11 99999-9999 ou 11999999999"
+                                class="url-input">
+                            <small>Digite o número com ou sem formatação</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="whatsappMessage">Mensagem (opcional)</label>
+                            <textarea id="whatsappMessage" placeholder="Digite sua mensagem aqui..."
+                                class="message-input"></textarea>
+                            <small>A mensagem será pré-preenchida no WhatsApp</small>
+                        </div>
+                        <button type="button" id="generateWhatsAppBtn" class="shorten-btn">
+                            <i class="fab fa-whatsapp"></i>
+                            Gerar Link WhatsApp
+                        </button>
+                        <div id="whatsappResult" class="result-container" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Por que usar links do WhatsApp?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>Comunicação Rápida</h3>
+                        <p>Conecte-se instantaneamente com clientes, amigos e familiares</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <h3>Marketing Direto</h3>
+                        <p>Use em campanhas publicitárias e materiais promocionais</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <h3>QR Code Integrado</h3>
+                        <p>Gere QR codes para facilitar ainda mais o acesso</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Use Cases Section -->
+        <section class="tools">
+            <div class="container">
+                <h2 class="section-title">Casos de Uso</h2>
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <h3>Negócios</h3>
+                        <p>Atendimento ao cliente, vendas, suporte técnico</p>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h3>Eventos</h3>
+                        <p>Confirmações, informações, inscrições</p>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <h3>Social</h3>
+                        <p>Compartilhar contato, organizar encontros</p>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <h3>Educação</h3>
+                        <p>Comunicação com alunos, pais e professores</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How to Use Section -->
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Como usar o gerador</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h3>1. Digite o número</h3>
+                        <p>Insira o número de telefone com ou sem formatação</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <h3>2. Adicione mensagem</h3>
+                        <p>Opcionalmente, inclua uma mensagem pré-definida</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-share"></i>
+                        </div>
+                        <h3>3. Compartilhe</h3>
+                        <p>Use o link gerado ou QR code onde precisar</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="LOGO_LINKZIN_005.png" alt="LinkZin Logo" class="footer-logo-img">
+                    <span class="footer-logo-text">LINKZIN</span>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Encurtador</a>
+                    <a href="contador.html">Contador de Cliques</a>
+                    <a href="desencurtar.html">Desencurtar URL</a>
+                    <a href="recursos.html">Por que LINKZIN?</a>
+                    <a href="denunciar.html">Denunciar URL</a>
+                    <a href="termos.html">Termos de Serviço</a>
+                    <a href="privacidade.html">Privacidade</a>
+                    <a href="contato.html">Contato</a>
+                </div>
+                <div class="footer-info">
+                    <p>&copy; 2025 LinkZin - Ferramenta para encurtar link ® Desenvolvido por Bruno Ulrich</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

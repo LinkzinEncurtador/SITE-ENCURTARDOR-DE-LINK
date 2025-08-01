@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de QR Code - LinkZin</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="LOGO_LINKZIN_005.png" alt="LinkZin" class="logo-img">
+                    </a>
+                </div>
+                <nav class="nav">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="recursos.html">Recursos</a></li>
+                        <li><a href="qr-code.html" class="active">Gerador de QR Code</a></li>
+                        <li><a href="whatsapp.html">Gerador de link WhatsApp</a></li>
+                    </ul>
+                </nav>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- QR Generator Section -->
+        <section class="qr-generator-section">
+            <div class="container">
+                <div class="qr-generator-card">
+                    <h2 class="qr-generator-title">Gerador de QR Code</h2>
+
+                    <div class="qr-generator-content">
+                        <!-- Left Column - Form -->
+                        <div class="qr-form-column">
+                            <!-- Content Type Selection -->
+                            <div class="content-type-section">
+                                <h3 class="content-type-title">Seleção do tipo de conteúdo</h3>
+                                <div class="content-type-buttons">
+                                    <button type="button" class="content-type-btn active" data-type="link">
+                                        <i class="fas fa-link"></i>
+                                        Link único
+                                    </button>
+                                    <button type="button" class="content-type-btn" data-type="text">
+                                        <i class="fas fa-file-text"></i>
+                                        Texto
+                                    </button>
+                                    <button type="button" class="content-type-btn" data-type="email">
+                                        <i class="fas fa-envelope"></i>
+                                        Email
+                                    </button>
+                                    <button type="button" class="content-type-btn" data-type="whatsapp">
+                                        <i class="fab fa-whatsapp"></i>
+                                        WhatsApp
+                                    </button>
+                                    <button type="button" class="content-type-btn" data-type="wifi">
+                                        <i class="fas fa-wifi"></i>
+                                        Wi-Fi
+                                    </button>
+                                    <button type="button" class="content-type-btn" data-type="location">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        Localização
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- URL Input -->
+                            <div class="url-input-section">
+                                <label for="qrContent" class="input-label">URL</label>
+                                <input type="text" id="qrContent" class="url-input" placeholder="https://...">
+                            </div>
+
+                            <!-- Customization Section -->
+                            <div class="customization-section">
+                                <h3 class="customization-title">Personalização</h3>
+                                <div class="customization-options">
+                                    <div class="color-pickers">
+                                        <div class="color-picker">
+                                            <label for="foregroundColor">Primeiro plano</label>
+                                            <input type="color" id="foregroundColor" value="#000000">
+                                        </div>
+                                        <div class="color-picker">
+                                            <label for="backgroundColor">Fundo</label>
+                                            <input type="color" id="backgroundColor" value="#ffffff">
+                                        </div>
+                                    </div>
+                                    <div class="checkbox-option">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="transparentBg">
+                                            <span class="checkmark"></span>
+                                            Fundo Transparente
+                                        </label>
+                                    </div>
+                                    <div class="logo-upload">
+                                        <button type="button" id="uploadLogoBtn" class="upload-logo-btn">
+                                            <i class="fas fa-folder"></i>
+                                            Carregar Logo
+                                        </button>
+                                        <input type="file" id="logoFile" accept="image/*" style="display: none;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column - QR Preview -->
+                        <div class="qr-preview-column">
+                            <div class="qr-preview-container">
+                                <div id="qrPreview" class="qr-preview-area">
+                                    <div class="qr-preview-placeholder">
+                                        <i class="fas fa-qrcode"></i>
+                                        <p>Seu QR Code aparecerá aqui</p>
+                                    </div>
+                                </div>
+                                <button type="button" id="generateQRBtn" class="generate-qr-btn">
+                                    Gerar QR Code
+                                </button>
+                                <div id="downloadSection" class="download-section" style="display: none;">
+                                    <button type="button" id="downloadQRBtn" class="download-qr-btn">
+                                        <i class="fas fa-download"></i>
+                                        Baixar QR Code
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="qr-features-section">
+            <div class="container">
+                <h2 class="features-title">Recursos do Gerador</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <h3 class="feature-title">Personalização Total</h3>
+                        <p class="feature-description">Como personalizar seus encurtados para o futuro</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h3 class="feature-title">Logo Integrado</h3>
+                        <p class="feature-description">Adicione seu logo no centro do QR code</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <h3 class="feature-title">Download em Alta Qualidade</h3>
+                        <p class="feature-description">Baixe seu QR code em diferentes formatos</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Compatível</h3>
+                        <p class="feature-description">Funciona em todos os dispositivos e aplicativos</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="LOGO_LINKZIN_005.png" alt="LinkZin" class="logo-img">
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Início</a>
+                    <a href="contador.html">Contador de Cliques</a>
+                    <a href="desencurtar.html">Desencurtar URL</a>
+                    <a href="recursos.html">Porque LINKZIN?</a>
+                    <a href="denunciar.html">Denunciar URL</a>
+                    <a href="termos.html">Termos de Serviço</a>
+                    <a href="privacidade.html">Privacidade</a>
+                    <a href="contato.html">Contato</a>
+                </div>
+            </div>
+            <div class="footer-info">
+                <p>&copy; 2025 LinkZin - Ferramenta para encurtar link ® Desenvolvido por Bruno Ulrich</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const qrContent = document.getElementById('qrContent');
+            const generateQRBtn = document.getElementById('generateQRBtn');
+            const qrPreview = document.getElementById('qrPreview');
+            const downloadSection = document.getElementById('downloadSection');
+            const downloadQRBtn = document.getElementById('downloadQRBtn');
+            const foregroundColor = document.getElementById('foregroundColor');
+            const backgroundColor = document.getElementById('backgroundColor');
+            const transparentBg = document.getElementById('transparentBg');
+            const uploadLogoBtn = document.getElementById('uploadLogoBtn');
+            const logoFile = document.getElementById('logoFile');
+            const contentTypeBtns = document.querySelectorAll('.content-type-btn');
+
+            let currentContentType = 'link';
+            let uploadedLogo = null;
+
+            // Content type selection
+            contentTypeBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    contentTypeBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentContentType = this.dataset.type;
+
+                    // Update placeholder based on content type
+                    const placeholders = {
+                        'link': 'https://exemplo.com',
+                        'text': 'Seu texto aqui...',
+                        'email': 'email@exemplo.com',
+                        'whatsapp': '+55 11 99999-9999',
+                        'wifi': 'SSID: MinhaRede\nSenha: 12345678',
+                        'location': 'Endereço ou coordenadas'
+                    };
+                    qrContent.placeholder = placeholders[currentContentType] || 'https://...';
+                });
+            });
+
+            // Logo upload
+            uploadLogoBtn.addEventListener('click', function () {
+                logoFile.click();
+            });
+
+            logoFile.addEventListener('change', function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        uploadedLogo = e.target.result;
+                        alert('Logo carregado com sucesso!');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Generate QR Code
+            generateQRBtn.addEventListener('click', function () {
+                const content = qrContent.value.trim();
+                if (!content) {
+                    alert('Por favor, insira o conteúdo para gerar o QR code.');
+                    return;
+                }
+
+                // Clear previous QR code
+                qrPreview.innerHTML = '';
+
+                // Generate QR code with customization
+                const options = {
+                    width: 200,
+                    height: 200,
+                    margin: 2,
+                    color: {
+                        dark: foregroundColor.value,
+                        light: transparentBg.checked ? '#00000000' : backgroundColor.value
+                    }
+                };
+
+                QRCode.toCanvas(qrPreview, content, options, function (error) {
+                    if (error) {
+                        console.error('Erro ao gerar QR code:', error);
+                        alert('Erro ao gerar QR code. Tente novamente.');
+                    } else {
+                        // Show download section
+                        downloadSection.style.display = 'block';
+                    }
+                });
+            });
+
+            // Download QR Code
+            downloadQRBtn.addEventListener('click', function () {
+                const canvas = qrPreview.querySelector('canvas');
+                if (canvas) {
+                    const link = document.createElement('a');
+                    link.download = 'qrcode-linkzin.png';
+                    link.href = canvas.toDataURL();
+                    link.click();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

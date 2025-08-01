@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desencurtar URL - LinkZin</title>
+    <link rel="icon" type="image/png" href="LOGO_LINKZIN_005.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="LOGO_LINKZIN_005.png" alt="LinkZin" class="logo-img">
+                    </a>
+                </div>
+                <nav class="nav">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="recursos.html">Recursos</a></li>
+                        <li><a href="qr-code.html">Gerador de QR Code</a></li>
+                        <li><a href="whatsapp.html">Gerador de link WhatsApp</a></li>
+                    </ul>
+                </nav>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Desencurtar URL</h1>
+                    <p class="hero-subtitle">Descubra a URL original de qualquer link encurtado do LinkZin</p>
+
+                    <!-- URL Unshortener Form -->
+                    <div class="unshorten-form">
+                        <div class="input-group">
+                            <input type="url" id="shortUrlInput" placeholder="Cole sua URL curta do LinkZin aqui..."
+                                class="url-input">
+                            <button type="button" id="unshortenBtn" class="shorten-btn">
+                                <i class="fas fa-expand-arrows-alt"></i>
+                                Desencurtar
+                            </button>
+                        </div>
+                        <div id="unshortenResult" class="result-container" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Por que desencurtar URLs?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3>Transparência</h3>
+                        <p>Veja para onde o link realmente leva antes de clicar, garantindo sua segurança</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Segurança</h3>
+                        <p>Evite links suspeitos e proteja-se contra phishing e malware</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <h3>Informação</h3>
+                        <p>Descubra o destino real de links compartilhados por amigos ou redes sociais</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How to Use Section -->
+        <section class="tools">
+            <div class="container">
+                <h2 class="section-title">Como usar o desencurtador</h2>
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-copy"></i>
+                        </div>
+                        <h3>1. Cole o link</h3>
+                        <p>Copie a URL curta que você recebeu e cole no campo acima</p>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>2. Clique em desencurtar</h3>
+                        <p>Nosso sistema irá analisar o link e mostrar a URL original</p>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>3. Verifique o destino</h3>
+                        <p>Confirme se o link leva para onde você esperava</p>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-external-link-alt"></i>
+                        </div>
+                        <h3>4. Acesse com segurança</h3>
+                        <p>Agora você pode clicar no link com confiança</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security Tips Section -->
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Dicas de Segurança</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>Sempre verifique</h3>
+                        <p>Nunca clique em links encurtados sem verificar o destino primeiro</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3>Confie na fonte</h3>
+                        <p>Links de fontes confiáveis são geralmente mais seguros</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bug"></i>
+                        </div>
+                        <h3>Denuncie links suspeitos</h3>
+                        <p>Se encontrar um link malicioso, use nossa ferramenta de denúncia</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="LOGO_LINKZIN_005.png" alt="LinkZin Logo" class="footer-logo-img">
+                    <span class="footer-logo-text">LINKZIN</span>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Encurtador</a>
+                    <a href="contador.html">Contador de Cliques</a>
+                    <a href="desencurtar.html">Desencurtar URL</a>
+                    <a href="recursos.html">Por que LINKZIN?</a>
+                    <a href="denunciar.html">Denunciar URL</a>
+                    <a href="termos.html">Termos de Serviço</a>
+                    <a href="privacidade.html">Privacidade</a>
+                    <a href="contato.html">Contato</a>
+                </div>
+                <div class="footer-info">
+                    <p>&copy; 2025 LinkZin - Ferramenta para encurtar link ® Desenvolvido por Bruno Ulrich</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

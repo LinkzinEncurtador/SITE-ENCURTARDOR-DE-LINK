@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Denunciar URL - LinkZin</title>
+    <link rel="icon" type="image/png" href="LOGO_LINKZIN_005.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="LOGO_LINKZIN_005.png" alt="LinkZin" class="logo-img">
+                    </a>
+                </div>
+                <nav class="nav">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="recursos.html">Recursos</a></li>
+                        <li><a href="qr-code.html">Gerador de QR Code</a></li>
+                        <li><a href="whatsapp.html">Gerador de link WhatsApp</a></li>
+                    </ul>
+                </nav>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Denunciar URL</h1>
+                    <p class="hero-subtitle">Ajude-nos a manter o LinkZin seguro denunciando links maliciosos</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Report Form Section -->
+        <section class="features">
+            <div class="container">
+                <div class="report-container">
+                    <div class="report-info">
+                        <h2>Por que denunciar?</h2>
+                        <div class="report-item">
+                            <div class="report-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="report-details">
+                                <h3>Proteger a Comunidade</h3>
+                                <p>Ajude outros usuários a evitar links perigosos</p>
+                            </div>
+                        </div>
+                        <div class="report-item">
+                            <div class="report-icon">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="report-details">
+                                <h3>Combater Malware</h3>
+                                <p>Identifique e remova links que disseminam vírus</p>
+                            </div>
+                        </div>
+                        <div class="report-item">
+                            <div class="report-icon">
+                                <i class="fas fa-ban"></i>
+                            </div>
+                            <div class="report-details">
+                                <h3>Eliminar Spam</h3>
+                                <p>Remova links que promovem conteúdo indesejado</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="report-form-container">
+                        <h2>Formulário de Denúncia</h2>
+                        <form class="report-form" id="reportForm">
+                            <div class="form-group">
+                                <label for="reportedUrl">URL Denunciada *</label>
+                                <input type="url" id="reportedUrl" name="reportedUrl" required class="form-input"
+                                    placeholder="Cole aqui a URL que você deseja denunciar">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="reportType">Tipo de Violação *</label>
+                                <select id="reportType" name="reportType" required class="form-input">
+                                    <option value="">Selecione o tipo de violação</option>
+                                    <option value="malware">Malware/Vírus</option>
+                                    <option value="phishing">Phishing/Fraude</option>
+                                    <option value="spam">Spam/Conteúdo Indesejado</option>
+                                    <option value="pornografia">Conteúdo Adulto Inapropriado</option>
+                                    <option value="violencia">Violência/Conteúdo Chocante</option>
+                                    <option value="direitos_autorais">Violação de Direitos Autorais</option>
+                                    <option value="outro">Outro</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="reportDescription">Descrição da Denúncia *</label>
+                                <textarea id="reportDescription" name="reportDescription" required class="form-input"
+                                    rows="5" placeholder="Descreva detalhadamente o problema encontrado..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="reporterEmail">Seu Email (opcional)</label>
+                                <input type="email" id="reporterEmail" name="reporterEmail" class="form-input"
+                                    placeholder="Para receber atualizações sobre sua denúncia">
+                                <small>Seu email será mantido em sigilo e usado apenas para comunicações sobre esta
+                                    denúncia</small>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
+                            </div>
+
+                            <button type="submit" class="submit-btn">
+                                <i class="fas fa-flag"></i>
+                                Enviar Denúncia
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guidelines Section -->
+        <section class="tools">
+            <div class="container">
+                <h2 class="section-title">Diretrizes para Denúncias</h2>
+                <div class="guidelines-grid">
+                    <div class="guideline-card">
+                        <div class="guideline-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>Denuncie Imediatamente</h3>
+                        <p>Se você encontrar um link suspeito, denuncie-o o mais rápido possível para proteger outros
+                            usuários.</p>
+                    </div>
+                    <div class="guideline-card">
+                        <div class="guideline-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <h3>Forneça Detalhes</h3>
+                        <p>Inclua informações específicas sobre o problema encontrado para que possamos investigar
+                            adequadamente.</p>
+                    </div>
+                    <div class="guideline-card">
+                        <div class="guideline-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>Verifique Antes</h3>
+                        <p>Certifique-se de que o link realmente viola nossos termos antes de denunciar.</p>
+                    </div>
+                    <div class="guideline-card">
+                        <div class="guideline-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Resposta Rápida</h3>
+                        <p>Nossa equipe analisa todas as denúncias e responde em até 24 horas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- What Happens Next Section -->
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">O que acontece após a denúncia?</h2>
+                <div class="process-grid">
+                    <div class="process-step">
+                        <div class="step-number">1</div>
+                        <h3>Recebimento</h3>
+                        <p>Sua denúncia é recebida e registrada em nosso sistema</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number">2</div>
+                        <h3>Análise</h3>
+                        <p>Nossa equipe analisa a denúncia e verifica o link reportado</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number">3</div>
+                        <h3>Ação</h3>
+                        <p>Se confirmada a violação, o link é removido ou bloqueado</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number">4</div>
+                        <h3>Notificação</h3>
+                        <p>Você recebe uma confirmação sobre o resultado da análise</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="LOGO_LINKZIN_005.png" alt="LinkZin Logo" class="footer-logo-img">
+                    <span class="footer-logo-text">LINKZIN</span>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Encurtador</a>
+                    <a href="contador.html">Contador de Cliques</a>
+                    <a href="desencurtar.html">Desencurtar URL</a>
+                    <a href="recursos.html">Por que LINKZIN?</a>
+                    <a href="denunciar.html">Denunciar URL</a>
+                    <a href="termos.html">Termos de Serviço</a>
+                    <a href="privacidade.html">Privacidade</a>
+                    <a href="contato.html">Contato</a>
+                </div>
+                <div class="footer-info">
+                    <p>&copy; 2025 LinkZin - Ferramenta para encurtar link ® Desenvolvido por Bruno Ulrich</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Report Form
+        document.getElementById('reportForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Verificar reCAPTCHA
+            const recaptchaResponse = grecaptcha.getResponse();
+            if (!recaptchaResponse) {
+                alert('Por favor, complete o reCAPTCHA.');
+                return;
+            }
+
+            // Simular envio da denúncia
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                alert('Denúncia enviada com sucesso! Nossa equipe analisará o caso e entrará em contato em breve.');
+                this.reset();
+                grecaptcha.reset();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+    </script>
+</body>
+
+</html>
