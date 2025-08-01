@@ -41,128 +41,201 @@
     <!-- Main Content -->
     <main class="main">
         <!-- Hero Section -->
-        <section class="hero">
+        <section class="whatsapp-hero">
             <div class="container">
                 <div class="hero-content">
-                    <h1 class="hero-title">Gerador de Link WhatsApp</h1>
-                    <p class="hero-subtitle">Crie links diretos para o WhatsApp com mensagem personalizada</p>
+                    <div class="hero-text">
+                        <h1 class="hero-title">Gerador de Link do WhatsApp</h1>
+                        <h2 class="hero-subtitle">A FERRAMENTA ESSENCIAL PARA SEU NEGÓCIO</h2>
+                        <p class="hero-description">Crie um Link WhatsApp Personalizado para sua você em Segundos</p>
+                        <p class="hero-text-detail">Os links do WhatsApp facilitam o contato direto com seus clientes.
+                            Nosso gerador gratuito cria um link clicável com uma mensagem pré-definida e um QR Code
+                            exclusivo.</p>
+                    </div>
 
-                    <!-- WhatsApp Link Generator Form -->
-                    <div class="whatsapp-form">
+                    <!-- WhatsApp Generator Form -->
+                    <div class="whatsapp-form-card">
+                        <h3 class="form-title">Gere o seu Link do WhatsApp</h3>
+
                         <div class="form-group">
-                            <label for="whatsappNumber">Número de Telefone</label>
-                            <input type="tel" id="whatsappNumber" placeholder="Ex: 11 99999-9999 ou 11999999999"
-                                class="url-input">
-                            <small>Digite o número com ou sem formatação</small>
+                            <label for="whatsappNumber">Digite seu número de telefone do WhatsApp</label>
+                            <div class="phone-input-group">
+                                <div class="country-code-select">
+                                    <img src="https://flagcdn.com/br.svg" alt="Brasil" class="flag-icon">
+                                    <select id="countryCode">
+                                        <option value="+55">+55</option>
+                                        <option value="+1">+1</option>
+                                        <option value="+44">+44</option>
+                                        <option value="+33">+33</option>
+                                        <option value="+49">+49</option>
+                                    </select>
+                                </div>
+                                <input type="tel" id="whatsappNumber" placeholder="Número de telefone"
+                                    class="phone-input">
+                            </div>
                         </div>
+
                         <div class="form-group">
-                            <label for="whatsappMessage">Mensagem (opcional)</label>
-                            <textarea id="whatsappMessage" placeholder="Digite sua mensagem aqui..."
-                                class="message-input"></textarea>
-                            <small>A mensagem será pré-preenchida no WhatsApp</small>
+                            <label for="whatsappMessage">Mensagem do WhatsApp</label>
+                            <div class="message-formatting">
+                                <button type="button" class="format-btn" data-format="bold">B</button>
+                                <button type="button" class="format-btn" data-format="italic">I</button>
+                                <button type="button" class="format-btn" data-format="strikethrough">S</button>
+                                <button type="button" class="format-btn" data-format="code">&lt;/&gt;</button>
+                                <button type="button" class="emoji-btn">
+                                    <i class="far fa-smile"></i>
+                                    Adicionar Emoji
+                                </button>
+                            </div>
+                            <textarea id="whatsappMessage" placeholder="Mensagem" class="message-textarea"></textarea>
                         </div>
-                        <button type="button" id="generateWhatsAppBtn" class="shorten-btn">
+
+                        <div class="form-group">
+                            <label for="customLink">Link personalizado (opcional)</label>
+                            <input type="text" id="customLink" placeholder="Ex: w.app/SuaEmpresa"
+                                class="custom-link-input">
+                            <small>Os links personalizados permitem que você use links mais personalizados como
+                                w.app/SuaEmpresa</small>
+                        </div>
+
+                        <button type="button" id="generateWhatsAppBtn" class="generate-whatsapp-btn">
                             <i class="fab fa-whatsapp"></i>
-                            Gerar Link WhatsApp
+                            Gerar Link do WhatsApp
                         </button>
-                        <div id="whatsappResult" class="result-container" style="display: none;"></div>
+
+                        <div id="whatsappResult" class="whatsapp-result-container" style="display: none;"></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Features Section -->
-        <section class="features">
+        <!-- USE TAMBÉM Section -->
+        <section class="use-tambem-section">
             <div class="container">
-                <h2 class="section-title">Por que usar links do WhatsApp?</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-rocket"></i>
+                <h2 class="use-tambem-title">USE TAMBÉM</h2>
+                <div class="use-tambem-content">
+                    <div class="linkzin-promo">
+                        <div class="linkzin-logo">
+                            <img src="menina ilustração.png" alt="Menina Ilustração" class="menina-illustration">
+                            <span class="linkzin-text">LINKZIN</span>
                         </div>
-                        <h3>Comunicação Rápida</h3>
-                        <p>Conecte-se instantaneamente com clientes, amigos e familiares</p>
+                        <div class="linkzin-services">
+                            <p>Encurtador de URL Longa</p>
+                            <p>Gerador de QR Code</p>
+                        </div>
+                        <button class="linkzin-btn">CLIQUE AQUI</button>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-bullhorn"></i>
+                    <div class="smartphone-illustration">
+                        <div class="phone-screen">
+                            <div class="browser-bar">
+                                <span>www.</span>
+                                <div class="search-bar"></div>
+                            </div>
+                            <div class="link-content">
+                                <i class="fas fa-link"></i>
+                                <span>HTTP://YOURLINK/</span>
+                                <i class="fas fa-share"></i>
+                            </div>
                         </div>
-                        <h3>Marketing Direto</h3>
-                        <p>Use em campanhas publicitárias e materiais promocionais</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-qrcode"></i>
-                        </div>
-                        <h3>QR Code Integrado</h3>
-                        <p>Gere QR codes para facilitar ainda mais o acesso</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Use Cases Section -->
-        <section class="tools">
+        <!-- Why Use Section -->
+        <section class="why-use-section">
             <div class="container">
-                <h2 class="section-title">Casos de Uso</h2>
-                <div class="tools-grid">
-                    <div class="tool-card">
-                        <div class="tool-icon">
-                            <i class="fas fa-store"></i>
-                        </div>
-                        <h3>Negócios</h3>
-                        <p>Atendimento ao cliente, vendas, suporte técnico</p>
+                <div class="why-use-content">
+                    <div class="why-use-text">
+                        <div class="yellow-bar"></div>
+                        <h2 class="why-use-title">Por que Usar o Gerador de Link do WhatsApp?</h2>
+                        <ul class="benefits-list">
+                            <li><i class="fas fa-check"></i> Contato instantâneo para seus clientes</li>
+                            <li><i class="fas fa-check"></i> Ideal para diversos negócios (profissionais, lojas,
+                                serviços)</li>
+                            <li><i class="fas fa-check"></i> Aumenta conversões quando usado em campanhas, redes sociais
+                                e materiais físicos</li>
+                            <li><i class="fas fa-check"></i> Possibilidade de gerar e imprimir QR codes para pontos de
+                                venda, cartões, pastas</li>
+                            <li><i class="fas fa-check"></i> Opção de definir uma mensagem de abertura personalizada
+                                para seus clientes</li>
+                        </ul>
                     </div>
-                    <div class="tool-card">
-                        <div class="tool-icon">
-                            <i class="fas fa-calendar-check"></i>
-                        </div>
-                        <h3>Eventos</h3>
-                        <p>Confirmações, informações, inscrições</p>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-icon">
-                            <i class="fas fa-user-friends"></i>
-                        </div>
-                        <h3>Social</h3>
-                        <p>Compartilhar contato, organizar encontros</p>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-icon">
-                            <i class="fas fa-chalkboard-teacher"></i>
-                        </div>
-                        <h3>Educação</h3>
-                        <p>Comunicação com alunos, pais e professores</p>
+                    <div class="linkzin-logo-large">
+                        <img src="menina ilustração.png" alt="Menina Ilustração" class="menina-illustration-large">
+                        <span class="logo-text">LINKZIN</span>
+                        <p class="logo-services">Encurtador de URL Longa<br>Gerador de QR Code</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- How to Use Section -->
-        <section class="features">
+        <!-- Bottom Section -->
+        <section class="bottom-section">
             <div class="container">
-                <h2 class="section-title">Como usar o gerador</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-phone"></i>
+                <div class="bottom-content">
+                    <div class="marketing-campaigns">
+                        <h3>Campanhas de Marketing</h3>
+                        <div class="campaign-item">
+                            <h4>Redes Sociais</h4>
+                            <p>Use o link na bio do Instagram, posts do Facebook ou stories com chamadas para ação</p>
                         </div>
-                        <h3>1. Digite o número</h3>
-                        <p>Insira o número de telefone com ou sem formatação</p>
+                        <div class="campaign-item">
+                            <h4>Materiais Impressos</h4>
+                            <p>Use o QR Code em folhetos, banners e cartões de visita</p>
+                        </div>
+                        <div class="campaign-item">
+                            <h4>Ofertas e Vendas</h4>
+                            <p>Direcione seu público para promoções com links prontos para compras ou consultas</p>
+                        </div>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-comment"></i>
-                        </div>
-                        <h3>2. Adicione mensagem</h3>
-                        <p>Opcionalmente, inclua uma mensagem pré-definida</p>
+
+                    <div class="how-it-works">
+                        <h3>Como Funciona?</h3>
+                        <ol class="steps-list">
+                            <li>Digite o número do WhatsApp (com DDD e código do país)</li>
+                            <li>Escreva uma mensagem personalizada para envio automático</li>
+                            <li>Clique em "Gerar Link", depois copie, compartilhe ou gere um QR Code</li>
+                        </ol>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-share"></i>
+
+                    <div class="phone-preview">
+                        <div class="phone-mockup">
+                            <div class="phone-header">
+                                <span class="contact-name">J90 Ama</span>
+                                <div class="call-icons">
+                                    <i class="fas fa-phone"></i>
+                                    <i class="fas fa-video"></i>
+                                </div>
+                            </div>
+                            <div class="chat-area">
+                                <div class="chat-bubble">
+                                    Digife uma mersagart.
+                                </div>
+                            </div>
+                            <div class="phone-footer">
+                                <div class="input-area">
+                                    <i class="fas fa-paperclip"></i>
+                                    <span class="input-placeholder">Digite uma mensagem</span>
+                                    <i class="fas fa-camera"></i>
+                                    <i class="fas fa-microphone"></i>
+                                </div>
+                            </div>
                         </div>
-                        <h3>3. Compartilhe</h3>
-                        <p>Use o link gerado ou QR code onde precisar</p>
+                        <button class="generate-link-btn">Gerar link do WhatsApp</button>
+                    </div>
+                </div>
+
+                <div class="security-info">
+                    <div class="security-content">
+                        <h3>Seguro, Rápido e Gratuito</h3>
+                        <p>Sua privacidade é respeitada. Não armazenamos seus dados. Geração 100% instantânea.</p>
+                        <div class="security-seal">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>SITE SEGURO</span>
+                            <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
+                                alt="Google" class="google-logo">
+                        </div>
                     </div>
                 </div>
             </div>
