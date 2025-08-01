@@ -63,7 +63,7 @@
                             </div>
                             <div class="contact-details">
                                 <h3>Email</h3>
-                                <p>contato@linkzin.com.br</p>
+                                <p>linkzinencurtador@gmail.com</p>
                             </div>
                         </div>
                         <div class="contact-item">
@@ -242,7 +242,20 @@
                 return;
             }
 
-            // Simular envio do formulário
+            // Coletar dados do formulário
+            const formData = new FormData(this);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const subject = formData.get('subject');
+            const message = formData.get('message');
+
+            // Criar link mailto com os dados do formulário
+            const mailtoLink = `mailto:linkzinencurtador@gmail.com?subject=${encodeURIComponent('Contato LinkZin - ' + subject)}&body=${encodeURIComponent(`Nome: ${name}\nEmail: ${email}\nAssunto: ${subject}\n\nMensagem:\n${message}`)}`;
+
+            // Abrir cliente de email padrão
+            window.location.href = mailtoLink;
+
+            // Mostrar mensagem de sucesso
             const submitBtn = this.querySelector('.submit-btn');
             const originalText = submitBtn.innerHTML;
 
@@ -250,12 +263,12 @@
             submitBtn.disabled = true;
 
             setTimeout(() => {
-                alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
+                alert('Formulário processado! Seu cliente de email será aberto para enviar a mensagem.');
                 this.reset();
                 grecaptcha.reset();
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
-            }, 2000);
+            }, 1000);
         });
     </script>
 </body>
