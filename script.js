@@ -679,17 +679,56 @@ class WhatsAppLinkGenerator {
                 }
             });
         }
+
+        // Adicionar listener para mudança do código do país
+        const countryCodeSelect = document.getElementById('countryCode');
+        if (countryCodeSelect) {
+            countryCodeSelect.addEventListener('change', () => this.updateCountryFlag());
+        }
+    }
+
+    updateCountryFlag() {
+        const countryCodeSelect = document.getElementById('countryCode');
+        const flagIcon = document.querySelector('.flag-icon');
+
+        if (!countryCodeSelect || !flagIcon) return;
+
+        const countryFlags = {
+            '+55': 'br',
+            '+1': 'us',
+            '+44': 'gb',
+            '+33': 'fr',
+            '+49': 'de',
+            '+34': 'es',
+            '+39': 'it',
+            '+31': 'nl',
+            '+351': 'pt',
+            '+54': 'ar',
+            '+56': 'cl',
+            '+57': 'co',
+            '+52': 'mx',
+            '+51': 'pe',
+            '+58': 've'
+        };
+
+        const selectedCode = countryCodeSelect.value;
+        const countryCode = countryFlags[selectedCode] || 'br';
+
+        flagIcon.src = `https://flagcdn.com/${countryCode}.svg`;
+        flagIcon.alt = selectedCode;
     }
 
     generateWhatsAppLink() {
         const numberInput = document.getElementById('whatsappNumber');
         const messageInput = document.getElementById('whatsappMessage');
+        const countryCodeSelect = document.getElementById('countryCode');
         const resultDiv = document.getElementById('whatsappResult');
 
         if (!numberInput || !resultDiv) return;
 
         let number = numberInput.value.trim();
         const message = messageInput ? messageInput.value.trim() : '';
+        const countryCode = countryCodeSelect ? countryCodeSelect.value : '+55';
 
         if (!number) {
             this.showMessage('Por favor, insira um número de telefone.', 'error');
@@ -699,15 +738,22 @@ class WhatsAppLinkGenerator {
         // Limpar número (remover caracteres especiais)
         number = number.replace(/\D/g, '');
 
-        // Adicionar código do país se não estiver presente
-        if (number.length === 11 && number.startsWith('0')) {
-            number = '55' + number.substring(1);
-        } else if (number.length === 10) {
-            number = '55' + number;
+        // Remover código do país do número se já estiver presente
+        const countryCodeNumber = countryCode.replace('+', '');
+        if (number.startsWith(countryCodeNumber)) {
+            number = number.substring(countryCodeNumber.length);
         }
 
+        // Remover zeros à esquerda se necessário
+        if (number.startsWith('0')) {
+            number = number.substring(1);
+        }
+
+        // Combinar código do país com número
+        const fullNumber = countryCodeNumber + number;
+
         // Criar link do WhatsApp
-        let whatsappUrl = `https://wa.me/${number}`;
+        let whatsappUrl = `https://wa.me/${fullNumber}`;
         if (message) {
             whatsappUrl += `?text=${encodeURIComponent(message)}`;
         }
@@ -718,7 +764,7 @@ class WhatsAppLinkGenerator {
                 <h3>Link do WhatsApp Gerado</h3>
                 <div class="whatsapp-link">
                     <input type="text" value="${whatsappUrl}" readonly class="whatsapp-url-display">
-                    <button type="button" class="copy-btn" onclick="this.copyWhatsAppLink('${whatsappUrl}')">
+                    <button type="button" class="copy-btn" onclick="whatsappGenerator.copyWhatsAppLink('${whatsappUrl}')">
                         <i class="fas fa-copy"></i> Copiar
                     </button>
                 </div>
@@ -726,7 +772,7 @@ class WhatsAppLinkGenerator {
                     <a href="${whatsappUrl}" target="_blank" class="whatsapp-btn">
                         <i class="fab fa-whatsapp"></i> Abrir WhatsApp
                     </a>
-                    <button type="button" class="qr-btn" onclick="this.generateWhatsAppQR('${whatsappUrl}')">
+                    <button type="button" class="qr-btn" onclick="whatsappGenerator.generateWhatsAppQR('${whatsappUrl}')">
                         <i class="fas fa-qrcode"></i> Gerar QR Code
                     </button>
                 </div>
@@ -810,7 +856,7 @@ document.addEventListener('DOMContentLoaded', function () {
             new QRCodeGenerator();
             break;
         case 'whatsapp.html':
-            new WhatsAppLinkGenerator();
+            window.whatsappGenerator = new WhatsAppLinkGenerator();
             break;
         default:
             new LinkZin();
