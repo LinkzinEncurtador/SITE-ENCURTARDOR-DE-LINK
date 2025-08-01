@@ -73,11 +73,21 @@ class LinkZin {
 
     // Verificar se há redirecionamento na URL
     checkForRedirect() {
+        // Evitar múltiplas verificações
+        if (this.redirectChecked) return;
+        this.redirectChecked = true;
+
         const urlParams = new URLSearchParams(window.location.search);
         const shortCode = urlParams.get('r');
 
         if (shortCode) {
-            this.redirectToOriginal(shortCode);
+            // Mostrar indicador de redirecionamento
+            this.showRedirectMessage();
+
+            // Adicionar um pequeno delay para garantir que a página carregou
+            setTimeout(() => {
+                this.redirectToOriginal(shortCode);
+            }, 100);
         }
     }
 
@@ -111,6 +121,7 @@ class LinkZin {
 
             // Criar URL curta
             const shortUrl = `${window.location.origin}${window.location.pathname}?r=${shortCode}`;
+            console.log('URL curta gerada:', shortUrl);
 
             // Salvar link
             const linkData = {
@@ -170,16 +181,32 @@ class LinkZin {
 
     // Redirecionar para URL original
     redirectToOriginal(shortCode) {
+        console.log('Tentando redirecionar para código:', shortCode);
+        console.log('Links disponíveis:', Object.keys(this.links));
+
         const linkData = this.links[shortCode];
 
         if (linkData) {
+            console.log('Link encontrado:', linkData);
+
             // Incrementar contador de cliques
             linkData.clicks++;
             this.saveLinks();
 
-            // Redirecionar
-            window.location.href = linkData.originalUrl;
+            // Verificar se a URL original é válida
+            if (linkData.originalUrl && this.isValidUrl(linkData.originalUrl)) {
+                console.log('Redirecionando para:', linkData.originalUrl);
+
+                // Adicionar timeout para evitar travamento
+                setTimeout(() => {
+                    window.location.href = linkData.originalUrl;
+                }, 500);
+            } else {
+                console.error('URL original inválida:', linkData.originalUrl);
+                this.showMessage('URL original inválida.', 'error');
+            }
         } else {
+            console.error('Link não encontrado para código:', shortCode);
             this.showMessage('Link não encontrado ou expirado.', 'error');
         }
     }
@@ -235,6 +262,27 @@ class LinkZin {
         }
     }
 
+    // Mostrar mensagem de redirecionamento
+    showRedirectMessage() {
+        // Remover mensagens anteriores
+        const existingMessages = document.querySelectorAll('.message');
+        existingMessages.forEach(msg => msg.remove());
+
+        // Criar mensagem de redirecionamento
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message redirect';
+        messageDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecionando...';
+        messageDiv.style.textAlign = 'center';
+        messageDiv.style.fontSize = '1.2rem';
+        messageDiv.style.padding = '2rem';
+
+        // Inserir mensagem no topo da página
+        const main = document.querySelector('main');
+        if (main) {
+            main.insertBefore(messageDiv, main.firstChild);
+        }
+    }
+
     // Mostrar mensagem
     showMessage(message, type = 'info') {
         // Remover mensagens anteriores
@@ -264,7 +312,9 @@ class LinkZin {
     loadLinks() {
         try {
             const saved = localStorage.getItem('linkzin_links');
-            return saved ? JSON.parse(saved) : {};
+            const links = saved ? JSON.parse(saved) : {};
+            console.log('Links carregados do localStorage:', links);
+            return links;
         } catch (error) {
             console.error('Erro ao carregar links:', error);
             return {};

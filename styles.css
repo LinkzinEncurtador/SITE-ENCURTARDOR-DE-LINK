@@ -693,6 +693,17 @@ body {
     border: 1px solid #bee5eb;
 }
 
+.message.redirect {
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-yellow));
+    color: white;
+    font-size: 1.2rem;
+    padding: 2rem;
+    margin: 2rem 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(10, 26, 63, 0.3);
+    text-align: center;
+}
+
 /* Estilos adicionais para páginas específicas */
 
 /* Form Groups */
