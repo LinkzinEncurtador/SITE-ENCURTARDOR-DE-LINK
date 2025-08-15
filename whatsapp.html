@@ -25,11 +25,71 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3026521456856935"
-     crossorigin="anonymous"></script>
+    <!-- Google Ads será carregado dinamicamente após consentimento GDPR -->
 </head>
 
 <body>
+    <!-- Banner de Consentimento GDPR - LinkZin -->
+    <div id="gdpr-consent" style="position:fixed;bottom:0;left:0;width:100%;background:#002147;color:#fff;padding:20px;text-align:center;z-index:9999;font-family:Arial,sans-serif;box-shadow:0 -2px 8px rgba(0,0,0,0.3);">
+        <p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;max-width:800px;margin-left:auto;margin-right:auto;">
+            📢 Usamos cookies e tecnologias semelhantes para melhorar sua experiência, personalizar anúncios e analisar o tráfego.  
+            De acordo com as leis de privacidade do Espaço Económico Europeu (EEE), Reino Unido e Suíça, pedimos seu consentimento para processar dados pessoais.  
+            <a href="privacidade.html" style="color:#ffd700;text-decoration:underline;">Saiba mais</a>
+        </p>
+        <button onclick="setConsent(true)" style="background:#ffd700;color:#002147;padding:8px 15px;border:none;border-radius:5px;cursor:pointer;margin-right:8px;font-weight:bold;">
+            Aceitar
+        </button>
+        <button onclick="setConsent(false)" style="background:transparent;color:white;padding:8px 15px;border:1px solid white;border-radius:5px;cursor:pointer;">
+            Recusar
+        </button>
+    </div>
+
+    <script>
+    // Lista de países EEE + UK + Suíça
+    const eeeCountries = [
+        "AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IE","IT",
+        "LV","LI","LT","LU","MT","NL","NO","PL","PT","RO","SK","SI","ES","SE","CH","GB"
+    ];
+
+    // Verifica localização
+    fetch("https://ipapi.co/json/")
+        .then(res => res.json())
+        .then(data => {
+            if (!eeeCountries.includes(data.country)) {
+                document.getElementById('gdpr-consent').style.display = 'none';
+                loadAds(); // Carrega anúncios normalmente para fora do EEE
+            }
+        })
+        .catch(() => {
+            // Se API falhar, exibe banner por segurança
+        });
+
+    // Define consentimento
+    function setConsent(accepted) {
+        localStorage.setItem("gdprConsent", accepted ? "granted" : "denied");
+        document.getElementById("gdpr-consent").style.display = "none";
+        if (accepted) {
+            loadAds();
+        }
+    }
+
+    // Oculta se já definido e carrega anúncios se aceitou
+    if (localStorage.getItem("gdprConsent")) {
+        document.getElementById("gdpr-consent").style.display = "none";
+        if (localStorage.getItem("gdprConsent") === "granted") {
+            loadAds();
+        }
+    }
+
+    // Função para carregar anúncios do Google
+    function loadAds() {
+        let adsScript = document.createElement("script");
+        adsScript.async = true;
+        adsScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
+        adsScript.setAttribute("data-ad-client", "ca-pub-3026521456856935"); // Seu ID AdSense
+        document.head.appendChild(adsScript);
+    }
+    </script>
     <!-- Header -->
     <header class="header">
         <div class="container">
