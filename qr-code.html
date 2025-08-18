@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" href="favicon linkzin.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <!-- Google Ads será carregado dinamicamente após consentimento GDPR -->
 </head>
 
@@ -376,20 +376,44 @@
                     margin: 2,
                     color: {
                         dark: foregroundColor.value,
-                        light: transparentBg.checked ? '#00000000' : backgroundColor.value
+                        light: transparentBg.checked ? '#ffffff' : backgroundColor.value
                     }
                 };
 
-                const canvas = document.createElement('canvas');
-                QRCode.toCanvas(canvas, content, options, function (error) {
-                    if (error) {
-                        console.error('Erro ao gerar QR code:', error);
-                        alert('Erro ao gerar QR code. Tente novamente.');
-                        return;
+                try {
+                    // Limpar preview
+                    qrPreview.innerHTML = '';
+                    
+                    // Criar div para o QR code
+                    const qrDiv = document.createElement('div');
+                    qrDiv.id = 'qrcode';
+                    qrDiv.style.textAlign = 'center';
+                    qrPreview.appendChild(qrDiv);
+                    
+                    // Gerar QR code usando QRCode.js
+                    new QRCode(qrDiv, {
+                        text: content,
+                        width: 200,
+                        height: 200,
+                        colorDark: foregroundColor.value,
+                        colorLight: transparentBg.checked ? '#ffffff' : backgroundColor.value,
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                    
+                    // Adicionar estilo ao canvas gerado
+                    const canvas = qrDiv.querySelector('canvas');
+                    if (canvas) {
+                        canvas.style.maxWidth = '100%';
+                        canvas.style.height = 'auto';
+                        canvas.style.border = '1px solid #ddd';
+                        canvas.style.borderRadius = '8px';
                     }
-                    qrPreview.appendChild(canvas);
+                    
                     downloadSection.style.display = 'block';
-                });
+                } catch (error) {
+                    console.error('Erro ao gerar QR code:', error);
+                    alert('Erro ao gerar QR code. Tente novamente.');
+                }
             });
 
             // Download QR Code
