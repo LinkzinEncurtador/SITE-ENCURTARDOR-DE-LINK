@@ -380,14 +380,15 @@
                     }
                 };
 
-                QRCode.toCanvas(qrPreview, content, options, function (error) {
+                const canvas = document.createElement('canvas');
+                QRCode.toCanvas(canvas, content, options, function (error) {
                     if (error) {
                         console.error('Erro ao gerar QR code:', error);
                         alert('Erro ao gerar QR code. Tente novamente.');
-                    } else {
-                        // Show download section
-                        downloadSection.style.display = 'block';
+                        return;
                     }
+                    qrPreview.appendChild(canvas);
+                    downloadSection.style.display = 'block';
                 });
             });
 
