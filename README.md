@@ -252,4 +252,4 @@ Contribuições são bem-vindas! Para contribuir:
 
 ---
 
-**Desenvolvido com ❤️ por Bruno Ulrich** 
+**Desenvolvido com ❤️ por Bruno Ulrich - LinkZin Encurtador** 
