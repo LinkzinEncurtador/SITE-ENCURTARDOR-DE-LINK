@@ -35,6 +35,7 @@
     <link rel="icon" type="image/png" href="favicon linkzin.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3026521456856935"
      crossorigin="anonymous"></script>
@@ -222,10 +223,16 @@
                                     Gerar QR Code
                                 </button>
                                 <div id="downloadSection" class="download-section" style="display: none;">
-                                    <button type="button" id="downloadQRBtn" class="download-qr-btn">
-                                        <i class="fas fa-download"></i>
-                                        Baixar QR Code
-                                    </button>
+                                    <div class="download-options">
+                                        <button type="button" id="downloadQRBtn" class="download-qr-btn">
+                                            <i class="fas fa-download"></i>
+                                            Baixar PNG
+                                        </button>
+                                        <button type="button" id="downloadEPSBtn" class="download-qr-btn eps-btn">
+                                            <i class="fas fa-file-vector"></i>
+                                            Baixar EPS
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -335,6 +342,7 @@
             const qrPreview = document.getElementById('qrPreview');
             const downloadSection = document.getElementById('downloadSection');
             const downloadQRBtn = document.getElementById('downloadQRBtn');
+            const downloadEPSBtn = document.getElementById('downloadEPSBtn');
             const foregroundColor = document.getElementById('foregroundColor');
             const backgroundColor = document.getElementById('backgroundColor');
             const transparentBg = document.getElementById('transparentBg');
@@ -448,7 +456,7 @@
                 }
             });
 
-            // Download QR Code
+            // Download QR Code PNG
             downloadQRBtn.addEventListener('click', function () {
                 const canvas = qrPreview.querySelector('canvas');
                 if (canvas) {
@@ -456,8 +464,179 @@
                     link.download = 'qrcode-linkzin.png';
                     link.href = canvas.toDataURL();
                     link.click();
+                    showNotification('QR Code PNG baixado com sucesso!', 'success');
                 }
             });
+
+            // Download QR Code EPS
+            downloadEPSBtn.addEventListener('click', function () {
+                const canvas = qrPreview.querySelector('canvas');
+                if (canvas) {
+                    generateEPSFromCanvas(canvas, 'qrcode-linkzin.eps');
+                    showNotification('QR Code EPS gerado com sucesso!', 'success');
+                }
+            });
+
+            // Função para gerar arquivo EPS
+            function generateEPSFromCanvas(canvas, filename) {
+                const ctx = canvas.getContext('2d');
+                const width = canvas.width;
+                const height = canvas.height;
+                
+                // Obter dados da imagem
+                const imageData = ctx.getImageData(0, 0, width, height);
+                const data = imageData.data;
+                
+                // Obter cores personalizadas
+                const fgColor = foregroundColor.value;
+                const bgColor = transparentBg.checked ? '#ffffff' : backgroundColor.value;
+                
+                // Converter cores hex para RGB
+                const fgRGB = hexToRgb(fgColor);
+                const bgRGB = hexToRgb(bgColor);
+                
+                // Criar conteúdo EPS
+                let epsContent = `%!PS-Adobe-3.0 EPSF-3.0
+%%BoundingBox: 0 0 ${width} ${height}
+%%Creator: LinkZin QR Code Generator
+%%Title: QR Code
+%%CreationDate: ${new Date().toISOString()}
+%%EndComments
+
+% Configurações iniciais
+/Helvetica findfont 12 scalefont setfont
+
+% Definir cores
+${fgRGB.r/255} ${fgRGB.g/255} ${fgRGB.b/255} setrgbcolor
+
+% Função para desenhar pixel
+/pixel {
+    newpath
+    moveto
+    1 0 rlineto
+    0 1 rlineto
+    -1 0 rlineto
+    closepath
+    fill
+} def
+
+% Desenhar QR Code
+`;
+
+                // Converter pixels para comandos EPS
+                for (let y = 0; y < height; y++) {
+                    for (let x = 0; x < width; x++) {
+                        const index = (y * width + x) * 4;
+                        const r = data[index];
+                        const g = data[index + 1];
+                        const b = data[index + 2];
+                        
+                        // Se o pixel é escuro (QR code)
+                        if (r < 128 || g < 128 || b < 128) {
+                            epsContent += `${x} ${height - y} pixel\n`;
+                        }
+                    }
+                }
+                
+                epsContent += `\n%%EOF`;
+                
+                // Criar blob e download
+                const blob = new Blob([epsContent], { type: 'application/postscript' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }
+
+            // Função auxiliar para converter hex para RGB
+            function hexToRgb(hex) {
+                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? {
+                    r: parseInt(result[1], 16),
+                    g: parseInt(result[2], 16),
+                    b: parseInt(result[3], 16)
+                } : {r: 0, g: 0, b: 0};
+            }
+
+            // Função para mostrar notificações
+            function showNotification(message, type = 'info') {
+                // Remover notificação anterior se existir
+                const existingNotification = document.querySelector('.notification');
+                if (existingNotification) {
+                    existingNotification.remove();
+                }
+
+                const notification = document.createElement('div');
+                notification.className = `notification notification-${type}`;
+                notification.innerHTML = `
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i>
+                    <span>${message}</span>
+                `;
+                
+                // Adicionar estilos inline
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${type === 'success' ? '#28a745' : '#17a2b8'};
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    z-index: 10000;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    animation: slideInRight 0.3s ease-out;
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Remover após 3 segundos
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.style.animation = 'slideOutRight 0.3s ease-out';
+                        setTimeout(() => {
+                            if (notification.parentNode) {
+                                notification.remove();
+                            }
+                        }, 300);
+                    }
+                }, 3000);
+            }
+
+            // Adicionar estilos de animação para notificações
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideInRight {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+                
+                @keyframes slideOutRight {
+                    from {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
         });
     </script>
 </body>
