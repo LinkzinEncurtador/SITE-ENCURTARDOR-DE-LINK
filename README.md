@@ -98,8 +98,34 @@ SITE ENCURTARDOR DE LINK/
 - Mensagem pré-definida opcional
 - QR code integrado
 - Botão de abrir WhatsApp
+- **Validade de 1 ano** para todos os links criados
+- Sistema de redirecionamento com verificação de expiração
+- Contador de cliques para cada link
+- Limpeza automática de links expirados
+- Links curtos no formato `whatsapp.html?w=CODIGO`
 
 ## 🔧 Configuração
+
+### Sistema de Validade de Links do WhatsApp
+
+O LinkZin implementa um sistema robusto de validade para links do WhatsApp:
+
+#### Características
+- **Duração**: Todos os links têm validade de 1 ano (365 dias)
+- **Armazenamento**: Links são salvos no localStorage do navegador
+- **Limpeza**: Sistema automático remove links expirados a cada 24 horas
+- **Redirecionamento**: Verificação de validade antes de redirecionar para o WhatsApp
+
+#### Como Funciona
+1. **Criação**: Ao gerar um link, o sistema calcula automaticamente a data de expiração
+2. **Acesso**: Quando alguém acessa o link, o sistema verifica se ainda é válido
+3. **Expiração**: Links expirados são automaticamente removidos e não funcionam mais
+
+#### Benefícios
+- **Segurança**: Links não ficam ativos indefinidamente
+- **Performance**: Sistema otimizado com limpeza automática
+- **Controle**: Usuários sabem exatamente quando o link expira
+- **Estatísticas**: Contador de cliques para acompanhar o uso
 
 ### Firebase (Opcional)
 Para persistência de dados em nuvem, descomente e configure as linhas no `script.js`:
@@ -126,7 +152,7 @@ Substitua a chave do reCAPTCHA nas páginas de contato e denúncia:
 
 ### LocalStorage
 - Links encurtados são salvos localmente
-- Limpeza automática de links antigos (30 dias)
+- Links não expiram (permanentes)
 - Dados persistentes entre sessões
 
 ### Estrutura dos Dados
@@ -215,7 +241,7 @@ Este projeto foi desenvolvido por Bruno Ulrich. Todos os direitos reservados.
 - [ ] Analytics avançados
 - [ ] API pública
 - [ ] Integração com redes sociais
-- [ ] Links com expiração
+- [x] Links permanentes (sem expiração)
 - [ ] Campanhas de marketing
 - [ ] Integração com Google Analytics
 

@@ -891,6 +891,34 @@ body {
     border-radius: 10px;
 }
 
+.whatsapp-info {
+    background-color: var(--light-gray);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.whatsapp-info p {
+    margin: 0.5rem 0;
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+.whatsapp-info p strong {
+    color: var(--primary-blue);
+    font-weight: 600;
+}
+
+.whatsapp-info .expiration-warning {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.whatsapp-info .expiration-ok {
+    color: #28a745;
+    font-weight: 600;
+}
+
 /* Tool Features */
 .tool-features {
     list-style: none;
@@ -3391,5 +3419,85 @@ body {
 
     .phone-mockup {
         max-width: 200px;
+    }
+}
+
+/* Estilos para informações de permanência dos QR Codes */
+.qr-info,
+.qr-permanent-info,
+.whatsapp-qr-info {
+    margin-top: 10px;
+    text-align: center;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    border-left: 4px solid #28a745;
+}
+
+/* Notificação de permanência na página principal */
+.qr-permanent-notice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 15px 0;
+    padding: 10px;
+    background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+    border: 1px solid #28a745;
+    border-radius: 8px;
+    color: #28a745;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.1);
+}
+
+.qr-permanent-notice i {
+    font-size: 16px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.qr-info small,
+.qr-permanent-info small,
+.whatsapp-qr-info small {
+    color: #666;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.qr-info small::before,
+.qr-permanent-info small::before,
+.whatsapp-qr-info small::before {
+    content: "✓ ";
+    color: #28a745;
+    font-weight: bold;
+}
+
+/* Animação suave para as informações de permanência */
+.qr-info,
+.qr-permanent-info,
+.whatsapp-qr-info {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

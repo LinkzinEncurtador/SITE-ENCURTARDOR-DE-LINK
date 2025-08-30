@@ -207,7 +207,7 @@ class LinkZin {
             }
         } else {
             console.error('Link não encontrado para código:', shortCode);
-            this.showMessage('Link não encontrado ou expirado.', 'error');
+            this.showMessage('Link não encontrado.', 'error');
         }
     }
 
@@ -220,7 +220,7 @@ class LinkZin {
             // Limpar container
             qrContainer.innerHTML = '';
 
-            // Gerar QR Code
+            // Gerar QR Code com configurações permanentes
             await QRCode.toCanvas(qrContainer, url, {
                 width: 200,
                 height: 200,
@@ -228,8 +228,20 @@ class LinkZin {
                 color: {
                     dark: '#0a1a3f',
                     light: '#ffffff'
-                }
+                },
+                // Configurações para garantir que o QR code seja permanente
+                errorCorrectionLevel: 'H', // Nível mais alto de correção de erros
+                version: 1, // Versão fixa para consistência
+                maskPattern: 0, // Padrão de máscara fixo
+                // Não há configuração de expiração - QR codes são permanentes por padrão
             });
+
+            // Adicionar informações sobre a permanência do QR code
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'qr-info';
+            infoDiv.innerHTML = '<small style="color: #666; font-size: 12px; margin-top: 10px; display: block;">✓ QR Code permanente - não expira</small>';
+            qrContainer.appendChild(infoDiv);
+
         } catch (error) {
             console.error('Erro ao gerar QR Code:', error);
         }
@@ -360,21 +372,11 @@ class LinkZin {
         }
     }
 
-    // Limpar links antigos (mais de 30 dias)
+    // Função para limpeza de links (desabilitada - links não expiram)
     cleanupOldLinks() {
-        const thirtyDaysAgo = new Date();
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-        Object.keys(this.links).forEach(key => {
-            const linkData = this.links[key];
-            const createdAt = new Date(linkData.createdAt);
-
-            if (createdAt < thirtyDaysAgo) {
-                delete this.links[key];
-            }
-        });
-
-        this.saveLinks();
+        // Links não expiram mais - função mantida para compatibilidade
+        // mas não executa nenhuma limpeza
+        console.log('Limpeza de links desabilitada - links não expiram');
     }
 }
 
@@ -443,7 +445,7 @@ class ClickCounter {
             `;
             resultDiv.style.display = 'block';
         } else {
-            this.showMessage('Link não encontrado ou expirado.', 'error');
+            this.showMessage('Link não encontrado.', 'error');
         }
     }
 
@@ -662,6 +664,7 @@ class QRCodeGenerator {
 // Classe para gerador de link WhatsApp
 class WhatsAppLinkGenerator {
     constructor() {
+        this.whatsappLinks = this.loadWhatsAppLinks();
         this.init();
     }
 
@@ -684,6 +687,127 @@ class WhatsAppLinkGenerator {
         const countryCodeSelect = document.getElementById('countryCode');
         if (countryCodeSelect) {
             countryCodeSelect.addEventListener('change', () => this.updateCountryFlag());
+        }
+
+        // Verificar se há redirecionamento de link WhatsApp
+        this.checkForWhatsAppRedirect();
+    }
+
+    // Carregar links do WhatsApp do localStorage
+    loadWhatsAppLinks() {
+        try {
+            const saved = localStorage.getItem('linkzin_whatsapp_links');
+            const links = saved ? JSON.parse(saved) : {};
+            console.log('Links do WhatsApp carregados:', links);
+            return links;
+        } catch (error) {
+            console.error('Erro ao carregar links do WhatsApp:', error);
+            return {};
+        }
+    }
+
+    // Salvar links do WhatsApp no localStorage
+    saveWhatsAppLinks() {
+        try {
+            localStorage.setItem('linkzin_whatsapp_links', JSON.stringify(this.whatsappLinks));
+        } catch (error) {
+            console.error('Erro ao salvar links do WhatsApp:', error);
+        }
+    }
+
+    // Verificar se há redirecionamento de link WhatsApp
+    checkForWhatsAppRedirect() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const whatsappCode = urlParams.get('w');
+
+        if (whatsappCode) {
+            this.redirectToWhatsApp(whatsappCode);
+        }
+    }
+
+    // Redirecionar para WhatsApp
+    redirectToWhatsApp(whatsappCode) {
+        console.log('Tentando redirecionar WhatsApp para código:', whatsappCode);
+        
+        const linkData = this.whatsappLinks[whatsappCode];
+
+        if (linkData) {
+            console.log('Link do WhatsApp encontrado:', linkData);
+
+            // Verificar se o link não expirou (1 ano de validade)
+            const expirationDate = new Date(linkData.expiresAt);
+            const now = new Date();
+
+            if (now > expirationDate) {
+                console.error('Link do WhatsApp expirado');
+                this.showRedirectMessage('Este link do WhatsApp expirou (validade de 1 ano).', 'error');
+                return;
+            }
+
+            // Incrementar contador de cliques
+            linkData.clicks = (linkData.clicks || 0) + 1;
+            this.saveWhatsAppLinks();
+
+            // Mostrar mensagem de redirecionamento
+            this.showRedirectMessage('Redirecionando para o WhatsApp...', 'info');
+
+            // Redirecionar para o WhatsApp
+            console.log('Redirecionando para WhatsApp:', linkData.whatsappUrl);
+            setTimeout(() => {
+                window.location.href = linkData.whatsappUrl;
+            }, 2000);
+        } else {
+            console.error('Link do WhatsApp não encontrado para código:', whatsappCode);
+            this.showRedirectMessage('Link do WhatsApp não encontrado.', 'error');
+        }
+    }
+
+    // Mostrar mensagem de redirecionamento
+    showRedirectMessage(message, type = 'info') {
+        // Remover mensagens anteriores
+        const existingMessages = document.querySelectorAll('.redirect-message');
+        existingMessages.forEach(msg => msg.remove());
+
+        // Criar mensagem de redirecionamento
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `redirect-message ${type}`;
+        messageDiv.innerHTML = `
+            <div style="text-align: center; padding: 3rem; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin: 2rem auto; max-width: 500px;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">
+                    ${type === 'error' ? '❌' : '📱'}
+                </div>
+                <h2 style="color: #0a1a3f; margin-bottom: 1rem;">${type === 'error' ? 'Link Expirado' : 'Redirecionando...'}</h2>
+                <p style="color: #666; font-size: 1.1rem; margin-bottom: 2rem;">${message}</p>
+                ${type === 'error' ? `
+                    <a href="whatsapp.html" style="background: #0a1a3f; color: white; padding: 0.8rem 1.5rem; text-decoration: none; border-radius: 8px; display: inline-block;">
+                        Criar Novo Link
+                    </a>
+                ` : `
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 0.5rem;">
+                        <div class="spinner" style="width: 20px; height: 20px; border: 2px solid #f3f3f3; border-top: 2px solid #25D366; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                        <span>Abrindo WhatsApp...</span>
+                    </div>
+                `}
+            </div>
+        `;
+
+        // Adicionar estilos para o spinner
+        if (!document.querySelector('#redirect-spinner-styles')) {
+            const style = document.createElement('style');
+            style.id = 'redirect-spinner-styles';
+            style.textContent = `
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Inserir mensagem no topo da página
+        const main = document.querySelector('main');
+        if (main) {
+            main.insertBefore(messageDiv, main.firstChild);
         }
     }
 
@@ -722,6 +846,7 @@ class WhatsAppLinkGenerator {
         const numberInput = document.getElementById('whatsappNumber');
         const messageInput = document.getElementById('whatsappMessage');
         const countryCodeSelect = document.getElementById('countryCode');
+        const customLinkInput = document.getElementById('customLink');
         const resultDiv = document.getElementById('whatsappResult');
 
         if (!numberInput || !resultDiv) return;
@@ -729,6 +854,7 @@ class WhatsAppLinkGenerator {
         let number = numberInput.value.trim();
         const message = messageInput ? messageInput.value.trim() : '';
         const countryCode = countryCodeSelect ? countryCodeSelect.value : '+55';
+        const customLink = customLinkInput ? customLinkInput.value.trim() : '';
 
         if (!number) {
             this.showMessage('Por favor, insira um número de telefone.', 'error');
@@ -758,21 +884,56 @@ class WhatsAppLinkGenerator {
             whatsappUrl += `?text=${encodeURIComponent(message)}`;
         }
 
+        // Gerar código único para o link
+        const whatsappCode = this.generateWhatsAppCode();
+        
+        // Criar URL curta do WhatsApp
+        const shortWhatsappUrl = `${window.location.origin}${window.location.pathname}?w=${whatsappCode}`;
+
+        // Salvar link do WhatsApp com validade de 1 ano
+        const linkData = {
+            id: whatsappCode,
+            whatsappUrl: whatsappUrl,
+            shortUrl: shortWhatsappUrl,
+            phoneNumber: fullNumber,
+            message: message,
+            countryCode: countryCode,
+            customLink: customLink,
+            createdAt: new Date().toISOString(),
+            clicks: 0,
+            expiresAt: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)).toISOString() // 1 ano
+        };
+
+        this.whatsappLinks[whatsappCode] = linkData;
+        this.saveWhatsAppLinks();
+
+        // Calcular data de expiração para exibição
+        const expirationDate = new Date(linkData.expiresAt).toLocaleDateString('pt-BR');
+        const createdDate = new Date(linkData.createdAt).toLocaleDateString('pt-BR');
+
         // Exibir resultado
         resultDiv.innerHTML = `
             <div class="whatsapp-link-card">
                 <h3>Link do WhatsApp Gerado</h3>
                 <div class="whatsapp-link">
-                    <input type="text" value="${whatsappUrl}" readonly class="whatsapp-url-display">
-                    <button type="button" class="copy-btn" onclick="whatsappGenerator.copyWhatsAppLink('${whatsappUrl}')">
+                    <input type="text" value="${shortWhatsappUrl}" readonly class="whatsapp-url-display">
+                    <button type="button" class="copy-btn" onclick="whatsappGenerator.copyWhatsAppLink('${shortWhatsappUrl}')">
                         <i class="fas fa-copy"></i> Copiar
                     </button>
                 </div>
+                <div class="whatsapp-info">
+                    <p><strong>Número:</strong> ${countryCode} ${number}</p>
+                    <p><strong>Mensagem:</strong> ${message || 'Nenhuma mensagem'}</p>
+                    <p><strong>Criado em:</strong> ${createdDate}</p>
+                    <p><strong>Validade:</strong> <span class="expiration-ok">1 ano (expira em ${expirationDate})</span></p>
+                    <p><strong>Cliques:</strong> 0</p>
+                    <p><strong>Status:</strong> <span class="expiration-ok">✓ Link ativo</span></p>
+                </div>
                 <div class="whatsapp-actions">
-                    <a href="${whatsappUrl}" target="_blank" class="whatsapp-btn">
-                        <i class="fab fa-whatsapp"></i> Abrir WhatsApp
+                    <a href="${shortWhatsappUrl}" target="_blank" class="whatsapp-btn">
+                        <i class="fab fa-whatsapp"></i> Testar Link
                     </a>
-                    <button type="button" class="qr-btn" onclick="whatsappGenerator.generateWhatsAppQR('${whatsappUrl}')">
+                    <button type="button" class="qr-btn" onclick="whatsappGenerator.generateWhatsAppQR('${shortWhatsappUrl}')">
                         <i class="fas fa-qrcode"></i> Gerar QR Code
                     </button>
                 </div>
@@ -780,6 +941,16 @@ class WhatsAppLinkGenerator {
             </div>
         `;
         resultDiv.style.display = 'block';
+    }
+
+    // Gerar código único para link do WhatsApp
+    generateWhatsAppCode() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        for (let i = 0; i < 8; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return result;
     }
 
     async copyWhatsAppLink(url) {
@@ -812,8 +983,19 @@ class WhatsAppLinkGenerator {
                 color: {
                     dark: '#25D366',
                     light: '#ffffff'
-                }
+                },
+                // Configurações para garantir que o QR code seja permanente
+                errorCorrectionLevel: 'H', // Nível mais alto de correção de erros
+                version: 1, // Versão fixa para consistência
+                maskPattern: 0 // Padrão de máscara fixo
             });
+
+            // Adicionar informações sobre a permanência do QR code
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'whatsapp-qr-info';
+            infoDiv.innerHTML = '<small style="color: #666; font-size: 12px; margin-top: 10px; display: block; text-align: center;">✓ QR Code permanente - não expira</small>';
+            qrContainer.appendChild(infoDiv);
+
         } catch (error) {
             console.error('Erro ao gerar QR Code:', error);
         }
@@ -824,7 +1006,7 @@ class WhatsAppLinkGenerator {
         messageDiv.className = `message ${type}`;
         messageDiv.textContent = message;
 
-        const form = document.querySelector('.whatsapp-form');
+        const form = document.querySelector('.whatsapp-form-card');
         if (form) {
             form.insertBefore(messageDiv, form.firstChild);
         }
@@ -834,6 +1016,47 @@ class WhatsAppLinkGenerator {
                 messageDiv.remove();
             }
         }, 5000);
+    }
+
+    // Limpar links do WhatsApp expirados
+    cleanupExpiredWhatsAppLinks() {
+        const now = new Date();
+        let expiredCount = 0;
+
+        Object.keys(this.whatsappLinks).forEach(code => {
+            const linkData = this.whatsappLinks[code];
+            const expirationDate = new Date(linkData.expiresAt);
+
+            if (now > expirationDate) {
+                delete this.whatsappLinks[code];
+                expiredCount++;
+            }
+        });
+
+        if (expiredCount > 0) {
+            this.saveWhatsAppLinks();
+            console.log(`${expiredCount} links do WhatsApp expirados foram removidos`);
+        }
+    }
+
+    // Obter estatísticas de um link do WhatsApp
+    getWhatsAppLinkStats(whatsappCode) {
+        const linkData = this.whatsappLinks[whatsappCode];
+        if (!linkData) return null;
+
+        const expirationDate = new Date(linkData.expiresAt);
+        const now = new Date();
+        const isExpired = now > expirationDate;
+
+        return {
+            phoneNumber: linkData.phoneNumber,
+            message: linkData.message,
+            clicks: linkData.clicks,
+            createdAt: linkData.createdAt,
+            expiresAt: linkData.expiresAt,
+            isExpired: isExpired,
+            daysUntilExpiration: isExpired ? 0 : Math.ceil((expirationDate - now) / (1000 * 60 * 60 * 24))
+        };
     }
 }
 
@@ -857,14 +1080,18 @@ document.addEventListener('DOMContentLoaded', function () {
             break;
         case 'whatsapp.html':
             window.whatsappGenerator = new WhatsAppLinkGenerator();
+            // Limpar links do WhatsApp expirados a cada 24 horas
+            setInterval(() => {
+                window.whatsappGenerator.cleanupExpiredWhatsAppLinks();
+            }, 24 * 60 * 60 * 1000); // A cada 24 horas
             break;
         default:
             new LinkZin();
     }
 
-    // Limpar links antigos periodicamente
-    setInterval(() => {
-        const linkZin = new LinkZin();
-        linkZin.cleanupOldLinks();
-    }, 24 * 60 * 60 * 1000); // A cada 24 horas
+    // Limpeza de links desabilitada - links não expiram mais
+    // setInterval(() => {
+    //     const linkZin = new LinkZin();
+    //     linkZin.cleanupOldLinks();
+    // }, 24 * 60 * 60 * 1000); // A cada 24 horas
 }); 

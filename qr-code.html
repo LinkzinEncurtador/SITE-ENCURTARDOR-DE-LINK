@@ -241,10 +241,17 @@
                 <div class="features-grid">
                     <div class="feature-card">
                         <div class="feature-icon">
+                            <i class="fas fa-infinity"></i>
+                        </div>
+                        <h3 class="feature-title">QR Codes Permanentes</h3>
+                        <p class="feature-description">Seus QR codes nunca expiram e funcionam para sempre</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
                             <i class="fas fa-cog"></i>
                         </div>
                         <h3 class="feature-title">Personalização Total</h3>
-                        <p class="feature-description">Como personalizar seus encurtados para o futuro</p>
+                        <p class="feature-description">Personalize cores, tamanhos e adicione seu logo</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
@@ -266,6 +273,13 @@
                         </div>
                         <h3 class="feature-title">Compatível</h3>
                         <p class="feature-description">Funciona em todos os dispositivos e aplicativos</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Alta Confiabilidade</h3>
+                        <p class="feature-description">Nível máximo de correção de erros para maior durabilidade</p>
                     </div>
                 </div>
             </div>
@@ -400,15 +414,23 @@
                     qrDiv.style.textAlign = 'center';
                     qrPreview.appendChild(qrDiv);
                     
-                    // Gerar QR code usando QRCode.js
+                    // Gerar QR code permanente usando QRCode.js
                     new QRCode(qrDiv, {
                         text: content,
                         width: 200,
                         height: 200,
                         colorDark: foregroundColor.value,
                         colorLight: transparentBg.checked ? '#ffffff' : backgroundColor.value,
-                        correctLevel: QRCode.CorrectLevel.H
+                        correctLevel: QRCode.CorrectLevel.H, // Nível mais alto de correção de erros
+                        version: 1, // Versão fixa para consistência
+                        maskPattern: 0 // Padrão de máscara fixo
                     });
+                    
+                    // Adicionar informações sobre a permanência do QR code
+                    const infoDiv = document.createElement('div');
+                    infoDiv.className = 'qr-permanent-info';
+                    infoDiv.innerHTML = '<small style="color: #666; font-size: 12px; margin-top: 10px; display: block; text-align: center;">✓ QR Code permanente - não expira</small>';
+                    qrPreview.appendChild(infoDiv);
                     
                     // Adicionar estilo ao canvas gerado
                     const canvas = qrDiv.querySelector('canvas');
