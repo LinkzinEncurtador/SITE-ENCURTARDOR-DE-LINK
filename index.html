@@ -30,6 +30,7 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-3026521456856935">
     <title>LinkZin - Encurtador de Links</title>
     <link rel="icon" type="image/png" href="LOGO_LINKZIN_005.png">
     <link rel="stylesheet" href="styles.css">
@@ -96,11 +97,11 @@
 
     // Função para carregar anúncios do Google
     function loadAds() {
-        let adsScript = document.createElement("script");
-        adsScript.async = true;
-        adsScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3026521456856935";
-        adsScript.crossOrigin = "anonymous";
-        document.head.appendChild(adsScript);
+        // O script do AdSense já está carregado no head, apenas ativa os anúncios
+        if (typeof adsbygoogle !== 'undefined') {
+            // Ativa todos os anúncios existentes na página
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        }
     }
     </script>
 
