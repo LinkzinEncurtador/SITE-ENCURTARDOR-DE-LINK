@@ -3546,3 +3546,121 @@ body {
         font-size: 0.9rem;
     }
 }
+
+/* Estilos para a seção de Vantagens e Recursos */
+.advantages {
+    padding: 4rem 0;
+    background-color: var(--light-gray);
+}
+
+.advantages-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+.advantages-text h3 {
+    color: var(--primary-blue);
+    font-size: var(--font-card);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.advantages-text ul {
+    list-style: none;
+    margin-bottom: 2rem;
+}
+
+.advantages-text li {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    position: relative;
+    line-height: 1.6;
+}
+
+.advantages-text li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--success);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.advantages-text strong {
+    color: var(--primary-blue);
+}
+
+.stats-section {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, #1a365d 100%);
+    padding: 2rem;
+    border-radius: 12px;
+    color: var(--white);
+}
+
+.stats-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-item h4 {
+    font-size: 1.8rem;
+    color: var(--primary-yellow);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.stat-item p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    opacity: 0.9;
+}
+
+/* Responsividade para a seção de vantagens */
+@media (max-width: 768px) {
+    .advantages-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .advantages-text h3 {
+        font-size: var(--font-card-mobile);
+    }
+    
+    .stats-section {
+        padding: 1.5rem;
+    }
+    
+    .stat-item h4 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .advantages {
+        padding: 2rem 0;
+    }
+    
+    .advantages-text li {
+        padding-left: 1.2rem;
+        font-size: 0.9rem;
+    }
+    
+    .stats-section {
+        padding: 1rem;
+    }
+    
+    .stat-item {
+        padding: 0.8rem;
+    }
+}
