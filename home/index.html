@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HSEC1242SP"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-HSEC1242SP');
+    </script>
+    
+    <!-- Google Consent Mode - Default Settings -->
+    <script>
+        // Define dataLayer and the gtag function.
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        // Set default consent to 'denied' as a placeholder
+        // Determine actual values based on your own requirements
+        gtag('consent', 'default', {
+          'ad_storage': 'denied',
+          'ad_user_data': 'denied',
+          'ad_personalization': 'denied',
+          'analytics_storage': 'denied'
+        });
+    </script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkZin - Página Home</title>
+    <link rel="icon" type="image/png" href="../LOGO_LINKZIN_005.png">
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3026521456856935"
+     crossorigin="anonymous"></script>
+    <!-- Google Ads será carregado dinamicamente após consentimento GDPR -->
+</head>
+
+<body>
+    <!-- Banner de Consentimento GDPR - LinkZin -->
+    <div id="gdpr-consent" style="position:fixed;bottom:0;left:0;width:100%;background:#002147;color:#fff;padding:20px;text-align:center;z-index:9999;font-family:Arial,sans-serif;box-shadow:0 -2px 8px rgba(0,0,0,0.3);">
+        <p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;max-width:800px;margin-left:auto;margin-right:auto;">
+            📢 Usamos cookies e tecnologias semelhantes para melhorar sua experiência, personalizar anúncios e analisar o tráfego.  
+            De acordo com as leis de privacidade do Espaço Económico Europeu (EEE), Reino Unido e Suíça, pedimos seu consentimento para processar dados pessoais.  
+            <a href="../privacidade/" style="color:#ffd700;text-decoration:underline;">Saiba mais</a>
+        </p>
+        <button onclick="setConsent(true)" style="background:#ffd700;color:#002147;padding:8px 15px;border:none;border-radius:5px;cursor:pointer;margin-right:8px;font-weight:bold;">
+            Aceitar
+        </button>
+        <button onclick="setConsent(false)" style="background:transparent;color:white;padding:8px 15px;border:1px solid white;border-radius:5px;cursor:pointer;">
+            Recusar
+        </button>
+    </div>
+
+    <script>
+    // Lista de países EEE + UK + Suíça
+    const eeeCountries = [
+        "AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IE","IT",
+        "LV","LI","LT","LU","MT","NL","NO","PL","PT","RO","SK","SI","ES","SE","CH","GB"
+    ];
+
+    // Verifica localização
+    fetch("https://ipapi.co/json/")
+        .then(res => res.json())
+        .then(data => {
+            if (!eeeCountries.includes(data.country)) {
+                document.getElementById('gdpr-consent').style.display = 'none';
+                loadAds(); // Carrega anúncios normalmente para fora do EEE
+            }
+        })
+        .catch(() => {
+            // Se API falhar, exibe banner por segurança
+        });
+
+    // Define consentimento
+    function setConsent(accepted) {
+        localStorage.setItem("gdprConsent", accepted ? "granted" : "denied");
+        document.getElementById("gdpr-consent").style.display = "none";
+        if (accepted) {
+            loadAds();
+        }
+    }
+
+    // Oculta se já definido e carrega anúncios se aceitou
+    if (localStorage.getItem("gdprConsent")) {
+        document.getElementById("gdpr-consent").style.display = "none";
+        if (localStorage.getItem("gdprConsent") === "granted") {
+            loadAds();
+        }
+    }
+
+    // Função para carregar anúncios do Google
+    function loadAds() {
+        let adsScript = document.createElement("script");
+        adsScript.async = true;
+        adsScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3026521456856935";
+        adsScript.crossOrigin = "anonymous";
+        document.head.appendChild(adsScript);
+    }
+    </script>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="../LOGO_LINKZIN_005.png" alt="LinkZin Logo">
+                <span>LinkZin</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../">Início</a></li>
+                <li><a href="../porque-usar/">Por que usar?</a></li>
+                <li><a href="../recursos/">Recursos</a></li>
+                <li><a href="../blog/">Blog</a></li>
+                <li><a href="../contato/">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Bem-vindo à Página Home do LinkZin</h1>
+                <p>Esta é a página que será acessível através de <code>/home</code></p>
+                <div class="cta-buttons">
+                    <a href="../" class="btn btn-primary">Voltar ao Início</a>
+                    <a href="../porque-usar/" class="btn btn-secondary">Por que usar?</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <h2>Recursos Principais</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-link"></i>
+                    <h3>Encurtamento de Links</h3>
+                    <p>Transforme links longos em URLs curtas e fáceis de compartilhar.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-qrcode"></i>
+                    <h3>Gerador de QR Code</h3>
+                    <p>Crie QR codes personalizados para seus links.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Estatísticas</h3>
+                    <p>Acompanhe o desempenho dos seus links com análises detalhadas.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>LinkZin</h4>
+                <p>O melhor encurtador de links do Brasil</p>
+            </div>
+            <div class="footer-section">
+                <h4>Links Úteis</h4>
+                <ul>
+                    <li><a href="../termos/">Termos de Uso</a></li>
+                    <li><a href="../privacidade/">Política de Privacidade</a></li>
+                    <li><a href="../contato/">Contato</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Redes Sociais</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 LinkZin. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>
