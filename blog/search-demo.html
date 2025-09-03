@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demonstração do Sistema de Pesquisa - Blog LinkZin</title>
+    <link rel="icon" type="image/png" href="../LOGO_LINKZIN_005.png">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="blog-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="../index.html">
+                        <img src="../LOGO_LINKZIN_005.png" alt="LinkZin Logo" class="logo-img">
+                    </a>
+                </div>
+                <nav class="nav">
+                    <a href="../index.html">Encurtador</a>
+                    <a href="../contador/">Contador</a>
+                    <a href="../desencurtar/">Desencurtar</a>
+                    <a href="index.html" class="active">Blog</a>
+                    <a href="../contato/">Contato</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Barra de Busca -->
+        <section class="search-section">
+            <div class="container">
+                <div class="search-container">
+                    <input type="text" placeholder="Digite sua pesquisa..." class="search-input">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Demonstração do Sistema -->
+        <section class="demo-section">
+            <div class="container">
+                <div class="demo-content">
+                    <h1>🚀 Sistema de Pesquisa do Blog LinkZin</h1>
+                    
+                    <div class="demo-info">
+                        <h2>Como Funciona</h2>
+                        <p>Este sistema de pesquisa permite encontrar rapidamente artigos do blog baseado em palavras-chave, títulos e conteúdo.</p>
+                        
+                        <div class="demo-features">
+                            <div class="feature">
+                                <i class="fas fa-search"></i>
+                                <h3>Pesquisa Inteligente</h3>
+                                <p>Busca por relevância em títulos, palavras-chave e descrições</p>
+                            </div>
+                            
+                            <div class="feature">
+                                <i class="fas fa-bolt"></i>
+                                <h3>Resultados em Tempo Real</h3>
+                                <p>Pesquisa automática enquanto você digita</p>
+                            </div>
+                            
+                            <div class="feature">
+                                <i class="fas fa-tags"></i>
+                                <h3>Palavras-chave</h3>
+                                <p>Encontra artigos relacionados ao que você procura</p>
+                            </div>
+                            
+                            <div class="feature">
+                                <i class="fas fa-history"></i>
+                                <h3>Histórico</h3>
+                                <p>Lembra suas pesquisas anteriores</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="demo-examples">
+                        <h2>Exemplos de Pesquisa</h2>
+                        <p>Experimente pesquisar por estas palavras-chave:</p>
+                        
+                        <div class="example-tags">
+                            <span class="example-tag" onclick="searchExample('QR Code')">QR Code</span>
+                            <span class="example-tag" onclick="searchExample('Segurança')">Segurança</span>
+                            <span class="example-tag" onclick="searchExample('Servidores')">Servidores</span>
+                            <span class="example-tag" onclick="searchExample('Links')">Links</span>
+                            <span class="example-tag" onclick="searchExample('Tecnologia')">Tecnologia</span>
+                            <span class="example-tag" onclick="searchExample('Empresa')">Empresa</span>
+                            <span class="example-tag" onclick="searchExample('Digital')">Digital</span>
+                            <span class="example-tag" onclick="searchExample('Marketing')">Marketing</span>
+                        </div>
+                    </div>
+
+                    <div class="demo-articles">
+                        <h2>Artigos Disponíveis</h2>
+                        <div class="articles-grid">
+                            <article class="article-card">
+                                <div class="article-image">
+                                    <img src="../Blog_img_card_02.png" alt="QR Codes">
+                                </div>
+                                <div class="article-content">
+                                    <h3>QR Codes: Estáticos vs Dinâmicos</h3>
+                                    <p>Descubra as diferenças e como escolher a melhor opção para sua estratégia digital.</p>
+                                    <div class="article-keywords">
+                                        <span class="keyword">QR Code</span>
+                                        <span class="keyword">Tecnologia</span>
+                                        <span class="keyword">Estratégia</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="article-card">
+                                <div class="article-image">
+                                    <img src="../Blog_img_card_01.png" alt="Desencurtar Links">
+                                </div>
+                                <div class="article-content">
+                                    <h3>Desencurtar um Link</h3>
+                                    <p>Descubra para onde o link realmente leva antes de clicar e proteja-se.</p>
+                                    <div class="article-keywords">
+                                        <span class="keyword">Segurança</span>
+                                        <span class="keyword">Links</span>
+                                        <span class="keyword">Proteção</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="article-card">
+                                <div class="article-image">
+                                    <img src="../Blog_img_card_03.png" alt="Hardening">
+                                </div>
+                                <div class="article-content">
+                                    <h3>Hardening de Servidores</h3>
+                                    <p>Proteção para negócios digitais através de técnicas avançadas de segurança.</p>
+                                    <div class="article-keywords">
+                                        <span class="keyword">Servidores</span>
+                                        <span class="keyword">Segurança</span>
+                                        <span class="keyword">TI</span>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+
+                    <div class="demo-tips">
+                        <h2>💡 Dicas de Pesquisa</h2>
+                        <ul>
+                            <li><strong>Use palavras-chave específicas:</strong> "QR Code" em vez de apenas "código"</li>
+                            <li><strong>Experimente sinônimos:</strong> "Segurança" ou "Proteção"</li>
+                            <li><strong>Pesquise por categoria:</strong> "Tecnologia", "Empresa", "Digital"</li>
+                            <li><strong>Use atalhos:</strong> Pressione Ctrl+K para focar na pesquisa</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="../LOGO_LINKZIN_005.png" alt="LinkZin Logo" class="footer-logo-img">
+                </div>
+                <div class="footer-links">
+                    <a href="../index.html">Encurtador</a>
+                    <a href="../contador/">Contador de Cliques</a>
+                    <a href="../desencurtar/">Desencurtar URL</a>
+                    <a href="../recursos/">Por que LINKZIN?</a>
+                    <a href="../denunciar/">Denunciar URL</a>
+                    <a href="../termos/">Termos de Serviço</a>
+                    <a href="../privacidade/">Privacidade</a>
+                    <a href="../contato/">Contato</a>
+                </div>
+                <div class="footer-info">
+                    <p>&copy; 2025 LinkZin - Ferramenta para encurtar link ® Desenvolvido por Bruno Ulrich</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Sistema de Pesquisa do Blog -->
+    <script src="search-system.js"></script>
+    
+    <script>
+        // Função para demonstrar pesquisas
+        function searchExample(query) {
+            const searchInput = document.querySelector('.search-input');
+            if (searchInput) {
+                searchInput.value = query;
+                searchInput.focus();
+                
+                // Simula uma pesquisa
+                const searchSystem = new BlogSearch();
+                searchSystem.performSearch(query);
+            }
+        }
+
+        // Adiciona estilos específicos para a demonstração
+        const style = document.createElement('style');
+        style.textContent = `
+            .demo-section {
+                padding: 40px 0;
+                background: #f8f9fa;
+            }
+            
+            .demo-content {
+                max-width: 800px;
+                margin: 0 auto;
+                text-align: center;
+            }
+            
+            .demo-content h1 {
+                color: var(--primary-blue);
+                margin-bottom: 30px;
+                font-size: 2.5em;
+            }
+            
+            .demo-info {
+                background: white;
+                padding: 30px;
+                border-radius: 15px;
+                margin-bottom: 40px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            }
+            
+            .demo-features {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+                margin-top: 30px;
+            }
+            
+            .feature {
+                padding: 20px;
+                background: #f8f9fa;
+                border-radius: 10px;
+                border: 2px solid transparent;
+                transition: all 0.3s ease;
+            }
+            
+            .feature:hover {
+                border-color: var(--primary-blue);
+                transform: translateY(-5px);
+            }
+            
+            .feature i {
+                font-size: 2em;
+                color: var(--primary-blue);
+                margin-bottom: 15px;
+            }
+            
+            .demo-examples {
+                background: white;
+                padding: 30px;
+                border-radius: 15px;
+                margin-bottom: 40px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            }
+            
+            .example-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                justify-content: center;
+                margin-top: 20px;
+            }
+            
+            .example-tag {
+                background: var(--primary-blue);
+                color: white;
+                padding: 10px 20px;
+                border-radius: 25px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                font-weight: 500;
+            }
+            
+            .example-tag:hover {
+                background: #081a3a;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            }
+            
+            .demo-articles {
+                background: white;
+                padding: 30px;
+                border-radius: 15px;
+                margin-bottom: 40px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            }
+            
+            .articles-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                margin-top: 20px;
+            }
+            
+            .article-card {
+                background: #f8f9fa;
+                border-radius: 10px;
+                overflow: hidden;
+                transition: all 0.3s ease;
+                border: 2px solid transparent;
+            }
+            
+            .article-card:hover {
+                border-color: var(--primary-blue);
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            }
+            
+            .article-image img {
+                width: 100%;
+                height: 150px;
+                object-fit: cover;
+            }
+            
+            .article-content {
+                padding: 20px;
+            }
+            
+            .article-content h3 {
+                color: var(--primary-blue);
+                margin-bottom: 10px;
+            }
+            
+            .article-keywords {
+                margin-top: 15px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+            
+            .keyword {
+                background: var(--primary-blue);
+                color: white;
+                padding: 3px 8px;
+                border-radius: 12px;
+                font-size: 11px;
+                text-transform: uppercase;
+            }
+            
+            .demo-tips {
+                background: white;
+                padding: 30px;
+                border-radius: 15px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                text-align: left;
+            }
+            
+            .demo-tips ul {
+                list-style: none;
+                padding: 0;
+            }
+            
+            .demo-tips li {
+                padding: 10px 0;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 25px;
+            }
+            
+            .demo-tips li:last-child {
+                border-bottom: none;
+            }
+            
+            .demo-tips li:before {
+                content: "✓";
+                position: absolute;
+                left: 0;
+                color: var(--primary-blue);
+                font-weight: bold;
+            }
+            
+            @media (max-width: 768px) {
+                .demo-content h1 {
+                    font-size: 2em;
+                }
+                
+                .demo-features {
+                    grid-template-columns: 1fr;
+                }
+                
+                .articles-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>

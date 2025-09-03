@@ -1063,30 +1063,39 @@ class WhatsAppLinkGenerator {
 // Inicializar aplicação baseada na página atual
 document.addEventListener('DOMContentLoaded', function () {
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const currentPath = window.location.pathname;
 
-    switch (currentPage) {
-        case 'index.html':
-        case '':
-            new LinkZin();
-            break;
-        case 'contador.html':
-            new ClickCounter();
-            break;
-        case 'desencurtar.html':
-            new UrlUnshortener();
-            break;
-        case 'qr-code.html':
-            new QRCodeGenerator();
-            break;
-        case 'whatsapp.html':
-            window.whatsappGenerator = new WhatsAppLinkGenerator();
-            // Limpar links do WhatsApp expirados a cada 24 horas
-            setInterval(() => {
-                window.whatsappGenerator.cleanupExpiredWhatsAppLinks();
-            }, 24 * 60 * 60 * 1000); // A cada 24 horas
-            break;
-        default:
-            new LinkZin();
+    console.log('Página atual:', currentPage);
+    console.log('Caminho completo:', currentPath);
+
+    // Verificar se estamos na página do contador
+    if (currentPath.includes('/contador/') || currentPath.includes('/contador')) {
+        console.log('Inicializando ClickCounter...');
+        window.clickCounter = new ClickCounter();
+    }
+    // Verificar se estamos na página de desencurtar
+    else if (currentPath.includes('/desencurtar/') || currentPath.includes('/desencurtar')) {
+        console.log('Inicializando UrlUnshortener...');
+        new UrlUnshortener();
+    }
+    // Verificar se estamos na página de QR Code
+    else if (currentPath.includes('/qr-code/') || currentPath.includes('/qr-code')) {
+        console.log('Inicializando QRCodeGenerator...');
+        new QRCodeGenerator();
+    }
+    // Verificar se estamos na página do WhatsApp
+    else if (currentPath.includes('/whatsapp/') || currentPath.includes('/whatsapp')) {
+        console.log('Inicializando WhatsAppLinkGenerator...');
+        window.whatsappGenerator = new WhatsAppLinkGenerator();
+        // Limpar links do WhatsApp expirados a cada 24 horas
+        setInterval(() => {
+            window.whatsappGenerator.cleanupExpiredWhatsAppLinks();
+        }, 24 * 60 * 60 * 1000); // A cada 24 horas
+    }
+    // Página principal ou outras páginas
+    else {
+        console.log('Inicializando LinkZin...');
+        new LinkZin();
     }
 
     // Limpeza de links desabilitada - links não expiram mais

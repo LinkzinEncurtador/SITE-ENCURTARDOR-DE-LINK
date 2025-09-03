@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo - Ticker de Cotações - LinkZin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .currency-ticker {
+            background: linear-gradient(90deg, #002147, #004a94);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            margin: 20px 0;
+        }
+        .ticker-content {
+            display: flex;
+            animation: ticker 30s linear infinite;
+            white-space: nowrap;
+        }
+        .ticker-content span {
+            padding-right: 50px;
+            font-size: 14px;
+        }
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .controls {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .control-group {
+            margin: 10px 0;
+        }
+        label {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+        }
+        input {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .info {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .status {
+            background: #d4edda;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Demo - Ticker de Cotações Automático</h1>
+        
+        <div class="info">
+            <h3>📊 Como Funciona:</h3>
+            <ul>
+                <li><strong>Data Automática:</strong> A data se atualiza automaticamente todos os dias</li>
+                <li><strong>Atualização em Tempo Real:</strong> O ticker se atualiza a cada minuto</li>
+                <li><strong>Botão de Atualização:</strong> Clique no botão 🔄 para atualizar manualmente</li>
+                <li><strong>Indicador de Tempo:</strong> Mostra quando foi a última atualização</li>
+            </ul>
+        </div>
+
+        <!-- Ticker de Cotações -->
+        <div class="currency-ticker">
+            <div class="ticker-content">
+                <span>Carregando taxas de câmbio...</span>
+                <span>Carregando taxas de câmbio...</span>
+            </div>
+        </div>
+
+        <!-- Controles de Demonstração -->
+        <div class="controls">
+            <h3>🎛️ Controles de Demonstração</h3>
+            
+            <div class="control-group">
+                <label>Dólar (USD):</label>
+                <input type="number" id="usd-rate" value="5.46" step="0.01" min="0">
+                <button onclick="updateRate('USD', 'usd-rate')">Atualizar</button>
+            </div>
+            
+            <div class="control-group">
+                <label>Euro (EUR):</label>
+                <input type="number" id="eur-rate" value="6.37" step="0.01" min="0">
+                <button onclick="updateRate('EUR', 'eur-rate')">Atualizar</button>
+            </div>
+            
+            <div class="control-group">
+                <label>Libra (GBP):</label>
+                <input type="number" id="gbp-rate" value="6.37" step="0.01" min="0">
+                <button onclick="updateRate('GBP', 'gbp-rate')">Atualizar</button>
+            </div>
+            
+            <div class="control-group">
+                <label>Dólar CAD:</label>
+                <input type="number" id="cad-rate" value="3.96" step="0.01" min="0">
+                <button onclick="updateRate('CAD', 'cad-rate')">Atualizar</button>
+            </div>
+            
+            <div class="control-group">
+                <label>Dólar AUD:</label>
+                <input type="number" id="aud-rate" value="3.56" step="0.01" min="0">
+                <button onclick="updateRate('AUD', 'aud-rate')">Atualizar</button>
+            </div>
+            
+            <div class="control-group">
+                <button onclick="resetToDefaults()">🔄 Reset para Padrões</button>
+                <button onclick="forceUpdate()">🔄 Forçar Atualização</button>
+            </div>
+        </div>
+
+        <div class="status" id="status">
+            ✅ Ticker inicializado e funcionando
+        </div>
+
+        <div class="info">
+            <h3>🔧 Para Implementar no Seu Site:</h3>
+            <ol>
+                <li>Inclua os arquivos <code>currency-config.js</code> e <code>currency-ticker.js</code></li>
+                <li>Adicione o HTML do ticker com a classe <code>currency-ticker</code></li>
+                <li>Atualize as cotações no arquivo <code>currency-config.js</code></li>
+                <li>O sistema se encarrega do resto automaticamente!</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="currency-config.js"></script>
+    <script src="currency-ticker.js"></script>
+    
+    <script>
+        // Funções de demonstração
+        function updateRate(currency, inputId) {
+            const input = document.getElementById(inputId);
+            const newRate = parseFloat(input.value);
+            
+            if (isNaN(newRate) || newRate < 0) {
+                alert('Por favor, insira um valor válido');
+                return;
+            }
+            
+            // Atualiza a cotação global
+            if (window.CURRENCY_RATES) {
+                window.CURRENCY_RATES[currency] = newRate;
+                
+                // Força atualização do ticker
+                if (window.currencyTicker) {
+                    window.currencyTicker.updateTicker();
+                }
+                
+                updateStatus(`✅ Cotação do ${currency} atualizada para R$${newRate.toFixed(2)}`);
+            }
+        }
+        
+        function resetToDefaults() {
+            // Reseta para os valores padrão
+            const defaults = {
+                'usd-rate': 5.46,
+                'eur-rate': 6.37,
+                'gbp-rate': 6.37,
+                'cad-rate': 3.96,
+                'aud-rate': 3.56
+            };
+            
+            Object.keys(defaults).forEach(inputId => {
+                document.getElementById(inputId).value = defaults[inputId];
+            });
+            
+            // Reseta as cotações globais
+            if (window.CURRENCY_RATES) {
+                window.CURRENCY_RATES.USD = 5.46;
+                window.CURRENCY_RATES.EUR = 6.37;
+                window.CURRENCY_RATES.GBP = 6.37;
+                window.CURRENCY_RATES.CAD = 3.96;
+                window.CURRENCY_RATES.AUD = 3.56;
+                
+                // Força atualização
+                if (window.currencyTicker) {
+                    window.currencyTicker.updateTicker();
+                }
+            }
+            
+            updateStatus('🔄 Cotações resetadas para valores padrão');
+        }
+        
+        function forceUpdate() {
+            if (window.currencyTicker) {
+                window.currencyTicker.updateTicker();
+                updateStatus('🔄 Ticker atualizado manualmente');
+            }
+        }
+        
+        function updateStatus(message) {
+            const statusElement = document.getElementById('status');
+            statusElement.textContent = message;
+            statusElement.style.background = '#d4edda';
+            
+            setTimeout(() => {
+                statusElement.style.background = '#d4edda';
+            }, 3000);
+        }
+        
+        // Aguarda o ticker estar pronto
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                if (window.currencyTicker && window.currencyTicker.isInitialized) {
+                    updateStatus('✅ Ticker funcionando perfeitamente!');
+                } else {
+                    updateStatus('⚠️ Aguardando inicialização do ticker...');
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HSEC1242SP"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-HSEC1242SP');
+    </script>
+    
+    <!-- Google Consent Mode - Default Settings -->
+    <script>
+        // Define dataLayer and the gtag function.
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        // Set default consent to 'denied' as a placeholder
+        // Determine actual values based on your own requirements
+        gtag('consent', 'default', {
+          'ad_storage': 'denied',
+          'ad_user_data': 'denied',
+          'ad_personalization': 'denied',
+          'analytics_storage': 'denied'
+        });
+    </script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - LinkZin - Encurtador de Links</title>
+    <link rel="icon" type="image/png" href="../LOGO_LINKZIN_005.png">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="blog-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3026521456856935"
+     crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Banner de Consentimento GDPR - LinkZin -->
+    <div id="gdpr-consent" style="position:fixed;bottom:0;left:0;width:100%;background:#002147;color:#fff;padding:20px;text-align:center;z-index:9999;font-family:Arial,sans-serif;box-shadow:0 -2px 8px rgba(0,0,0,0.3);">
+        <p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;max-width:800px;margin-left:auto;margin-right:auto;">
+            📢 Usamos cookies e tecnologias semelhantes para melhorar sua experiência, personalizar anúncios e analisar o tráfego.  
+            De acordo com as leis de privacidade do Espaço Económico Europeu (EEE), Reino Unido e Suíça, pedimos seu consentimento para processar dados pessoais.  
+            <a href="../privacidade/" style="color:#ffd700;text-decoration:underline;">Saiba mais</a>
+        </p>
+        <button onclick="setConsent(true)" style="background:#ffd700;color:#002147;padding:8px 15px;border:none;border-radius:5px;cursor:pointer;margin-right:8px;font-weight:bold;">
+            Aceitar
+        </button>
+        <button onclick="setConsent(false)" style="background:transparent;color:white;padding:8px 15px;border:1px solid white;border-radius:5px;cursor:pointer;">
+            Recusar
+        </button>
+    </div>
+
+    <script>
+    // Lista de países EEE + UK + Suíça
+    const eeeCountries = [
+        "AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IE","IT",
+        "LV","LI","LT","LU","MT","NL","NO","PL","PT","RO","SK","SI","ES","SE","CH","GB"
+    ];
+
+    // Verifica localização
+    fetch("https://ipapi.co/json/")
+        .then(res => res.json())
+        .then(data => {
+            if (!eeeCountries.includes(data.country)) {
+                document.getElementById('gdpr-consent').style.display = 'none';
+                loadAds(); // Carrega anúncios normalmente para fora do EEE
+            }
+        })
+        .catch(() => {
+            // Se API falhar, exibe banner por segurança
+        });
+
+    // Define consentimento
+    function setConsent(accepted) {
+        localStorage.setItem("gdprConsent", accepted ? "granted" : "denied");
+        document.getElementById("gdpr-consent").style.display = "none";
+        if (accepted) {
+            loadAds();
+        }
+    }
+
+    // Oculta se já definido e carrega anúncios se aceitou
+    if (localStorage.getItem("gdprConsent")) {
+        document.getElementById("gdpr-consent").style.display = "none";
+        if (localStorage.getItem("gdprConsent") === "granted") {
+            loadAds();
+        }
+    }
+
+    // Função para carregar anúncios do Google
+    function loadAds() {
+        let adsScript = document.createElement("script");
+        adsScript.async = true;
+        adsScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3026521456856935";
+        adsScript.crossOrigin = "anonymous";
+        document.head.appendChild(adsScript);
+    }
+    </script>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="../index.html">
+                        <img src="../LOGO_LINKZIN_005.png" alt="LinkZin" class="logo-img">
+                    </a>
+                </div>
+                <nav class="nav">
+                    <ul class="nav-list">
+                        <li><a href="../index.html">Início</a></li>
+                        <li><a href="../recursos/">Recursos</a></li>
+                        <li><a href="../qr-code/">Gerador de QR Code</a></li>
+                        <li><a href="../whatsapp/">Gerador de link WhatsApp</a></li>
+                        <li><a href="index.html" class="active">Blog</a></li>
+                    </ul>
+                </nav>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Ticker de Cotações -->
+    <div class="currency-ticker">
+        <div class="ticker-content">
+            <span>Carregando taxas de câmbio...</span>
+            <span>Carregando taxas de câmbio...</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Barra de Busca -->
+        <section class="search-section">
+            <div class="container">
+                <div class="search-container">
+                    <input type="text" placeholder="Digite sua pesquisa..." class="search-input">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hero Section do Blog -->
+        <section class="blog-hero">
+            <div class="container">
+                <div class="blog-hero-content">
+                    <div class="blog-hero-left">
+                        <div class="audio-player">
+                            <span>Ouça esse artigo:</span>
+                            <div class="player-controls">
+                                <button class="play-btn" id="playBtn">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                <div class="progress-container">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="progressFill"></div>
+                                    </div>
+                                    <input type="range" class="progress-slider" id="progressSlider" min="0" max="100" value="0">
+                                </div>
+                                <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
+                                <div class="volume-control">
+                                    <i class="fas fa-volume-up" id="volumeIcon"></i>
+                                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="100">
+                                </div>
+                            </div>
+                            <audio id="audioPlayer" preload="metadata">
+                                <source src="../conheça%20nosso%20site%20.mp3" type="audio/mpeg">
+                                Seu navegador não suporta o elemento de áudio.
+                            </audio>
+                        </div>
+                        <h1 class="blog-title">Blog</h1>
+                    </div>
+                    <div class="blog-hero-center">
+                        <h2 class="main-article-title">QR Codes: Estáticos vs Dinâmicos – Qual escolher para sua estratégia digital?</h2>
+                        <div class="hero-image-container">
+                            <div class="hero-main-image">
+                                <img src="../Blog_img_01.png" alt="QR Codes Estáticos vs Dinâmicos" class="hero-img">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Cards dos Artigos -->
+        <section class="articles-section">
+            <div class="container">
+                <div class="articles-grid">
+                    <article class="article-card">
+                        <a href="desencurtar-um-link.html" class="article-link">
+                            <div class="article-image">
+                                <img src="../Blog_img_card_01.png" alt="Desencurtar um Link">
+                            </div>
+                            <div class="article-content">
+                                <h3 class="article-title">Desencurtar um Link:</h3>
+                                <p class="article-subtitle" style="text-align: center;">Descubra para onde o link<br>
+ realmente leva antes de clicar!</p>
+                            </div>
+                        </a>
+                    </article>
+
+                    <article class="article-card">
+                        <a href="qr-codes-estaticos-vs-dinamicos.html" class="article-link">
+                            <div class="article-image">
+                                <img src="../Blog_img_card_02.png" alt="Códigos QR">
+                            </div>
+                            <div class="article-content">
+                                <h3 class="article-title">Códigos QR:</h3>
+                                <p class="article-subtitle" style="text-align: center;">Estáticos x Dinâmicos e<br>
+ o impacto para empresas</p>
+                            </div>
+                        </a>
+                    </article>
+
+                    <article class="article-card">
+                        <a href="hardening-de-servidores.html" class="article-link">
+                            <div class="article-image">
+                                <img src="../Blog_img_card_03.png" alt="Hardening de Servidores">
+                            </div>
+                            <div class="article-content">
+                                <h3 class="article-title">Hardening de Servidores:</h3>
+                                <p class="article-subtitle" style="text-align: center;">Proteção para negócios<br>
+ digitais</p>
+                            </div>
+                        </a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Banner Promocional -->
+        <section class="promo-banner">
+            <div class="container">
+                <div class="promo-content">
+                    <div class="promo-image">
+                        <img src="../kitsocialmedia_01.png" alt="Kit Social Media">
+                    </div>
+                    <div class="promo-text">
+                        <h3>O guia que todo social media precisa</h3>
+                    </div>
+                    <div class="promo-action">
+                        <div class="promo-price">
+                            <div class="price-label">por apenas</div>
+                            <div class="price-value">
+                                <span class="currency-symbol">R$</span>
+                                <span class="main-price">20</span>
+                                <span class="cents">,00</span>
+                            </div>
+                        </div>
+                        <a href="https://brunoulrich23.hotmart.host/kit-social-media-b370f160-ab02-4d9c-964f-01822c82b45b" target="_blank" class="promo-btn">COMPRAR AGORA</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="../LOGO_LINKZIN_005.png" alt="LinkZin Logo" class="footer-logo-img">
+                </div>
+                <div class="footer-links">
+                    <a href="../index.html">Encurtador</a>
+                    <a href="../contador/">Contador de Cliques</a>
+                    <a href="../desencurtar/">Desencurtar URL</a>
+                    <a href="../recursos/">Por que LINKZIN?</a>
+                    <a href="../denunciar/">Denunciar URL</a>
+                    <a href="../termos/">Termos de Serviço</a>
+                    <a href="../privacidade/">Privacidade</a>
+                    <a href="../contato/">Contato</a>
+                </div>
+                <div class="footer-info">
+                    <p>&copy; 2025 LinkZin - Ferramenta para encurtar link ® Desenvolvido por Bruno Ulrich</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts do Ticker de Cotações -->
+    <script src="currency-config.js"></script>
+    <script src="currency-ticker.js"></script>
+    
+    <!-- Sistema de Pesquisa do Blog -->
+    <script src="search-system.js"></script>
+    
+    <!-- Player de Áudio -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('audioPlayer');
+            const playBtn = document.getElementById('playBtn');
+            const playIcon = playBtn.querySelector('i');
+            const progressFill = document.getElementById('progressFill');
+            const progressSlider = document.getElementById('progressSlider');
+            const timeDisplay = document.getElementById('timeDisplay');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const volumeIcon = document.getElementById('volumeIcon');
+            
+            let isPlaying = false;
+            
+            // Função para formatar tempo em MM:SS
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = Math.floor(seconds % 60);
+                return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+            }
+            
+            // Função para atualizar o display de tempo
+            function updateTimeDisplay() {
+                const currentTime = audio.currentTime;
+                const duration = audio.duration;
+                timeDisplay.textContent = `${formatTime(currentTime)} / ${formatTime(duration)}`;
+            }
+            
+            // Função para atualizar a barra de progresso
+            function updateProgress() {
+                if (audio.duration) {
+                    const progress = (audio.currentTime / audio.duration) * 100;
+                    progressFill.style.width = progress + '%';
+                    progressSlider.value = progress;
+                }
+            }
+            
+            // Função para alternar play/pause
+            function togglePlay() {
+                if (isPlaying) {
+                    audio.pause();
+                    playIcon.className = 'fas fa-play';
+                    isPlaying = false;
+                } else {
+                    audio.play();
+                    playIcon.className = 'fas fa-pause';
+                    isPlaying = true;
+                }
+            }
+            
+            // Event listeners
+            playBtn.addEventListener('click', togglePlay);
+            
+            // Atualizar progresso durante a reprodução
+            audio.addEventListener('timeupdate', function() {
+                updateProgress();
+                updateTimeDisplay();
+            });
+            
+            // Atualizar tempo quando o áudio carregar
+            audio.addEventListener('loadedmetadata', function() {
+                updateTimeDisplay();
+            });
+            
+            // Atualizar tempo quando o áudio terminar
+            audio.addEventListener('ended', function() {
+                playIcon.className = 'fas fa-play';
+                isPlaying = false;
+                progressFill.style.width = '0%';
+                progressSlider.value = 0;
+                timeDisplay.textContent = `0:00 / ${formatTime(audio.duration)}`;
+            });
+            
+            // Controle de progresso via slider
+            progressSlider.addEventListener('input', function() {
+                const progress = this.value;
+                const time = (progress / 100) * audio.duration;
+                audio.currentTime = time;
+            });
+            
+            // Controle de volume
+            volumeSlider.addEventListener('input', function() {
+                const volume = this.value / 100;
+                audio.volume = volume;
+                
+                // Atualizar ícone de volume
+                if (volume === 0) {
+                    volumeIcon.className = 'fas fa-volume-mute';
+                } else if (volume < 0.5) {
+                    volumeIcon.className = 'fas fa-volume-down';
+                } else {
+                    volumeIcon.className = 'fas fa-volume-up';
+                }
+            });
+            
+            // Clique no ícone de volume para mutar/desmutar
+            volumeIcon.addEventListener('click', function() {
+                if (audio.volume > 0) {
+                    audio.volume = 0;
+                    volumeSlider.value = 0;
+                    volumeIcon.className = 'fas fa-volume-mute';
+                } else {
+                    audio.volume = 1;
+                    volumeSlider.value = 100;
+                    volumeIcon.className = 'fas fa-volume-up';
+                }
+            });
+            
+            // Atualizar progresso quando o usuário arrastar o slider
+            progressSlider.addEventListener('change', function() {
+                const progress = this.value;
+                const time = (progress / 100) * audio.duration;
+                audio.currentTime = time;
+            });
+            
+            // Tratamento de erros de áudio
+            audio.addEventListener('error', function(e) {
+                console.error('Erro ao carregar áudio:', e);
+                timeDisplay.textContent = 'Erro ao carregar áudio';
+            });
+            
+            // Atualizar ícone quando o áudio pausar
+            audio.addEventListener('pause', function() {
+                playIcon.className = 'fas fa-play';
+                isPlaying = false;
+            });
+            
+            // Atualizar ícone quando o áudio começar a tocar
+            audio.addEventListener('play', function() {
+                playIcon.className = 'fas fa-pause';
+                isPlaying = true;
+            });
+        });
+    </script>
+    
+    <script src="../script.js"></script>
+</body>
+
+</html>
