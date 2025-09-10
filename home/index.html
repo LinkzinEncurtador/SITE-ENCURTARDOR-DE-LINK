@@ -31,7 +31,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-adsense-account" content="ca-pub-3026521456856935">
-    <title>LinkZin - Página Home</title>
+    <title>LinkZin - Encurtador de Links</title>
     <link rel="icon" type="image/png" href="../LOGO_LINKZIN_005.png">
     <link rel="stylesheet" href="../styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -40,9 +40,12 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3026521456856935"
      crossorigin="anonymous"></script>
     <!-- Google Ads será carregado dinamicamente após consentimento GDPR -->
+    
+    <!-- PROTEÇÃO ANTI-COPY - CARREGAMENTO PRIORITÁRIO -->
+    <script src="../protection.js"></script>
 </head>
 
-<body>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onkeydown="return false">
     <!-- Banner de Consentimento GDPR - LinkZin -->
     <div id="gdpr-consent" style="position:fixed;bottom:0;left:0;width:100%;background:#002147;color:#fff;padding:20px;text-align:center;z-index:9999;font-family:Arial,sans-serif;box-shadow:0 -2px 8px rgba(0,0,0,0.3);">
         <p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;max-width:800px;margin-left:auto;margin-right:auto;">
@@ -97,95 +100,253 @@
 
     // Função para carregar anúncios do Google
     function loadAds() {
-        let adsScript = document.createElement("script");
-        adsScript.async = true;
-        adsScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3026521456856935";
-        adsScript.crossOrigin = "anonymous";
-        document.head.appendChild(adsScript);
+        // O script do AdSense já está carregado no head, apenas ativa os anúncios
+        if (typeof adsbygoogle !== 'undefined') {
+            // Ativa todos os anúncios existentes na página
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        }
     }
     </script>
 
     <!-- Header -->
-    <header>
-        <nav>
-            <div class="logo">
-                <img src="../LOGO_LINKZIN_005.png" alt="LinkZin Logo">
-                <span>LinkZin</span>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="../">
+                        <img src="../LOGO_LINKZIN_005.png" alt="LinkZin" class="logo-img">
+                    </a>
+                </div>
+                <nav class="nav">
+                    <ul class="nav-list">
+                        <li><a href="../" class="active">Início</a></li>
+                        <li><a href="../recursos/">Recursos</a></li>
+                        <li><a href="../qr-code/">Gerador de QR Code</a></li>
+                        <li><a href="../whatsapp/">Gerador de link WhatsApp</a></li>
+                        <li><a href="../blog/">Blog</a></li>
+                    </ul>
+                </nav>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
-            <ul class="nav-links">
-                <li><a href="../">Início</a></li>
-                <li><a href="../porque-usar/">Por que usar?</a></li>
-                <li><a href="../recursos/">Recursos</a></li>
-                <li><a href="../blog/">Blog</a></li>
-                <li><a href="../contato/">Contato</a></li>
-            </ul>
-        </nav>
+        </div>
     </header>
 
     <!-- Main Content -->
-    <main>
+    <main class="main">
+        <!-- Hero Section -->
         <section class="hero">
-            <div class="hero-content">
-                <h1>Bem-vindo à Página Home do LinkZin</h1>
-                <p>Esta é a página que será acessível através de <code>/home</code></p>
-                <div class="cta-buttons">
-                    <a href="../" class="btn btn-primary">Voltar ao Início</a>
-                    <a href="../porque-usar/" class="btn btn-secondary">Por que usar?</a>
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Encurte seus links de forma simples e rápida</h1>
+                    <p class="hero-subtitle">Transforme URLs longas em links curtos e fáceis de compartilhar</p>
+
+                    <!-- URL Shortener Form -->
+                    <div class="shortener-form">
+                        <div class="input-group">
+                            <input type="url" id="longUrl" placeholder="Cole sua URL longa aqui..." class="url-input">
+                            <button type="button" id="shortenBtn" class="shorten-btn">
+                                <i class="fas fa-link"></i>
+                                Encurtar
+                            </button>
+                        </div>
+                        <div id="result" class="result-container" style="display: none;">
+                            <div class="shortened-url">
+                                <input type="text" id="shortUrl" readonly class="short-url-input">
+                                <button type="button" id="copyBtn" class="copy-btn">
+                                    <i class="fas fa-copy"></i>
+                                    Copiar
+                                </button>
+                            </div>
+                            <div class="qr-code-container">
+                                <div id="qrCode"></div>
+                                <div class="qr-permanent-notice">
+                                    <i class="fas fa-infinity"></i>
+                                    <span>QR Code permanente - nunca expira</span>
+                                </div>
+                                <button type="button" id="downloadQR" class="download-qr-btn">
+                                    <i class="fas fa-download"></i>
+                                    Baixar QR Code
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
+        <!-- Features Section -->
         <section class="features">
-            <h2>Recursos Principais</h2>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <i class="fas fa-link"></i>
-                    <h3>Encurtamento de Links</h3>
-                    <p>Transforme links longos em URLs curtas e fáceis de compartilhar.</p>
+            <div class="container">
+                <h2 class="section-title">Por que escolher o LinkZin?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Confiável</h3>
+                        <p>Excluímos links que tentam disseminar spam e malware</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>Responsivo</h3>
+                        <p>Compatível com desktop, tablets e dispositivos móveis</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Estatísticas</h3>
+                        <p>Acompanhe o desempenho dos seus links em tempo real</p>
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <i class="fas fa-qrcode"></i>
-                    <h3>Gerador de QR Code</h3>
-                    <p>Crie QR codes personalizados para seus links.</p>
+            </div>
+        </section>
+
+        <!-- Anúncio Google AdSense - Horizontal Centralizado -->
+        <div align="center" style="margin: 40px 0;">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-3026521456856935"
+                 data-ad-slot="9959729343"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <!-- Tools Section -->
+        <section class="tools">
+            <div class="container">
+                <h2 class="section-title">Ferramentas Úteis</h2>
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-mouse-pointer"></i>
+                        </div>
+                        <h3>Contador de Cliques</h3>
+                        <p>Verifique quantos cliques seus links receberam</p>
+                        <a href="../contador/" class="tool-btn">Verificar</a>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-expand-arrows-alt"></i>
+                        </div>
+                        <h3>Desencurtar URL</h3>
+                        <p>Descubra a URL original de um link encurtado</p>
+                        <a href="../desencurtar/" class="tool-btn">Desencurtar</a>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <h3>Gerador de QR Code</h3>
+                        <p>Crie QR codes para seus links rapidamente</p>
+                        <a href="../qr-code/" class="tool-btn">Gerar</a>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <h3>Link WhatsApp</h3>
+                        <p>Gere links diretos para o WhatsApp</p>
+                        <a href="../whatsapp/" class="tool-btn">Criar</a>
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <i class="fas fa-chart-line"></i>
-                    <h3>Estatísticas</h3>
-                    <p>Acompanhe o desempenho dos seus links com análises detalhadas.</p>
+            </div>
+        </section>
+
+        <!-- Seção de Vantagens e Recursos -->
+        <section class="advantages">
+            <div class="container">
+                <div class="advantages-content">
+                    <div class="advantages-text">
+                        <h3>Vantagens de encurtar links online</h3>
+                        <ul>
+                            <li><strong>Compartilhamento rápido:</strong> um link curto é mais prático para enviar em mensagens e publicações.</li>
+                            <li><strong>Mais cliques e confiança:</strong> URLs simples passam credibilidade para quem recebe.</li>
+                            <li><strong>Personalização:</strong> crie links curtos com sua marca ou campanha.</li>
+                            <li><strong>Métricas inteligentes:</strong> acompanhe cliques e desempenho para melhorar sua estratégia digital.</li>
+                        </ul>
+
+                        <h3>Ferramentas exclusivas do LinkZin</h3>
+                        <p>Nosso site oferece recursos além do básico de encurtar URL:</p>
+                        <ul>
+                            <li><strong>Gerador de link para WhatsApp</strong> – crie um link que abre direto no seu número.</li>
+                            <li><strong>QR Code dinâmico e estático</strong> – leve seus clientes a qualquer conteúdo digital.</li>
+                            <li><strong>Encurtador rápido e seguro</strong> – ideal para redes sociais e campanhas online.</li>
+                        </ul>
+                    </div>
+
+                    <div class="stats-section">
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <h4>5 mil+</h4>
+                                <p>Links e QR Codes gerados só no primeiro mês</p>
+                            </div>
+                            <div class="stat-item">
+                                <h4>1.200+</h4>
+                                <p>Usuários ativos explorando nossas ferramentas</p>
+                            </div>
+                            <div class="stat-item">
+                                <h4>Cliques ilimitados</h4>
+                                <p>sem alterar nada na página</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
+    
+    <!-- Anúncio Google AdSense - Display -->
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3026521456856935" data-ad-slot="1074004322" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    
+    <!-- Anúncios Horizontal -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-3026521456856935"
+         data-ad-slot="1262207596"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
 
     <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>LinkZin</h4>
-                <p>O melhor encurtador de links do Brasil</p>
-            </div>
-            <div class="footer-section">
-                <h4>Links Úteis</h4>
-                <ul>
-                    <li><a href="../termos/">Termos de Uso</a></li>
-                    <li><a href="../privacidade/">Política de Privacidade</a></li>
-                    <li><a href="../contato/">Contato</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Redes Sociais</h4>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="../LOGO_LINKZIN_005.png" alt="LinkZin Logo" class="footer-logo-img">
+                </div>
+                <div class="footer-links">
+                    <a href="../">Encurtador</a>
+                    <a href="../contador/">Contador de Cliques</a>
+                    <a href="../desencurtar/">Desencurtar URL</a>
+                    <a href="../recursos/">Por que LINKZIN?</a>
+                    <a href="../denunciar/">Denunciar URL</a>
+                    <a href="../termos/">Termos de Serviço</a>
+                    <a href="../privacidade/">Privacidade</a>
+                    <a href="../contato/">Contato</a>
+                </div>
+                <div class="footer-info">
+                    <p>&copy; 2025 LinkZin - Ferramenta para encurtar link ® Desenvolvido por Bruno Ulrich</p>
                 </div>
             </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 LinkZin. Todos os direitos reservados.</p>
         </div>
     </footer>
 
     <script src="../script.js"></script>
 </body>
+
 </html>
