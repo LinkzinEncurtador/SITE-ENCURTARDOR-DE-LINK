@@ -39,9 +39,12 @@
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3026521456856935"
      crossorigin="anonymous"></script>
+    
+    <!-- PROTEÇÃO ANTI-COPY - CARREGAMENTO PRIORITÁRIO -->
+    <script src="../protection.js"></script>
 </head>
 
-<body>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onkeydown="return false">
     <!-- Banner de Consentimento GDPR - LinkZin -->
     <div id="gdpr-consent" style="position:fixed;bottom:0;left:0;width:100%;background:#002147;color:#fff;padding:20px;text-align:center;z-index:9999;font-family:Arial,sans-serif;box-shadow:0 -2px 8px rgba(0,0,0,0.3);">
         <p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;max-width:800px;margin-left:auto;margin-right:auto;">
@@ -196,10 +199,15 @@
             </div>
         </section>
 
-        <!-- Seção de Cards dos Artigos -->
+        <!-- Seção de Cards dos Artigos (Carrossel) -->
         <section class="articles-section">
             <div class="container">
-                <div class="articles-grid">
+                <div class="articles-carousel">
+                    <button class="carousel-btn prev" aria-label="Anterior" id="articlesPrev">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="carousel-viewport" id="articlesViewport">
+                        <div class="carousel-track" id="articlesTrack">
                     <article class="article-card">
                         <a href="desencurtar-um-link.html" class="article-link">
                             <div class="article-image">
@@ -238,6 +246,23 @@
                             </div>
                         </a>
                     </article>
+                    <article class="article-card">
+                        <a href="seguranca-e-privacidade-na-internet.html" class="article-link">
+                            <div class="article-image">
+                                <img src="../cards_segurança.png" alt="Segurança e Privacidade na Internet">
+                            </div>
+                            <div class="article-content">
+                                <h3 class="article-title">Segurança e Privacidade na Internet</h3>
+                                <p class="article-subtitle" style="text-align: center;">Como proteger seus dados<br>ao clicar em links encurtados</p>
+                            </div>
+                        </a>
+                    </article>
+                        </div>
+                    </div>
+                    <button class="carousel-btn next" aria-label="Próximo" id="articlesNext">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
                 </div>
             </div>
         </section>
@@ -432,6 +457,48 @@
                 isPlaying = true;
             });
         });
+    </script>
+    <script>
+        // Navegação do carrossel: cálculo por índice para evitar tremores
+        (function(){
+            const viewport = document.getElementById('articlesViewport');
+            const track = document.getElementById('articlesTrack');
+            const prev = document.getElementById('articlesPrev');
+            const next = document.getElementById('articlesNext');
+            if(!viewport||!track||!prev||!next) return;
+
+            const getCards = () => Array.from(track.querySelectorAll('.article-card'));
+            function getLayout(){
+                const style = getComputedStyle(track);
+                const gap = parseInt(style.gap) || 30;
+                const card = track.querySelector('.article-card');
+                const cardWidth = card ? card.getBoundingClientRect().width : viewport.clientWidth;
+                // visíveis por vez: detecta por largura
+                let perPage = 3;
+                if (window.matchMedia('(max-width: 600px)').matches) perPage = 1;
+                else if (window.matchMedia('(max-width: 992px)').matches) perPage = 2;
+                const pageWidth = (cardWidth * perPage) + (gap * (perPage - 1));
+                return { perPage, cardWidth, gap, pageWidth };
+            }
+
+            function pageIndex(){
+                const { pageWidth } = getLayout();
+                return Math.round(viewport.scrollLeft / pageWidth);
+            }
+
+            function scrollToPage(index){
+                const { pageWidth } = getLayout();
+                const maxIndex = Math.max(0, Math.ceil(getCards().length / getLayout().perPage) - 1);
+                const clamped = Math.max(0, Math.min(index, maxIndex));
+                const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                viewport.scrollTo({ left: clamped * pageWidth, behavior: prefersReduced ? 'auto' : 'smooth' });
+            }
+
+            prev.addEventListener('click', () => scrollToPage(pageIndex() - 1));
+            next.addEventListener('click', () => scrollToPage(pageIndex() + 1));
+
+            window.addEventListener('resize', () => scrollToPage(pageIndex()));
+        })();
     </script>
     
     <script src="../script.js"></script>

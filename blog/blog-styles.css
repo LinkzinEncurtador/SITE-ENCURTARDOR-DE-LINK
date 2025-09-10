@@ -350,6 +350,71 @@
     background: #f8f9fa;
 }
 
+/* ===== Carrossel de Artigos ===== */
+.articles-carousel { position: relative; }
+.carousel-viewport {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-gutter: stable both-edges;
+}
+.carousel-viewport::-webkit-scrollbar { height: 8px; }
+.carousel-viewport::-webkit-scrollbar-thumb { background: #d9dee3; border-radius: 8px; }
+.carousel-viewport::-webkit-scrollbar-track { background: transparent; }
+.carousel-track {
+    display: flex;
+    gap: 30px;
+    scroll-behavior: smooth;
+    padding: 5px 10px;
+}
+.carousel-track .article-card {
+    flex: 0 0 calc((100% - 60px) / 3); /* 3 cards visíveis (2 gaps = 60px) */
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translate3d(0,-50%,0);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: var(--primary-blue);
+    color: #ffffff;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* sombra fixa, sem transição */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    transition: none; /* remove animações que podem piscar */
+    outline: none;
+    will-change: auto;
+    backface-visibility: hidden;
+}
+.carousel-btn, .carousel-btn i { animation: none !important; transition: none !important; }
+.carousel-btn:focus { outline: none; }
+.carousel-btn.prev { left: 5px; }
+.carousel-btn.next { right: 5px; }
+.carousel-btn i { color: #ffffff; pointer-events: none; }
+.carousel-btn:hover { background: var(--primary-blue); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+
+/* Evita qualquer mudança visual em estados de interação */
+.carousel-btn:active { background: var(--primary-blue); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+
+/* Reserva espaço lateral para os botões, evitando sobreposição com a área rolável */
+.articles-carousel { padding: 0 56px; }
+
+/* Responsividade para o carrossel */
+@media (max-width: 992px) {
+    .carousel-track .article-card { flex-basis: calc((100% - 30px) / 2); }
+}
+@media (max-width: 600px) {
+    .carousel-track .article-card { flex-basis: 100%; }
+}
+
 .articles-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));

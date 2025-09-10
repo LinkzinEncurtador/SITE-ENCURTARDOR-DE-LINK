@@ -1103,4 +1103,170 @@ document.addEventListener('DOMContentLoaded', function () {
     //     const linkZin = new LinkZin();
     //     linkZin.cleanupOldLinks();
     // }, 24 * 60 * 60 * 1000); // A cada 24 horas
+});
+
+// ===== PROTEÇÕES CONTRA CÓPIA DE CÓDIGO =====
+
+// Proteção contra clique direito
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+});
+
+// Proteção contra seleção de texto
+document.addEventListener('selectstart', function(e) {
+    e.preventDefault();
+    return false;
+});
+
+// Proteção contra arrastar elementos
+document.addEventListener('dragstart', function(e) {
+    e.preventDefault();
+    return false;
+});
+
+// Proteção contra teclas de atalho
+document.addEventListener('keydown', function(e) {
+    // F12 - DevTools
+    if (e.key === 'F12') {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Ctrl+Shift+I - DevTools
+    if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Ctrl+Shift+C - Element Inspector
+    if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Ctrl+U - View Source
+    if (e.ctrlKey && e.key === 'u') {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Ctrl+S - Save Page
+    if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Ctrl+A - Select All
+    if (e.ctrlKey && e.key === 'a') {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Ctrl+C - Copy
+    if (e.ctrlKey && e.key === 'c') {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Ctrl+V - Paste
+    if (e.ctrlKey && e.key === 'v') {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Ctrl+X - Cut
+    if (e.ctrlKey && e.key === 'x') {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Ctrl+P - Print
+    if (e.ctrlKey && e.key === 'p') {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// Proteção contra inspeção de elementos
+let devtools = {open: false, orientation: null};
+const threshold = 160;
+
+setInterval(() => {
+    if (window.outerHeight - window.innerHeight > threshold || 
+        window.outerWidth - window.innerWidth > threshold) {
+        if (!devtools.open) {
+            devtools.open = true;
+            // Redirecionar ou mostrar aviso
+            document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#fff;font-family:Arial,sans-serif;text-align:center;"><div><h1>🔒 Acesso Restrito</h1><p>O uso de ferramentas de desenvolvedor não é permitido neste site.</p><p>Por favor, feche as ferramentas de desenvolvedor para continuar.</p></div></div>';
+        }
+    } else {
+        devtools.open = false;
+    }
+}, 500);
+
+// Proteção contra cópia de imagens
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+        img.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        img.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+    });
+});
+
+// Proteção adicional contra console
+(function() {
+    let devtools = false;
+    const element = new Image();
+    Object.defineProperty(element, 'id', {
+        get: function() {
+            devtools = true;
+            document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#fff;font-family:Arial,sans-serif;text-align:center;"><div><h1>🔒 Acesso Restrito</h1><p>O uso de ferramentas de desenvolvedor não é permitido neste site.</p></div></div>';
+        }
+    });
+    console.log(element);
+})();
+
+// Proteção contra debugger
+setInterval(() => {
+    debugger;
+}, 1000);
+
+// Proteção contra cópia via CSS
+document.addEventListener('DOMContentLoaded', function() {
+    const style = document.createElement('style');
+    style.textContent = `
+        * {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+            -webkit-touch-callout: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+        }
+        
+        img {
+            pointer-events: none !important;
+            -webkit-user-drag: none !important;
+            -khtml-user-drag: none !important;
+            -moz-user-drag: none !important;
+            -o-user-drag: none !important;
+            user-drag: none !important;
+        }
+        
+        input, textarea {
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+        }
+    `;
+    document.head.appendChild(style);
 }); 
