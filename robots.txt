@@ -1,4 +1,27 @@
 User-agent: *
-Allow: /
+Allow: /home/
+Allow: /desencurtar/
+Allow: /contador/
+Allow: /qr-code/
+Allow: /whatsapp/
+Allow: /recursos/
+Allow: /blog/
+Allow: /privacidade/
+Allow: /termos/
+Allow: /contato/
+Allow: /denunciar/
+
+# Disallow root index.html to prevent duplicate content
+Disallow: /index.html
+
+# Allow access to static assets
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.svg
+Allow: /*.ico
 
 Sitemap: https://linkzinencurtador.online/sitemap.xml
