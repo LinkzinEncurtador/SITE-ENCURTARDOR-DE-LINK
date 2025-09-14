@@ -84,7 +84,7 @@ class CurrencyTicker {
         const dayOfWeek = this.getDayOfWeek(today);
         const formattedDate = this.formatDate(today);
         
-        const fallbackText = `Hoje ${dayOfWeek} - Taxas de Câmbio ${formattedDate} - Dólar R$5,46 - Euro R$6,37 - Libra Esterlina R$6,37 - Dólar Canadense R$3,96 - Dólar Australiano R$3,56`;
+        const fallbackText = `${dayOfWeek} - Taxas de Câmbio ${formattedDate} - Dólar R$5,46 - Euro R$6,37 - Libra Esterlina R$6,37 - Dólar Canadense R$3,96 - Dólar Australiano R$3,56`;
         
         this.updateTickerDisplay(fallbackText);
     }

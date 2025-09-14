@@ -2,36 +2,104 @@
 
 /* Ticker de Cotações */
 .currency-ticker {
-    background: #f8f9fa;
-    border-bottom: 1px solid #e9ecef;
-    overflow: hidden;
-    white-space: nowrap;
+    background: linear-gradient(135deg, #002147 0%, #0a1a3f 100%);
+    color: white;
+    padding: 12px 0;
     position: relative;
-    height: 40px;
-    display: flex;
-    align-items: center;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .ticker-content {
     display: flex;
-    animation: ticker 30s linear infinite;
+    animation: scroll 30s linear infinite;
     white-space: nowrap;
+    gap: 50px;
 }
 
 .ticker-content span {
-    padding: 10px 20px;
     font-size: 14px;
-    color: #333;
     font-weight: 500;
-    white-space: nowrap;
+    color: white;
+    font-family: 'Arial', sans-serif;
 }
 
-@keyframes ticker {
+@keyframes scroll {
     0% {
         transform: translateX(100%);
     }
     100% {
         transform: translateX(-100%);
+    }
+}
+
+.currency-ticker:hover .ticker-content {
+    animation-play-state: paused;
+}
+
+/* Ticker do IBOV - TradingView */
+.ibov-ticker {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 2px solid #ffd700;
+    position: relative;
+    padding: 8px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.ticker-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 5px;
+    flex-wrap: wrap;
+}
+
+.ticker-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #002147;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ticker-subtitle {
+    font-size: 11px;
+    color: #666;
+    font-style: italic;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.tradingview-widget-container {
+    width: 100%;
+    height: 50px;
+    overflow: hidden;
+}
+
+.tradingview-widget-container__widget {
+    width: 100%;
+    height: 100%;
+}
+
+/* Responsividade para o ticker */
+@media (max-width: 768px) {
+    .ticker-header {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .ticker-title {
+        font-size: 14px;
+    }
+    
+    .ticker-subtitle {
+        font-size: 11px;
+    }
+    
+    .tradingview-widget-container {
+        height: 45px;
     }
 }
 

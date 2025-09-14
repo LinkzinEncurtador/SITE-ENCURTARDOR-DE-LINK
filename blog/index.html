@@ -168,11 +168,18 @@
         </div>
     </header>
 
-    <!-- Ticker de Cotações -->
-    <div class="currency-ticker">
-        <div class="ticker-content">
-            <span>Carregando taxas de câmbio...</span>
-            <span>Carregando taxas de câmbio...</span>
+    <!-- Ticker do IBOV - TradingView -->
+    <div class="ibov-ticker">
+        <div class="ticker-header">
+            <span class="ticker-title">📈 Mercado Brasileiro - Ativos em Tempo Real</span>
+            <span class="ticker-subtitle">VALE • DÓLAR • BTC • ITUB4 • ABEV • IBOVESPA • IFIX • MGLU3 • PETR4</span>
+        </div>
+        <div class="tradingview-widget-container">
+            <iframe 
+                src="https://s.tradingview.com/embed-widget/ticker-tape/?locale=pt#%7B%22symbols%22%3A%5B%7B%22proName%22%3A%22BMFBOVESPA%3AVALE3%22%2C%22title%22%3A%22VALE3%22%7D%2C%7B%22proName%22%3A%22FX_IDC%3AUSDBRL%22%2C%22title%22%3A%22D%C3%93LAR%22%7D%2C%7B%22proName%22%3A%22BINANCE%3ABTCBRL%22%2C%22title%22%3A%22BITCOIN%22%7D%2C%7B%22proName%22%3A%22BMFBOVESPA%3AITUB4%22%2C%22title%22%3A%22ITUB4%22%7D%2C%7B%22proName%22%3A%22BMFBOVESPA%3AABEV3%22%2C%22title%22%3A%22ABEV3%22%7D%2C%7B%22proName%22%3A%22BMFBOVESPA%3AIBOV%22%2C%22title%22%3A%22IBOVESPA%22%7D%2C%7B%22proName%22%3A%22BMFBOVESPA%3AIFIX%22%2C%22title%22%3A%22IFIX%22%7D%2C%7B%22proName%22%3A%22BMFBOVESPA%3AMGLU3%22%2C%22title%22%3A%22MGLU3%22%7D%2C%7B%22proName%22%3A%22BMFBOVESPA%3APETR4%22%2C%22title%22%3A%22PETR4%22%7D%5D%2C%22showSymbolLogo%22%3Atrue%2C%22colorTheme%22%3A%22light%22%2C%22isTransparent%22%3Afalse%2C%22displayMode%22%3A%22adaptive%22%2C%22locale%22%3A%22pt%22%7D"
+                style="width: 100%; height: 50px; border: none;"
+                title="Ticker de Ativos Brasileiros">
+            </iframe>
         </div>
     </div>
 
@@ -291,6 +298,30 @@
                             </div>
                         </a>
                     </article>
+
+                    <article class="article-card">
+                        <a href="vantagens-links-whatsapp-cta.html" class="article-link">
+                            <div class="article-image">
+                                <img src="../links.png" alt="Vantagens de gerar links para WhatsApp com call-to-action">
+                            </div>
+                            <div class="article-content">
+                                <h3 class="article-title">Vantagens de gerar links para WhatsApp com call-to-action</h3>
+                                <p class="article-subtitle" style="text-align: center;">Descubra como maximizar<br>sua conversão com links diretos</p>
+                            </div>
+                        </a>
+                    </article>
+
+                    <article class="article-card">
+                        <a href="nano-banana-revolucao-criativa.html" class="article-link">
+                            <div class="article-image">
+                                <img src="../cards blog nano banana.png" alt="Nano Banana: A Revolução Criativa para Influenciadores e Marcas">
+                            </div>
+                            <div class="article-content">
+                                <h3 class="article-title">🍌 Nano Banana:</h3>
+                                <p class="article-subtitle" style="text-align: center;">A Revolução Criativa para<br>Influenciadores e Marcas</p>
+                            </div>
+                        </a>
+                    </article>
                         </div>
                     </div>
                     <button class="carousel-btn next" aria-label="Próximo" id="articlesNext">
@@ -376,9 +407,7 @@
         </div>
     </footer>
 
-    <!-- Scripts do Ticker de Cotações -->
-    <script src="currency-config.js"></script>
-    <script src="currency-ticker.js"></script>
+    <!-- Scripts do Ticker do IBOV já incluídos no widget do TradingView -->
     
     <!-- Sistema de Pesquisa do Blog -->
     <script src="search-system.js"></script>

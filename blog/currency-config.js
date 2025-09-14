@@ -49,14 +49,14 @@ function generateTickerText() {
     const dayOfWeek = getDayOfWeek(today);
     const formattedDate = formatDate(today);
     
-    let tickerText = `Hoje ${dayOfWeek} - Taxas de Câmbio ${formattedDate} - `;
+    let tickerText = `${dayOfWeek} - Taxas de Câmbio ${formattedDate} - `;
     
     // Adiciona cada moeda ao texto
     const currencies = Object.keys(CURRENCY_RATES);
     currencies.forEach((currency, index) => {
         const name = CURRENCY_NAMES[currency];
         const rate = CURRENCY_RATES[currency];
-        tickerText += `${name} R$${rate.toFixed(2)}`;
+        tickerText += `${name} R$${rate.toFixed(2).replace('.', ',')}`;
         
         if (index < currencies.length - 1) {
             tickerText += " - ";
