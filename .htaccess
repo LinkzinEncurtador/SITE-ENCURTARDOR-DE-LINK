@@ -4,9 +4,8 @@
 # Enable URL rewriting
 RewriteEngine On
 
-# Redirect root domain to home directory
-RewriteCond %{REQUEST_URI} ^/$
-RewriteRule ^(.*)$ /home/ [R=301,L]
+# Serve root index.html directly (no redirect needed)
+# The root index.html is the main page
 
 # Redirect www to non-www (if needed)
 RewriteCond %{HTTP_HOST} ^www\.linkzinencurtador\.online [NC]

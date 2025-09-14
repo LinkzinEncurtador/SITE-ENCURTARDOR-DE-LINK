@@ -1,5 +1,5 @@
 User-agent: *
-Allow: /home/
+Allow: /
 Allow: /desencurtar/
 Allow: /contador/
 Allow: /qr-code/
