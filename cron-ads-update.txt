@@ -1,0 +1,22 @@
+# Configuração de Cron Job para atualização automática do ads.txt
+# 
+# Para configurar, execute: crontab -e
+# Adicione a linha abaixo para executar diariamente às 2:00 AM
+#
+# 0 2 * * * /caminho/para/seu/projeto/update-ads-txt.sh
+#
+# Exemplos de configuração:
+#
+# Atualizar diariamente às 2:00 AM:
+# 0 2 * * * /home/user/site/update-ads-txt.sh
+#
+# Atualizar a cada 6 horas:
+# 0 */6 * * * /home/user/site/update-ads-txt.sh
+#
+# Atualizar apenas em dias úteis às 3:00 AM:
+# 0 3 * * 1-5 /home/user/site/update-ads-txt.sh
+#
+# Para verificar se o cron está funcionando:
+# tail -f /var/log/cron
+# ou
+# journalctl -u cron -f

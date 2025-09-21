@@ -1,0 +1,56 @@
+.ez_wp_select_element_ui {
+	position: sticky;
+	top: 0;
+	width: 100%;
+	background-color: rgb(248, 248, 248, 1);
+	z-index: 1000001;
+	border-bottom: 1px solid #000;
+}
+
+.ez_wp_select_element_ui .ez_wp_container {
+	position: relative;
+	width: 100%;
+	display: inline;
+	margin-left: 20px;
+	margin-bottom: 20px;
+}
+
+.ez_wp_select_element_ui img {
+	float: left;
+	margin: 20px;
+}
+
+.ez_wp_select_element_ui .form {
+	margin-top: -7px;
+	margin-left: 230px;
+	min-width: 750px;
+}
+
+.ez_wp_select_element_ui .control {
+	margin-bottom: 5px;
+}
+
+.ez_wp_select_element_ui .form input {
+	width: 175px;
+	padding: 2px;
+}
+
+.ez_wp_select_element_ui .label {
+	display: inline-block;
+	width: 135px;
+	font-size: 16px;
+}
+
+.ez_wp_select_element_ui .selector-field {
+	margin-left: 10px;
+}
+.ez_wp_select_element_ui .selector-field input[type=text] {
+	width: 400px;
+}
+
+.ez_wp_select_element_ui .form button {
+	margin-left: 10px;
+	background-color: #5fa624;
+	color: #fff;
+	padding: 2px 15px;
+}

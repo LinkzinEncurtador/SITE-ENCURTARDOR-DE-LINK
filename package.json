@@ -1,0 +1,16 @@
+{
+  "name": "linkzin-ads-updater",
+  "version": "1.0.0",
+  "description": "Script para atualizar ads.txt da Ezoic no LinkZin",
+  "main": "update-ads-github.js",
+  "scripts": {
+    "update-ads": "node update-ads-github.js",
+    "test-ads": "node -e \"console.log('Testando conexão com Ezoic...'); require('https').get('https://srv.adstxtmanager.com/19390/linkzinencurtador.online', (res) => { console.log('Status:', res.statusCode); res.on('data', d => console.log('Tamanho:', d.length, 'bytes')); });\""
+  },
+  "keywords": ["ads.txt", "ezoic", "linkzin", "advertising"],
+  "author": "Bruno Ulrich",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}

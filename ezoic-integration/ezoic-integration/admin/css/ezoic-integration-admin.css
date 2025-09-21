@@ -1,0 +1,145 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+/**
+* For the activation notice on the plugins page.
+*/
+.ezoic_activate {
+	min-width: 825px;
+	border: 1px solid #7fe02f;
+	padding: 5px;
+	margin: 15px 0;
+	background: #5fa624;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	position: relative;
+	overflow: hidden;
+}
+
+.ezoic_activate .ez_button {
+	font-weight: bold;
+	text-align: center;
+	align-content: center;
+	color: #fff;
+	height: 100px;
+	width: 100%;
+	margin: 0;
+}
+
+.ezoic_activate .ez_button_border {
+	padding: 2px 12px;
+	border: 1px solid #006699;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	align-content: center;
+	text-align: center;
+	-webkit-border-radius: 2px;
+	background: #029dd6;
+	background-image: -webkit-gradient(
+		linear,
+		0% 0,
+		0% 100%,
+		from(#4c91f7),
+		to(#0079b1)
+	);
+	background-image: -moz-linear-gradient(0% 100% 90deg, #0079b1, #4c91f7);
+}
+
+.ezoic_activate .ez_button_container {
+	display: inline-block;
+	padding: 3px 5px;
+	align-content: center;
+	-moz-border-radius: 1px;
+	border-radius: 1px;
+	-webkit-border-radius: 1px;
+}
+
+.ezoic_activate .ez_description {
+	position: absolute;
+	top: 10px;
+	left: 285px;
+	margin-left: 25px;
+	color: #e5f2b1;
+	font-size: 15px;
+	z-index: 1000;
+}
+
+.ezoic_activate .ez_description strong {
+	color: #fff;
+	font-weight: normal;
+}
+
+.ezoic_activate .ez_logo {
+	position: absolute;
+	top: 5px;
+	right: 10px;
+	font-weight: bold;
+	font-size: 75px;
+	color: #ffffff;
+	font-family: "Avenir";
+	z-index: 1;
+}
+
+.ez_error {
+	color: #d63638 !important;
+}
+
+input.ez_error {
+	border-color: #dc3545 !important;
+}
+
+.ez_warning {
+	color: #dba618 !important;
+}
+
+#ez_integration {
+	margin-top: 20px;
+}
+
+#ez_integration .form-table td {
+	vertical-align: top;
+}
+
+#ez_integration .form-table li {
+	margin-left: 30px;
+}
+
+#ez_integration .form-table ul {
+	list-style: disc;
+}
+
+#ez_integration .nav-tab-wrapper {
+	margin: 15px 0 35px 0;
+}
+
+#ez_integration .nav-tab-wrapper #help-tab,
+#ez_integration .nav-tab-wrapper #pubdash-tab {
+	float: right;
+}
+
+#ez_integration .last_checked {
+	font-size: 11px;
+}
+
+#ez_integration form#ezoic_settings {
+	margin: 40px 20px;
+}
+
+#ez_integration .text-success {
+	color: #40860a !important;
+}
+
+#ez_integration .text-danger {
+	color: #a00 !important;
+}
+
+#ez_integration .text-info {
+	color: #2271b1 !important;
+}
+
+#ez_integration .ez_hidden {
+	display: none;
+}

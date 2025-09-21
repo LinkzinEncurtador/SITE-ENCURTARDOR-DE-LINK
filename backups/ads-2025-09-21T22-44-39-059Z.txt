@@ -1,0 +1,11 @@
+# Ezoic ads.txt - Gerenciado automaticamente
+# Para conteúdo atualizado, acesse: https://srv.adstxtmanager.com/19390/linkzinencurtador.online
+
+# Google AdSense (mantido para compatibilidade)
+google.com, pub-3026521456856935, DIRECT, f08c47fec0942fa0
+
+# Ezoic Publishers
+google.com, pub-3026521456856935, DIRECT, f08c47fec0942fa0
+google.com, pub-3026521456856935, RESELLER, f08c47fec0942fa0
+ezoic.com, 19390, DIRECT
+ezoic.com, 19390, RESELLER

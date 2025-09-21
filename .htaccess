@@ -15,6 +15,9 @@ RewriteRule ^(.*)$ https://linkzinencurtador.online/$1 [R=301,L]
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+# Ezoic ads.txt redirect
+RewriteRule ^ads\.txt$ https://srv.adstxtmanager.com/19390/linkzinencurtador.online [R=301,L]
+
 # Handle trailing slashes consistently
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_URI} !(.*)/$

@@ -73,6 +73,17 @@
     
     <!-- AMP AdSense Script -->
     <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
+    
+    <!-- Scripts de Privacidade Ezoic - Carregamento Prioritário -->
+    <script src="https://cmp.gatekeeperconsent.com/min.js" data-cfasync="false"></script>
+    <script src="https://the.gatekeeperconsent.com/cmp.min.js" data-cfasync="false"></script>
+    
+    <!-- Script de Cabeçalho Ezoic -->
+    <script async src="//www.ezojs.com/ezoic/sa.min.js"></script>
+    <script>
+        window.ezstandalone = window.ezstandalone || {};
+        ezstandalone.cmd = ezstandalone.cmd || [];
+    </script>
 </head>
 
 <body>
@@ -393,6 +404,17 @@
         </section>
     </main>
     
+    <!-- Ezoic - mid_content - mid_content -->
+    <div id="ezoic-pub-ad-placeholder-111"></div>
+    <!-- End Ezoic - mid_content - mid_content -->
+
+    <!-- Ezoic - longest_content - longest_content -->
+    <div id="ezoic-pub-ad-placeholder-114"></div>
+    <!-- End Ezoic - longest_content - longest_content -->
+    
+    <!-- Anúncio Ezoic - Entre Seções -->
+    <div id="ezoic-pub-ad-placeholder-107"></div>
+
     <!-- Anúncio Google AdSense - Display -->
     <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3026521456856935" data-ad-slot="1074004322" data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>
@@ -424,6 +446,16 @@
         </amp-ad>
     </div>
     
+    <!-- Anúncio Ezoic - Footer -->
+    <div id="ezoic-pub-ad-placeholder-108"></div>
+    
+    <!-- Script otimizado para todos os anúncios Ezoic da página -->
+    <script>
+        ezstandalone.cmd.push(function () {
+            ezstandalone.showAds(107, 108, 111, 114);
+        });
+    </script>
+
     <!-- Anúncios Horizontal -->
     <ins class="adsbygoogle"
          style="display:block"

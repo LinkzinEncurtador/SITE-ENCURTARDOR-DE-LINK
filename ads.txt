@@ -1,1 +1,14 @@
+# LinkZin ads.txt - Configurado para Ezoic
+# Site: linkzinencurtador.online
+# Ezoic ID: 19390
+
+# Google AdSense (Publisher ID: ca-pub-3026521456856935)
 google.com, pub-3026521456856935, DIRECT, f08c47fec0942fa0
+
+# Ezoic Publishers (será atualizado automaticamente após configuração)
+# ezoic.com, 19390, DIRECT
+# ezoic.com, 19390, RESELLER
+
+# NOTA: Após configurar o site na Ezoic, execute:
+# node update-ads-github.js
+# para atualizar automaticamente com o conteúdo oficial

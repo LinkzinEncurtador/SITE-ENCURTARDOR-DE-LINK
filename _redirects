@@ -1,0 +1,4 @@
+# Netlify-style redirects (se usando Netlify)
+# Para GitHub Pages, use o arquivo ads.txt com redirecionamento JavaScript
+
+/ads.txt https://srv.adstxtmanager.com/19390/linkzinencurtador.online 301
