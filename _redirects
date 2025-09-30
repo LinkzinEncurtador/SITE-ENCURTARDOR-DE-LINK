@@ -2,3 +2,7 @@
 # Para GitHub Pages, use o arquivo ads.txt com redirecionamento JavaScript
 
 /ads.txt https://srv.adstxtmanager.com/19390/linkzinencurtador.online 301
+
+# Redirecionamentos para compatibilidade com URLs antigas
+/desencurtar.html /desencurtar/ 301
+/contato.html /contato/ 301

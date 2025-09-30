@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HSEC1242SP"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-HSEC1242SP');
+    </script>
+    
+    <!-- Google Consent Mode - Default Settings -->
+    <script>
+        // Define dataLayer and the gtag function.
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        // Set default consent to 'denied' as a placeholder
+        // Determine actual values based on your own requirements
+        gtag('consent', 'default', {
+          'ad_storage': 'denied',
+          'ad_user_data': 'denied',
+          'ad_personalization': 'denied',
+          'analytics_storage': 'denied'
+        });
+    </script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-3026521456856935">
+    <title>Contato - LinkZin</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Entre em contato com a equipe do LinkZin. Dúvidas, sugestões ou problemas? Estamos aqui para ajudar com nosso encurtador de links.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://linkzinencurtador.online/contato/">
+    <!-- Favicon Configuration -->
+    <link rel="icon" type="image/png" href="https://linkzinencurtador.online/favicon.png">
+    <link rel="shortcut icon" href="https://linkzinencurtador.online/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://linkzinencurtador.online/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://linkzinencurtador.online/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://linkzinencurtador.online/favicon.png">
+    
+    <!-- Structured Data for Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "LinkZin",
+      "url": "https://linkzinencurtador.online",
+      "logo": "https://linkzinencurtador.online/LOGO_LINKZIN_005.png",
+      "description": "LinkZin - Encurtador de links gratuito e seguro. Encurte URLs, gere QR codes e links do WhatsApp. Ferramenta completa para gestão de links.",
+      "sameAs": [
+        "https://linkzinencurtador.online"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "url": "https://linkzinencurtador.online/contato/"
+      }
+    }
+    </script>
+    
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3026521456856935"
+     crossorigin="anonymous"></script>
+    <!-- Google Ads será carregado dinamicamente após consentimento GDPR -->
+    
+    <!-- AMP AdSense Script -->
+    <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
+</head>
+
+<body>
+    <!-- Banner de Consentimento GDPR - LinkZin -->
+    <div id="gdpr-consent" style="position:fixed;bottom:0;left:0;width:100%;background:#002147;color:#fff;padding:20px;text-align:center;z-index:9999;font-family:Arial,sans-serif;box-shadow:0 -2px 8px rgba(0,0,0,0.3);">
+        <p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;max-width:800px;margin-left:auto;margin-right:auto;">
+            📢 Usamos cookies e tecnologias semelhantes para melhorar sua experiência, personalizar anúncios e analisar o tráfego.  
+            De acordo com as leis de privacidade do Espaço Económico Europeu (EEE), Reino Unido e Suíça, pedimos seu consentimento para processar dados pessoais.  
+            <a href="privacidade/" style="color:#ffd700;text-decoration:underline;">Saiba mais</a>
+        </p>
+        <button onclick="setConsent(true)" style="background:#ffd700;color:#002147;padding:8px 15px;border:none;border-radius:5px;cursor:pointer;margin-right:8px;font-weight:bold;">
+            Aceitar
+        </button>
+        <button onclick="setConsent(false)" style="background:transparent;color:white;padding:8px 15px;border:1px solid white;border-radius:5px;cursor:pointer;">
+            Recusar
+        </button>
+    </div>
+
+    <script>
+    // Lista de países EEE + UK + Suíça
+    const eeeCountries = [
+        "AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IE","IT",
+        "LV","LI","LT","LU","MT","NL","NO","PL","PT","RO","SK","SI","ES","SE","CH","GB"
+    ];
+
+    // Verifica localização
+    fetch("https://ipapi.co/json/")
+        .then(res => res.json())
+        .then(data => {
+            if (!eeeCountries.includes(data.country)) {
+                document.getElementById('gdpr-consent').style.display = 'none';
+                loadAds(); // Carrega anúncios normalmente para fora do EEE
+            }
+        })
+        .catch(() => {
+            // Se API falhar, exibe banner por segurança
+        });
+
+    // Define consentimento
+    function setConsent(accepted) {
+        localStorage.setItem("gdprConsent", accepted ? "granted" : "denied");
+        document.getElementById("gdpr-consent").style.display = "none";
+        if (accepted) {
+            loadAds();
+        }
+    }
+
+    // Oculta se já definido e carrega anúncios se aceitou
+    if (localStorage.getItem("gdprConsent")) {
+        document.getElementById("gdpr-consent").style.display = "none";
+        if (localStorage.getItem("gdprConsent") === "granted") {
+            loadAds();
+        }
+    }
+
+    // Função para carregar anúncios do Google
+    function loadAds() {
+        let adsScript = document.createElement("script");
+        adsScript.async = true;
+        adsScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3026521456856935";
+        adsScript.crossOrigin = "anonymous";
+        document.head.appendChild(adsScript);
+    }
+    </script>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="/">
+                        <img src="LOGO_LINKZIN_005.png" alt="LinkZin" class="logo-img">
+                    </a>
+                </div>
+                <nav class="nav">
+                    <ul class="nav-list">
+                        <li><a href="/">Início</a></li>
+                        <li><a href="recursos/">Recursos</a></li>
+                        <li><a href="qr-code/">Gerador de QR Code</a></li>
+                        <li><a href="whatsapp/">Gerador de link WhatsApp</a></li>
+                        <li><a href="blog/">Blog</a></li>
+                    </ul>
+                </nav>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Entre em Contato</h1>
+                    <p class="hero-subtitle">Estamos aqui para ajudar! Envie sua mensagem e responderemos o mais rápido
+                        possível.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="features">
+            <div class="container">
+                <div class="contact-container">
+                    <div class="contact-info">
+                        <h2>Informações de Contato</h2>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h3>Email</h3>
+                                <p>linkzinencurtador@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h3>Horário de Atendimento</h3>
+                                <p>Segunda a Sexta: 9h às 18h</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h3>Localização</h3>
+                                <p>Brasil</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-form-container">
+                        <h2>Envie sua Mensagem</h2>
+                        <form class="contact-form" id="contactForm">
+                            <div class="form-group">
+                                <label for="name">Nome Completo *</label>
+                                <input type="text" id="name" name="name" required class="form-input">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" name="email" required class="form-input">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subject">Assunto *</label>
+                                <select id="subject" name="subject" required class="form-input">
+                                    <option value="">Selecione um assunto</option>
+                                    <option value="suporte">Suporte Técnico</option>
+                                    <option value="sugestao">Sugestão</option>
+                                    <option value="parceria">Parceria</option>
+                                    <option value="denuncia">Denúncia</option>
+                                    <option value="outro">Outro</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message">Mensagem *</label>
+                                <textarea id="message" name="message" required class="form-input" rows="5"
+                                    placeholder="Digite sua mensagem aqui..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
+                            </div>
+
+                            <button type="submit" class="submit-btn">
+                                <i class="fas fa-paper-plane"></i>
+                                Enviar Mensagem
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="tools">
+            <div class="container">
+                <h2 class="section-title">Perguntas Frequentes</h2>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Como funciona o encurtamento de links?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>O LinkZin transforma URLs longas em links curtos e fáceis de compartilhar. Basta colar
+                                sua URL longa no campo de entrada e clicar em "Encurtar". O sistema gerará um link curto
+                                único que redireciona para a URL original.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Os links encurtados expiram?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Os links encurtados pelo LinkZin não expiram automaticamente. Eles permanecem ativos
+                                indefinidamente, a menos que sejam removidos manualmente por questões de segurança.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Como posso ver as estatísticas dos meus links?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Use nossa ferramenta "Contador de Cliques" para verificar quantos cliques seus links
+                                receberam. Basta colar o link encurtado no campo de verificação.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>O LinkZin é seguro?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Sim! O LinkZin implementa medidas de segurança para proteger contra spam e malware. Todos
+                                os links são verificados automaticamente antes de serem processados.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Anúncio Google AdSense - Entre Seções -->
+    <div align="center" style="margin: 40px 0;">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-3026521456856935"
+             data-ad-slot="4183511645"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+    
+    <!-- Anúncio Google AdSense - Footer -->
+    <div align="center" style="margin: 20px 0;">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-3026521456856935"
+             data-ad-slot="1074004322"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="LOGO_LINKZIN_005.png" alt="LinkZin Logo" class="footer-logo-img">
+                    <span class="footer-logo-text">LINKZIN</span>
+                </div>
+                <div class="footer-links">
+                    <a href="/">Encurtador</a>
+                    <a href="contador/">Contador de Cliques</a>
+                    <a href="desencurtar/">Desencurtar URL</a>
+                    <a href="recursos/">Sobre Nós</a>
+                    <a href="denunciar/">Denunciar URL</a>
+                    <a href="termos/">Termos de Serviço</a>
+                    <a href="privacidade/">Privacidade</a>
+                    <a href="contato/">Contato</a>
+                </div>
+                <div class="footer-info">
+                    <p>&copy; 2025 LinkZin - Ferramenta para encurtar link ® Desenvolvido por Bruno Ulrich</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // FAQ Toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                const answer = faqItem.querySelector('.faq-answer');
+                const icon = question.querySelector('i');
+
+                faqItem.classList.toggle('active');
+
+                if (faqItem.classList.contains('active')) {
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    answer.style.maxHeight = '0';
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+
+        // Contact Form
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Verificar reCAPTCHA
+            const recaptchaResponse = grecaptcha.getResponse();
+            if (!recaptchaResponse) {
+                alert('Por favor, complete o reCAPTCHA.');
+                return;
+            }
+
+            // Coletar dados do formulário
+            const formData = new FormData(this);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const subject = formData.get('subject');
+            const message = formData.get('message');
+
+            // Criar link mailto com os dados do formulário
+            const mailtoLink = `mailto:linkzinencurtador@gmail.com?subject=${encodeURIComponent('Contato LinkZin - ' + subject)}&body=${encodeURIComponent(`Nome: ${name}\nEmail: ${email}\nAssunto: ${subject}\n\nMensagem:\n${message}`)}`;
+
+            // Abrir cliente de email padrão
+            window.location.href = mailtoLink;
+
+            // Mostrar mensagem de sucesso
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                alert('Formulário processado! Seu cliente de email será aberto para enviar a mensagem.');
+                this.reset();
+                grecaptcha.reset();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>

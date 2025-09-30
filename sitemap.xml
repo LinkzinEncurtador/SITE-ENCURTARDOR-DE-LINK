@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Página Principal -->
   <url>
     <loc>https://linkzinencurtador.online/</loc>
     <lastmod>2025-01-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+  
+  <!-- Páginas Principais de Funcionalidades -->
   <url>
     <loc>https://linkzinencurtador.online/recursos/</loc>
     <lastmod>2025-01-27</lastmod>
@@ -30,18 +33,8 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
-    <loc>https://linkzinencurtador.online/contato/</loc>
-    <lastmod>2025-01-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://linkzinencurtador.online/porque-usar/</loc>
-    <lastmod>2025-01-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
+  
+  <!-- Páginas de Desencurtar (duas versões) -->
   <url>
     <loc>https://linkzinencurtador.online/desencurtar/</loc>
     <lastmod>2025-01-27</lastmod>
@@ -49,11 +42,41 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://linkzinencurtador.online/desencurtar.html</loc>
+    <lastmod>2025-01-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Páginas de Contato (duas versões) -->
+  <url>
+    <loc>https://linkzinencurtador.online/contato/</loc>
+    <lastmod>2025-01-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://linkzinencurtador.online/contato.html</loc>
+    <lastmod>2025-01-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- Páginas Informativas -->
+  <url>
+    <loc>https://linkzinencurtador.online/porque-usar/</loc>
+    <lastmod>2025-01-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://linkzinencurtador.online/denunciar/</loc>
     <lastmod>2025-01-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
+  
+  <!-- Páginas Legais -->
   <url>
     <loc>https://linkzinencurtador.online/termos/</loc>
     <lastmod>2025-01-27</lastmod>
@@ -66,12 +89,16 @@
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
+  
+  <!-- Blog -->
   <url>
     <loc>https://linkzinencurtador.online/blog/</loc>
     <lastmod>2025-01-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
+  
+  <!-- Artigos do Blog -->
   <url>
     <loc>https://linkzinencurtador.online/blog/qr-codes-estaticos-vs-dinamicos.html</loc>
     <lastmod>2025-01-27</lastmod>
