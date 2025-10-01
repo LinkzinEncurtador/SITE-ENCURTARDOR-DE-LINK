@@ -5,6 +5,7 @@ Allow: /contador/
 Allow: /qr-code/
 Allow: /whatsapp/
 Allow: /recursos/
+Allow: /unir-pdfs/
 Allow: /blog/
 Allow: /privacidade/
 Allow: /termos/
