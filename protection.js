@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
             { ctrl: true, key: 's' }, // Save Page
             { ctrl: true, key: 'a' }, // Select All
             { ctrl: true, key: 'c' }, // Copy
-            { ctrl: true, key: 'v' }, // Paste
+            // { ctrl: true, key: 'v' }, // Paste - REMOVIDO para permitir colar URLs
             { ctrl: true, key: 'x' }, // Cut
             { ctrl: true, key: 'p' }, // Print
             { ctrl: true, key: 'f' }, // Find

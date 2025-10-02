@@ -5,7 +5,7 @@ Allow: /contador/
 Allow: /qr-code/
 Allow: /whatsapp/
 Allow: /recursos/
-Allow: /pdf-tools.html
+Allow: /unirpdfs/
 Allow: /blog/
 Allow: /privacidade/
 Allow: /termos/

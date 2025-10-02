@@ -1169,11 +1169,11 @@ document.addEventListener('keydown', function(e) {
         return false;
     }
     
-    // Ctrl+V - Paste
-    if (e.ctrlKey && e.key === 'v') {
-        e.preventDefault();
-        return false;
-    }
+    // Ctrl+V - Paste - REMOVIDO para permitir colar URLs
+    // if (e.ctrlKey && e.key === 'v') {
+    //     e.preventDefault();
+    //     return false;
+    // }
     
     // Ctrl+X - Cut
     if (e.ctrlKey && e.key === 'x') {
