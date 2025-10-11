@@ -4,91 +4,94 @@
 (function() {
     'use strict';
     
-    // Detectar abertura de DevTools
-    let devtools = false;
-    const threshold = 160;
+    // Detectar se é dispositivo móvel
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                     window.matchMedia("(max-width: 768px)").matches;
     
-    setInterval(() => {
-        if (window.outerHeight - window.innerHeight > threshold || 
-            window.outerWidth - window.innerWidth > threshold) {
-            if (!devtools) {
-                devtools = true;
-                // Limpar página e mostrar aviso
-                document.documentElement.innerHTML = `
-                    <head>
-                        <title>Acesso Restrito - LinkZin</title>
-                        <style>
-                            body { 
-                                margin: 0; 
-                                padding: 0; 
-                                background: #000; 
-                                color: #fff; 
-                                font-family: Arial, sans-serif; 
-                                display: flex; 
-                                justify-content: center; 
-                                align-items: center; 
-                                height: 100vh; 
-                                text-align: center; 
-                            }
-                            .container { max-width: 500px; padding: 20px; }
-                            h1 { color: #ffd700; margin-bottom: 20px; }
-                            p { line-height: 1.6; margin-bottom: 15px; }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="container">
-                            <h1>🔒 Acesso Restrito</h1>
-                            <p>O uso de ferramentas de desenvolvedor não é permitido neste site.</p>
-                            <p>Por favor, feche as ferramentas de desenvolvedor e recarregue a página para continuar.</p>
-                            <p><strong>LinkZin - Encurtador de Links</strong></p>
-                        </div>
-                    </body>
-                `;
+    // APENAS EM DESKTOP: Detectar abertura de DevTools
+    if (!isMobile) {
+        let devtools = false;
+        const threshold = 160;
+        
+        setInterval(() => {
+            if (window.outerHeight - window.innerHeight > threshold || 
+                window.outerWidth - window.innerWidth > threshold) {
+                if (!devtools) {
+                    devtools = true;
+                    // Limpar página e mostrar aviso
+                    document.documentElement.innerHTML = `
+                        <head>
+                            <title>Acesso Restrito - LinkZin</title>
+                            <style>
+                                body { 
+                                    margin: 0; 
+                                    padding: 0; 
+                                    background: #000; 
+                                    color: #fff; 
+                                    font-family: Arial, sans-serif; 
+                                    display: flex; 
+                                    justify-content: center; 
+                                    align-items: center; 
+                                    height: 100vh; 
+                                    text-align: center; 
+                                }
+                                .container { max-width: 500px; padding: 20px; }
+                                h1 { color: #ffd700; margin-bottom: 20px; }
+                                p { line-height: 1.6; margin-bottom: 15px; }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="container">
+                                <h1>🔒 Acesso Restrito</h1>
+                                <p>O uso de ferramentas de desenvolvedor não é permitido neste site.</p>
+                                <p>Por favor, feche as ferramentas de desenvolvedor e recarregue a página para continuar.</p>
+                                <p><strong>LinkZin - Encurtador de Links</strong></p>
+                            </div>
+                        </body>
+                    `;
+                }
+            } else {
+                devtools = false;
             }
-        } else {
-            devtools = false;
-        }
-    }, 100);
+        }, 100);
+    }
     
-    // Proteção contra console
-    const noop = () => {};
-    Object.defineProperty(window, 'console', {
-        value: {
-            log: noop,
-            warn: noop,
-            error: noop,
-            info: noop,
-            debug: noop,
-            trace: noop,
-            dir: noop,
-            group: noop,
-            groupEnd: noop,
-            time: noop,
-            timeEnd: noop,
-            count: noop,
-            clear: noop,
-            assert: noop
-        },
-        writable: false,
-        configurable: false
-    });
+    // Proteção contra console (apenas desktop)
+    if (!isMobile) {
+        const noop = () => {};
+        Object.defineProperty(window, 'console', {
+            value: {
+                log: noop,
+                warn: noop,
+                error: noop,
+                info: noop,
+                debug: noop,
+                trace: noop,
+                dir: noop,
+                group: noop,
+                groupEnd: noop,
+                time: noop,
+                timeEnd: noop,
+                count: noop,
+                clear: noop,
+                assert: noop
+            },
+            writable: false,
+            configurable: false
+        });
+    }
     
-    // Proteção contra debugger
-    setInterval(() => {
-        if (devtools) {
-            debugger;
-        }
-    }, 1000);
-    
-    // Proteção contra eval
-    window.eval = function() {
-        throw new Error('eval() is disabled');
-    };
-    
-    // Proteção contra Function constructor
-    window.Function = function() {
-        throw new Error('Function constructor is disabled');
-    };
+    // Proteção contra eval (apenas desktop)
+    if (!isMobile) {
+        window.eval = function() {
+            throw new Error('eval() is disabled');
+        };
+        
+        // Proteção contra Function constructor
+        window.Function = function() {
+            throw new Error('Function constructor is disabled');
+        };
+    }
     
 })();
 
