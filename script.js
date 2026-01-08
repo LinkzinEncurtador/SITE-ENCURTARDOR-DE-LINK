@@ -65,8 +65,36 @@ class LinkZin {
         const nav = document.querySelector('.nav');
 
         if (mobileMenuToggle && nav) {
-            mobileMenuToggle.addEventListener('click', () => {
+            // Suporte para toque e clique
+            const toggleMenu = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 nav.classList.toggle('active');
+                
+                // Animar o ícone do hambúrguer
+                mobileMenuToggle.classList.toggle('active');
+            };
+
+            mobileMenuToggle.addEventListener('click', toggleMenu);
+            mobileMenuToggle.addEventListener('touchend', toggleMenu);
+
+            // Fechar menu ao clicar fora
+            document.addEventListener('click', (e) => {
+                if (nav.classList.contains('active') && 
+                    !nav.contains(e.target) && 
+                    !mobileMenuToggle.contains(e.target)) {
+                    nav.classList.remove('active');
+                    mobileMenuToggle.classList.remove('active');
+                }
+            });
+
+            // Fechar menu ao clicar em um link
+            const navLinks = nav.querySelectorAll('a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    nav.classList.remove('active');
+                    mobileMenuToggle.classList.remove('active');
+                });
             });
         }
     }
@@ -323,12 +351,24 @@ class LinkZin {
     // Carregar links do localStorage
     loadLinks() {
         try {
+            // Verificar se localStorage está disponível (importante para mobile)
+            if (typeof(Storage) === "undefined") {
+                console.warn('localStorage não disponível');
+                return {};
+            }
+            
             const saved = localStorage.getItem('linkzin_links');
             const links = saved ? JSON.parse(saved) : {};
             console.log('Links carregados do localStorage:', links);
             return links;
         } catch (error) {
             console.error('Erro ao carregar links:', error);
+            // Tentar limpar e retornar objeto vazio em caso de erro
+            try {
+                localStorage.removeItem('linkzin_links');
+            } catch (e) {
+                console.error('Erro ao limpar localStorage:', e);
+            }
             return {};
         }
     }
@@ -336,9 +376,52 @@ class LinkZin {
     // Salvar links no localStorage
     saveLinks() {
         try {
-            localStorage.setItem('linkzin_links', JSON.stringify(this.links));
+            // Verificar se localStorage está disponível
+            if (typeof(Storage) === "undefined") {
+                console.warn('localStorage não disponível - link não será salvo');
+                return false;
+            }
+            
+            const data = JSON.stringify(this.links);
+            
+            // Verificar tamanho dos dados (mobile tem limites menores)
+            if (data.length > 4000000) { // 4MB - limite seguro para mobile
+                console.warn('Dados muito grandes para localStorage');
+                return false;
+            }
+            
+            localStorage.setItem('linkzin_links', data);
+            return true;
         } catch (error) {
             console.error('Erro ao salvar links:', error);
+            
+            // Tentar limpar espaço e salvar novamente
+            if (error.name === 'QuotaExceededError' || error.code === 22) {
+                console.warn('Quota do localStorage excedida, limpando links antigos...');
+                try {
+                    // Manter apenas os últimos 100 links
+                    const linkKeys = Object.keys(this.links);
+                    if (linkKeys.length > 100) {
+                        const sortedKeys = linkKeys.sort((a, b) => {
+                            const dateA = new Date(this.links[a].createdAt || 0);
+                            const dateB = new Date(this.links[b].createdAt || 0);
+                            return dateB - dateA;
+                        });
+                        const keysToKeep = sortedKeys.slice(0, 100);
+                        const newLinks = {};
+                        keysToKeep.forEach(key => {
+                            newLinks[key] = this.links[key];
+                        });
+                        this.links = newLinks;
+                        localStorage.setItem('linkzin_links', JSON.stringify(this.links));
+                        return true;
+                    }
+                } catch (e) {
+                    console.error('Erro ao salvar mesmo após limpeza:', e);
+                }
+            }
+            
+            return false;
         }
     }
 
@@ -1256,85 +1339,88 @@ document.addEventListener('dragstart', function(e) {
     return false;
 });
 
-// Proteção contra teclas de atalho
-document.addEventListener('keydown', function(e) {
-    // F12 - DevTools
-    if (e.key === 'F12') {
-        e.preventDefault();
-        return false;
-    }
-    
-    // Ctrl+Shift+I - DevTools
-    if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-        e.preventDefault();
-        return false;
-    }
-    
-    // Ctrl+Shift+C - Element Inspector
-    if (e.ctrlKey && e.shiftKey && e.key === 'C') {
-        e.preventDefault();
-        return false;
-    }
-    
-    // Ctrl+U - View Source
-    if (e.ctrlKey && e.key === 'u') {
-        e.preventDefault();
-        return false;
-    }
-    
-    // Ctrl+S - Save Page
-    if (e.ctrlKey && e.key === 's') {
-        e.preventDefault();
-        return false;
-    }
-    
-    // Ctrl+A - Select All
-    if (e.ctrlKey && e.key === 'a') {
-        e.preventDefault();
-        return false;
-    }
-    
-    // Ctrl+C - Copy
-    if (e.ctrlKey && e.key === 'c') {
-        e.preventDefault();
-        return false;
-    }
-    
-    // Ctrl+V - Paste - REMOVIDO para permitir colar URLs
-    // if (e.ctrlKey && e.key === 'v') {
-    //     e.preventDefault();
-    //     return false;
-    // }
-    
-    // Ctrl+X - Cut
-    if (e.ctrlKey && e.key === 'x') {
-        e.preventDefault();
-        return false;
-    }
-    
-    // Ctrl+P - Print
-    if (e.ctrlKey && e.key === 'p') {
-        e.preventDefault();
-        return false;
-    }
-});
+// Proteção contra teclas de atalho (apenas em desktop)
+// CORREÇÃO: Desabilitar em mobile para não interferir na experiência
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-// Proteção contra inspeção de elementos
-let devtools = {open: false, orientation: null};
-const threshold = 160;
-
-setInterval(() => {
-    if (window.outerHeight - window.innerHeight > threshold || 
-        window.outerWidth - window.innerWidth > threshold) {
-        if (!devtools.open) {
-            devtools.open = true;
-            // Redirecionar ou mostrar aviso
-            document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#fff;font-family:Arial,sans-serif;text-align:center;"><div><h1>🔒 Acesso Restrito</h1><p>O uso de ferramentas de desenvolvedor não é permitido neste site.</p><p>Por favor, feche as ferramentas de desenvolvedor para continuar.</p></div></div>';
+if (!isMobile) {
+    document.addEventListener('keydown', function(e) {
+        // F12 - DevTools
+        if (e.key === 'F12') {
+            e.preventDefault();
+            return false;
         }
-    } else {
-        devtools.open = false;
-    }
-}, 500);
+        
+        // Ctrl+Shift+I - DevTools
+        if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+Shift+C - Element Inspector
+        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+U - View Source
+        if (e.ctrlKey && e.key === 'u') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+S - Save Page
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+A - Select All - REMOVIDO para permitir seleção em inputs
+        // if (e.ctrlKey && e.key === 'a') {
+        //     e.preventDefault();
+        //     return false;
+        // }
+        
+        // Ctrl+C - Copy - REMOVIDO para permitir copiar links
+        // if (e.ctrlKey && e.key === 'c') {
+        //     e.preventDefault();
+        //     return false;
+        // }
+        
+        // Ctrl+X - Cut - REMOVIDO para permitir edição
+        // if (e.ctrlKey && e.key === 'x') {
+        //     e.preventDefault();
+        //     return false;
+        // }
+        
+        // Ctrl+P - Print
+        if (e.ctrlKey && e.key === 'p') {
+            e.preventDefault();
+            return false;
+        }
+    });
+}
+
+// Proteção contra inspeção de elementos (apenas em desktop)
+// CORREÇÃO: Desabilitar em mobile para não interferir na experiência
+if (!isMobile) {
+    let devtools = {open: false, orientation: null};
+    const threshold = 160;
+
+    setInterval(() => {
+        // Verificar apenas se não estiver em mobile
+        if (!isMobile && (window.outerHeight - window.innerHeight > threshold || 
+            window.outerWidth - window.innerWidth > threshold)) {
+            if (!devtools.open) {
+                devtools.open = true;
+                // Redirecionar ou mostrar aviso
+                document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#fff;font-family:Arial,sans-serif;text-align:center;"><div><h1>🔒 Acesso Restrito</h1><p>O uso de ferramentas de desenvolvedor não é permitido neste site.</p><p>Por favor, feche as ferramentas de desenvolvedor para continuar.</p></div></div>';
+            }
+        } else {
+            devtools.open = false;
+        }
+    }, 500);
+}
 
 // Proteção contra cópia de imagens
 document.addEventListener('DOMContentLoaded', function() {
@@ -1352,23 +1438,29 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Proteção adicional contra console
-(function() {
-    let devtools = false;
-    const element = new Image();
-    Object.defineProperty(element, 'id', {
-        get: function() {
-            devtools = true;
-            document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#fff;font-family:Arial,sans-serif;text-align:center;"><div><h1>🔒 Acesso Restrito</h1><p>O uso de ferramentas de desenvolvedor não é permitido neste site.</p></div></div>';
-        }
-    });
-    console.log(element);
-})();
+// Proteção adicional contra console (apenas em desktop)
+// CORREÇÃO: Desabilitar em mobile para não interferir na experiência
+if (!isMobile) {
+    (function() {
+        let devtools = false;
+        const element = new Image();
+        Object.defineProperty(element, 'id', {
+            get: function() {
+                devtools = true;
+                document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#fff;font-family:Arial,sans-serif;text-align:center;"><div><h1>🔒 Acesso Restrito</h1><p>O uso de ferramentas de desenvolvedor não é permitido neste site.</p></div></div>';
+            }
+        });
+        console.log(element);
+    })();
+}
 
-// Proteção contra debugger
-setInterval(() => {
-    debugger;
-}, 1000);
+// Proteção contra debugger (apenas em desktop)
+// CORREÇÃO: Desabilitar em mobile para não interferir na experiência
+if (!isMobile) {
+    setInterval(() => {
+        debugger;
+    }, 1000);
+}
 
 // Proteção contra cópia via CSS
 document.addEventListener('DOMContentLoaded', function() {

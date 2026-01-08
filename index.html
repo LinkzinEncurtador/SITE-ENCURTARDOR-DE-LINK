@@ -29,8 +29,11 @@
     </script>
     
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta name="google-adsense-account" content="ca-pub-3026521456856935">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>LinkZin - Encurtador de Links</title>
     
     <!-- SEO Meta Tags -->
@@ -84,18 +87,20 @@
 
 <body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
     <!-- Banner de Consentimento GDPR - LinkZin -->
-    <div id="gdpr-consent" style="position:fixed;bottom:0;left:0;width:100%;background:#002147;color:#fff;padding:20px;text-align:center;z-index:9999;font-family:Arial,sans-serif;box-shadow:0 -2px 8px rgba(0,0,0,0.3);">
-        <p style="margin:0 0 10px 0;font-size:14px;line-height:1.5;max-width:800px;margin-left:auto;margin-right:auto;">
+    <div id="gdpr-consent" style="position:fixed;bottom:0;left:0;width:100%;background:#002147;color:#fff;padding:15px;text-align:center;z-index:9999;font-family:Arial,sans-serif;box-shadow:0 -2px 8px rgba(0,0,0,0.3);max-height:50vh;overflow-y:auto;">
+        <p style="margin:0 0 12px 0;font-size:13px;line-height:1.4;max-width:800px;margin-left:auto;margin-right:auto;padding:0 10px;">
             📢 Usamos cookies e tecnologias semelhantes para melhorar sua experiência, personalizar anúncios e analisar o tráfego.  
             De acordo com as leis de privacidade do Espaço Económico Europeu (EEE), Reino Unido e Suíça, pedimos seu consentimento para processar dados pessoais.  
             <a href="privacidade/" style="color:#ffd700;text-decoration:underline;">Saiba mais</a>
         </p>
-        <button onclick="setConsent(true)" style="background:#ffd700;color:#002147;padding:8px 15px;border:none;border-radius:5px;cursor:pointer;margin-right:8px;font-weight:bold;">
-            Aceitar
-        </button>
-        <button onclick="setConsent(false)" style="background:transparent;color:white;padding:8px 15px;border:1px solid white;border-radius:5px;cursor:pointer;">
-            Recusar
-        </button>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+            <button onclick="setConsent(true)" style="background:#ffd700;color:#002147;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;font-weight:bold;min-width:100px;font-size:14px;-webkit-tap-highlight-color:rgba(255,215,0,0.3);touch-action:manipulation;">
+                Aceitar
+            </button>
+            <button onclick="setConsent(false)" style="background:transparent;color:white;padding:10px 20px;border:1px solid white;border-radius:5px;cursor:pointer;min-width:100px;font-size:14px;-webkit-tap-highlight-color:rgba(255,255,255,0.3);touch-action:manipulation;">
+                Recusar
+            </button>
+        </div>
     </div>
 
     <script>
