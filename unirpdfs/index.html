@@ -99,6 +99,9 @@
     <!-- PDF.js para processamento de PDFs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     
+    <!-- PDF.js para renderização de miniaturas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3026521456856935"
      crossorigin="anonymous"></script>
@@ -223,6 +226,7 @@
             align-items: center;
             gap: 1rem;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .file-item:hover {
@@ -238,6 +242,59 @@
         .file-icon {
             font-size: 2rem;
             color: #dc3545;
+        }
+
+        .file-thumbnail {
+            width: 80px;
+            height: 100px;
+            min-width: 80px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .file-thumbnail canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .file-thumbnail.loading {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        .file-thumbnail.loading::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--light-gray);
+            border-top-color: var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         .file-info {
@@ -518,6 +575,12 @@
                 flex-direction: column;
                 text-align: center;
             }
+
+            .file-thumbnail {
+                width: 60px;
+                height: 75px;
+                min-width: 60px;
+            }
         }
     </style>
 </head>
@@ -774,6 +837,7 @@
                     <a href="../termos/">Termos de Serviço</a>
                     <a href="../privacidade/">Privacidade</a>
                     <a href="../contato/">Contato</a>
+                    <a href="#" id="reportErrorBtn" style="color: #ff6b6b; cursor: pointer;">⚠️ Reportar Erro</a>
                 </div>
                 <div class="footer-info">
                     <p>&copy; 2025 LinkZin - Ferramenta para encurtar link ® Desenvolvido por Bruno Ulrich</p>
@@ -783,11 +847,17 @@
     </footer>
 
     <script>
+        // Configurar PDF.js worker
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        }
+
         // Classe principal para gerenciar as ferramentas PDF
         class PDFTools {
             constructor() {
                 this.files = [];
                 this.selectedAction = null;
+                this.thumbnails = new Map(); // Cache de miniaturas
                 this.init();
             }
 
@@ -832,7 +902,7 @@
                 });
             }
 
-            handleFileSelect(event) {
+            async handleFileSelect(event) {
                 const files = event.target.files || event.dataTransfer.files;
                 const pdfFiles = Array.from(files).filter(file => file.type === 'application/pdf');
 
@@ -842,11 +912,11 @@
                 }
 
                 this.files = [...this.files, ...pdfFiles];
-                this.displayFiles();
+                await this.displayFiles();
                 this.showProcessSection();
             }
 
-            displayFiles() {
+            async displayFiles() {
                 const filesList = document.getElementById('filesList');
                 const filesContainer = document.getElementById('filesContainer');
 
@@ -858,6 +928,8 @@
                 filesList.style.display = 'block';
                 filesContainer.innerHTML = '';
 
+                // Criar todos os cards primeiro
+                const fileItems = [];
                 this.files.forEach((file, index) => {
                     const fileItem = document.createElement('div');
                     fileItem.className = 'file-item';
@@ -868,8 +940,8 @@
                         <div class="drag-handle">
                             <i class="fas fa-grip-vertical"></i>
                         </div>
-                        <div class="file-icon">
-                            <i class="fas fa-file-pdf"></i>
+                        <div class="file-thumbnail loading" id="thumbnail-${index}">
+                            <i class="fas fa-file-pdf" style="font-size: 2rem; color: #dc3545;"></i>
                         </div>
                         <div class="file-info">
                             <div class="file-name">${file.name}</div>
@@ -910,30 +982,113 @@
                     });
 
                     filesContainer.appendChild(fileItem);
+                    fileItems.push({ fileItem, file, index });
                 });
-            }
 
-            moveFile(index, direction) {
-                const newIndex = index + direction;
-                if (newIndex >= 0 && newIndex < this.files.length) {
-                    [this.files[index], this.files[newIndex]] = [this.files[newIndex], this.files[index]];
-                    this.displayFiles();
+                // Gerar miniaturas para cada arquivo
+                for (const { fileItem, file, index } of fileItems) {
+                    try {
+                        await this.generateThumbnail(file, index);
+                    } catch (error) {
+                        console.error(`Erro ao gerar miniatura para ${file.name}:`, error);
+                        // Manter o ícone padrão em caso de erro
+                        const thumbnail = fileItem.querySelector('.file-thumbnail');
+                        if (thumbnail) {
+                            thumbnail.classList.remove('loading');
+                            thumbnail.innerHTML = '<i class="fas fa-file-pdf" style="font-size: 2rem; color: #dc3545;"></i>';
+                        }
+                    }
                 }
             }
 
-            removeFile(index) {
+            async generateThumbnail(file, index) {
+                // Verificar se já temos a miniatura em cache
+                if (this.thumbnails.has(file.name)) {
+                    const thumbnailData = this.thumbnails.get(file.name);
+                    this.insertThumbnail(index, thumbnailData);
+                    return;
+                }
+
+                const thumbnailElement = document.getElementById(`thumbnail-${index}`);
+                if (!thumbnailElement) return;
+
+                // Verificar se PDF.js está disponível
+                if (typeof pdfjsLib === 'undefined') {
+                    console.warn('PDF.js não está carregado. Usando ícone padrão.');
+                    thumbnailElement.classList.remove('loading');
+                    thumbnailElement.innerHTML = '<i class="fas fa-file-pdf" style="font-size: 2rem; color: #dc3545;"></i>';
+                    return;
+                }
+
+                try {
+                    // Carregar PDF usando PDF.js
+                    const arrayBuffer = await file.arrayBuffer();
+                    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                    
+                    // Pegar a primeira página
+                    const page = await pdf.getPage(1);
+                    
+                    // Configurar escala para miniatura (80x100px)
+                    const viewport = page.getViewport({ scale: 0.3 });
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+
+                    // Renderizar página no canvas
+                    await page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    }).promise;
+
+                    // Converter canvas para data URL e armazenar em cache
+                    const thumbnailData = canvas.toDataURL('image/png');
+                    this.thumbnails.set(file.name, thumbnailData);
+                    
+                    // Inserir miniatura no elemento
+                    this.insertThumbnail(index, thumbnailData);
+                } catch (error) {
+                    console.error('Erro ao gerar miniatura:', error);
+                    // Em caso de erro, manter o ícone padrão
+                    thumbnailElement.classList.remove('loading');
+                    thumbnailElement.innerHTML = '<i class="fas fa-file-pdf" style="font-size: 2rem; color: #dc3545;"></i>';
+                }
+            }
+
+            insertThumbnail(index, thumbnailData) {
+                const thumbnailElement = document.getElementById(`thumbnail-${index}`);
+                if (!thumbnailElement) return;
+
+                thumbnailElement.classList.remove('loading');
+                thumbnailElement.innerHTML = `<img src="${thumbnailData}" alt="Preview PDF" />`;
+            }
+
+            async moveFile(index, direction) {
+                const newIndex = index + direction;
+                if (newIndex >= 0 && newIndex < this.files.length) {
+                    [this.files[index], this.files[newIndex]] = [this.files[newIndex], this.files[index]];
+                    await this.displayFiles();
+                }
+            }
+
+            async removeFile(index) {
+                const removedFile = this.files[index];
                 this.files.splice(index, 1);
-                this.displayFiles();
+                // Remover miniatura do cache se existir
+                if (removedFile && this.thumbnails.has(removedFile.name)) {
+                    this.thumbnails.delete(removedFile.name);
+                }
+                await this.displayFiles();
                 
                 if (this.files.length === 0) {
                     document.getElementById('processSection').style.display = 'none';
                 }
             }
 
-            reorderFiles(fromIndex, toIndex) {
+            async reorderFiles(fromIndex, toIndex) {
                 const file = this.files.splice(fromIndex, 1)[0];
                 this.files.splice(toIndex, 0, file);
-                this.displayFiles();
+                await this.displayFiles();
             }
 
             selectAction(card) {
@@ -1129,6 +1284,369 @@
             }
         });
     </script>
+
+    <!-- Modal de Reporte de Erros -->
+    <div id="errorReportModal" class="error-modal">
+        <div class="error-modal-overlay"></div>
+        <div class="error-modal-card">
+            <div class="error-modal-header">
+                <h2 class="error-modal-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Encontrou algum erro?
+                </h2>
+                <button class="error-modal-close" id="closeErrorModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="error-modal-body">
+                <p class="error-modal-description">
+                    Se algo não estiver funcionando corretamente ao gerar o link do WhatsApp ou o QR Code, nos avise.
+                    Envie uma mensagem para que nossa equipe técnica possa analisar e corrigir o problema o mais rápido possível.
+                </p>
+                <form id="errorReportForm" class="error-report-form">
+                    <div class="form-group">
+                        <label for="errorType" class="form-label">Tipo de Erro</label>
+                        <select id="errorType" class="form-select" required>
+                            <option value="">Selecione o tipo de erro</option>
+                            <option value="GERADOR DE LINK">GERADOR DE LINK</option>
+                            <option value="QR CODE">QR CODE</option>
+                            <option value="GERADOR DE LINK PARA WHATSAPP">GERADOR DE LINK PARA WHATSAPP</option>
+                            <option value="OUTRO">OUTRO</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="errorDescription" class="form-label">Descreva o erro</label>
+                        <textarea 
+                            id="errorDescription" 
+                            class="form-textarea" 
+                            rows="5" 
+                            placeholder="Descreva detalhadamente o erro que está ocorrendo..."
+                            required
+                        ></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" id="cancelErrorReport">CANCELAR</button>
+                        <button type="submit" class="btn-submit">ENVIAR</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== MODAL DE REPORTE DE ERROS ==========
+        (function() {
+            const modal = document.getElementById('errorReportModal');
+            const openBtn = document.getElementById('reportErrorBtn');
+            const closeBtn = document.getElementById('closeErrorModal');
+            const cancelBtn = document.getElementById('cancelErrorReport');
+            const form = document.getElementById('errorReportForm');
+            const overlay = modal ? modal.querySelector('.error-modal-overlay') : null;
+
+            function openErrorModal(errorType = '') {
+                if (!modal) return;
+                if (errorType) {
+                    const errorTypeSelect = document.getElementById('errorType');
+                    if (errorTypeSelect) {
+                        errorTypeSelect.value = errorType;
+                    }
+                }
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeErrorModal() {
+                if (!modal) return;
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+                if (form) form.reset();
+            }
+
+            if (openBtn) {
+                openBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openErrorModal();
+                });
+            }
+
+            if (closeBtn) closeBtn.addEventListener('click', closeErrorModal);
+            if (cancelBtn) cancelBtn.addEventListener('click', closeErrorModal);
+            if (overlay) overlay.addEventListener('click', closeErrorModal);
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
+                    closeErrorModal();
+                }
+            });
+
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const errorType = document.getElementById('errorType').value;
+                    const errorDescription = document.getElementById('errorDescription').value;
+                    const submitBtn = form.querySelector('.btn-submit');
+                    
+                    if (!errorType || !errorDescription.trim()) {
+                        alert('Por favor, preencha todos os campos.');
+                        return;
+                    }
+                    
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = 'ENVIANDO...';
+                    }
+
+                    const subject = encodeURIComponent(`Reporte de Erro - LinkZin - ${errorType}`);
+                    const body = encodeURIComponent(
+                        `Tipo de Erro: ${errorType}\n\n` +
+                        `Descrição do Erro:\n${errorDescription}\n\n` +
+                        `--- Informações Técnicas ---\n` +
+                        `Data/Hora: ${new Date().toLocaleString('pt-BR')}\n` +
+                        `URL da Página: ${window.location.href}\n` +
+                        `Navegador: ${navigator.userAgent}\n` +
+                        `Resolução: ${window.screen.width}x${window.screen.height}`
+                    );
+                    
+                    window.location.href = `mailto:linkzinencurtador@gmail.com?subject=${subject}&body=${body}`;
+                    
+                    setTimeout(() => {
+                        closeErrorModal();
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = 'ENVIAR';
+                        }
+                    }, 1000);
+                });
+            }
+
+            window.openErrorReportModal = openErrorModal;
+        })();
+    </script>
+
+    <!-- Estilos do Modal de Erro -->
+    <style>
+        .error-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .error-modal.active {
+            display: flex;
+        }
+
+        .error-modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+        }
+
+        .error-modal-card {
+            position: relative;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease-out;
+            z-index: 10001;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .error-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 28px;
+            border-bottom: 1px solid #e0e0e0;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            border-radius: 16px 16px 0 0;
+        }
+
+        .error-modal-title {
+            margin: 0;
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .error-modal-title i {
+            font-size: 24px;
+        }
+
+        .error-modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: #ffffff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .error-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .error-modal-body {
+            padding: 28px;
+        }
+
+        .error-modal-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            font-size: 15px;
+        }
+
+        .error-report-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .btn-cancel,
+        .btn-submit {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-cancel {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-cancel:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: #ffffff;
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .error-modal-card {
+                max-width: 100%;
+                margin: 10px;
+            }
+
+            .error-modal-header {
+                padding: 20px;
+            }
+
+            .error-modal-title {
+                font-size: 18px;
+            }
+
+            .error-modal-body {
+                padding: 20px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn-cancel,
+            .btn-submit {
+                width: 100%;
+            }
+        }
+    </style>
 </body>
 
 </html>
