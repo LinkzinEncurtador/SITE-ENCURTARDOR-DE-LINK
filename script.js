@@ -806,14 +806,8 @@ class WhatsAppLinkGenerator {
             const links = JSON.parse(saved);
             console.log('Links do WhatsApp carregados:', Object.keys(links).length, 'links');
             
-            // CORREÇÃO: Validar e corrigir links com datas inválidas
-            Object.keys(links).forEach(code => {
-                const link = links[code];
-                if (!link.expiresAt || isNaN(new Date(link.expiresAt).getTime())) {
-                    console.warn(`Corrigindo data de expiração para link ${code}`);
-                    link.expiresAt = new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)).toISOString();
-                }
-            });
+            // LINKS NUNCA EXPIREM - não há necessidade de validar datas de expiração
+            // Todos os links são permanentes e funcionam para sempre
             
             return links;
         } catch (error) {
@@ -902,66 +896,169 @@ class WhatsAppLinkGenerator {
         }
     }
 
+    // Codificar dados do WhatsApp em Base64 (para links portáteis)
+    encodeWhatsAppData(phoneNumber, message) {
+        try {
+            const data = {
+                p: phoneNumber,
+                m: message || ''
+            };
+            const json = JSON.stringify(data);
+            // Usar Base64 URL-safe
+            return btoa(json)
+                .replace(/\+/g, '-')
+                .replace(/\//g, '_')
+                .replace(/=/g, '');
+        } catch (error) {
+            console.error('Erro ao codificar dados:', error);
+            return null;
+        }
+    }
+
+    // Decodificar dados do WhatsApp de Base64 (versão robusta - tenta múltiplos métodos)
+    decodeWhatsAppData(encodedData) {
+        if (!encodedData || typeof encodedData !== 'string') {
+            return null;
+        }
+
+        // Tentar múltiplas estratégias de decodificação
+        const strategies = [
+            // Estratégia 1: Base64 URL-safe padrão
+            () => {
+                let base64 = encodedData.replace(/-/g, '+').replace(/_/g, '/');
+                while (base64.length % 4) {
+                    base64 += '=';
+                }
+                const json = atob(base64);
+                return JSON.parse(json);
+            },
+            // Estratégia 2: Base64 padrão direto
+            () => {
+                const json = atob(encodedData);
+                return JSON.parse(json);
+            },
+            // Estratégia 3: Com padding automático mais agressivo
+            () => {
+                let base64 = encodedData.replace(/-/g, '+').replace(/_/g, '/');
+                const padCount = (4 - (base64.length % 4)) % 4;
+                base64 += '='.repeat(padCount);
+                const json = atob(base64);
+                return JSON.parse(json);
+            }
+        ];
+
+        // Tentar cada estratégia
+        for (let i = 0; i < strategies.length; i++) {
+            try {
+                const result = strategies[i]();
+                if (result && result.p && typeof result.p === 'string' && result.p.length > 0) {
+                    return result;
+                }
+            } catch (error) {
+                // Continuar para próxima estratégia
+                continue;
+            }
+        }
+
+        return null;
+    }
+
+    // Verificar se um código é um link codificado (novo formato) ou código simples (formato antigo)
+    isEncodedLink(code) {
+        // Links codificados são mais longos (geralmente > 8 caracteres) e contêm dados codificados
+        // Tentamos decodificar para verificar
+        try {
+            const decoded = this.decodeWhatsAppData(code);
+            return decoded && decoded.p && decoded.p.length > 0;
+        } catch {
+            return false;
+        }
+    }
+
     // Redirecionar para WhatsApp
     redirectToWhatsApp(whatsappCode) {
         console.log('Tentando redirecionar WhatsApp para código:', whatsappCode);
         
-        const linkData = this.whatsappLinks[whatsappCode];
+        let phoneNumber = null;
+        let message = '';
+        let linkData = null;
 
-        if (linkData) {
-            console.log('Link do WhatsApp encontrado:', linkData);
+        // CORREÇÃO PRINCIPAL: Tentar decodificar primeiro (novo formato portátil)
+        // Se falhar, tentar buscar no localStorage (formato antigo)
+        const decoded = this.decodeWhatsAppData(whatsappCode);
+        
+        if (decoded && decoded.p && decoded.p.length > 0) {
+            // Link codificado detectado - novo formato portátil
+            console.log('Link codificado detectado - decodificando...');
+            phoneNumber = decoded.p;
+            message = decoded.m || '';
+            
+            console.log('Dados decodificados:', { phoneNumber, message });
+        } else {
+            // Formato antigo: buscar no localStorage (SEM VERIFICAÇÃO DE EXPIRAÇÃO)
+            // LINKS NUNCA EXPIREM - eles funcionam para sempre
+            console.log('Tentando buscar link no localStorage (formato antigo)...');
+            linkData = this.whatsappLinks[whatsappCode];
+            
+            if (linkData && linkData.phoneNumber) {
+                console.log('Link do WhatsApp encontrado no localStorage:', linkData);
 
-            // Verificar se o link não expirou (1 ano de validade)
-            // CORREÇÃO: Melhorado para mobile com validação mais robusta
-            try {
-                const expirationDate = new Date(linkData.expiresAt);
-                const now = new Date();
-                
-                // Validar se as datas são válidas
-                if (isNaN(expirationDate.getTime())) {
-                    console.warn('Data de expiração inválida, recriando...');
-                    // Recriar data de expiração se estiver inválida
-                    linkData.expiresAt = new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)).toISOString();
+                // REMOVIDO: Verificação de expiração - links nunca expiram
+                // Links antigos funcionam para sempre, mesmo se a data de expiração passou
+
+                // Incrementar contador de cliques (opcional)
+                try {
+                    linkData.clicks = (linkData.clicks || 0) + 1;
                     this.saveWhatsAppLinks();
+                } catch (error) {
+                    console.error('Erro ao salvar cliques:', error);
+                    // Não é crítico - continuar mesmo se falhar
                 }
 
-                // Verificar expiração apenas se a data for válida
-                if (!isNaN(expirationDate.getTime()) && now > expirationDate) {
-                    console.error('Link do WhatsApp expirado');
-                    this.showRedirectMessage('Este link do WhatsApp expirou (validade de 1 ano).', 'error');
+                phoneNumber = linkData.phoneNumber;
+                message = linkData.message || '';
+            } else {
+                // Tentar mais uma vez com decodificação mais permissiva
+                console.log('Tentando decodificação alternativa...');
+                const alternativeDecoded = this.decodeWhatsAppData(whatsappCode);
+                
+                if (alternativeDecoded && alternativeDecoded.p) {
+                    console.log('Link decodificado com método alternativo!');
+                    phoneNumber = alternativeDecoded.p;
+                    message = alternativeDecoded.m || '';
+                } else {
+                    console.error('Link do WhatsApp não encontrado para código:', whatsappCode);
+                    this.showRedirectMessage('Link do WhatsApp não encontrado.', 'error');
                     return;
                 }
-            } catch (error) {
-                console.error('Erro ao verificar expiração:', error);
-                // Em caso de erro, continuar com o redirecionamento
             }
-
-            // Incrementar contador de cliques
-            try {
-                linkData.clicks = (linkData.clicks || 0) + 1;
-                this.saveWhatsAppLinks();
-            } catch (error) {
-                console.error('Erro ao salvar cliques:', error);
-                // Continuar mesmo se não conseguir salvar
-            }
-
-            // Mostrar mensagem de redirecionamento
-            this.showRedirectMessage('Redirecionando para o WhatsApp...', 'info');
-
-            // Redirecionar para o WhatsApp
-            console.log('Redirecionando para WhatsApp:', linkData.whatsappUrl);
-            
-            // CORREÇÃO: Reduzir delay em mobile para melhor experiência
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            const redirectDelay = isMobile ? 500 : 1000;
-            
-            setTimeout(() => {
-                window.location.href = linkData.whatsappUrl;
-            }, redirectDelay);
-        } else {
-            console.error('Link do WhatsApp não encontrado para código:', whatsappCode);
-            this.showRedirectMessage('Link do WhatsApp não encontrado.', 'error');
         }
+
+        // Construir URL do WhatsApp
+        if (!phoneNumber) {
+            console.error('Número de telefone não disponível');
+            this.showRedirectMessage('Link do WhatsApp inválido.', 'error');
+            return;
+        }
+
+        let whatsappUrl = `https://wa.me/${phoneNumber}`;
+        if (message) {
+            whatsappUrl += `?text=${encodeURIComponent(message)}`;
+        }
+
+        // Mostrar mensagem de redirecionamento
+        this.showRedirectMessage('Redirecionando para o WhatsApp...', 'info');
+
+        // Redirecionar para o WhatsApp
+        console.log('Redirecionando para WhatsApp:', whatsappUrl);
+        
+        // CORREÇÃO: Reduzir delay em mobile para melhor experiência
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const redirectDelay = isMobile ? 500 : 1000;
+        
+        setTimeout(() => {
+            window.location.href = whatsappUrl;
+        }, redirectDelay);
     }
 
     // Mostrar mensagem de redirecionamento
@@ -978,10 +1075,10 @@ class WhatsAppLinkGenerator {
                 <div style="font-size: 3rem; margin-bottom: 1rem;">
                     ${type === 'error' ? '❌' : '📱'}
                 </div>
-                <h2 style="color: #0a1a3f; margin-bottom: 1rem;">${type === 'error' ? 'Link Expirado' : 'Redirecionando...'}</h2>
+                <h2 style="color: #0a1a3f; margin-bottom: 1rem;">${type === 'error' ? (message.includes('não encontrado') || message.includes('inválido') || message.includes('corrompido') ? 'Link do WhatsApp não encontrado' : 'Link Expirado') : 'Redirecionando...'}</h2>
                 <p style="color: #666; font-size: 1.1rem; margin-bottom: 2rem;">${message}</p>
                 ${type === 'error' ? `
-                    <a href="whatsapp.html" style="background: #0a1a3f; color: white; padding: 0.8rem 1.5rem; text-decoration: none; border-radius: 8px; display: inline-block;">
+                    <a href="${window.location.origin}${window.location.pathname}" style="background: #0a1a3f; color: white; padding: 0.8rem 1.5rem; text-decoration: none; border-radius: 8px; display: inline-block;">
                         Criar Novo Link
                     </a>
                 ` : `
@@ -1086,16 +1183,20 @@ class WhatsAppLinkGenerator {
             whatsappUrl += `?text=${encodeURIComponent(message)}`;
         }
 
-        // Gerar código único para o link
-        const whatsappCode = this.generateWhatsAppCode();
+        // CORREÇÃO PRINCIPAL: Gerar código codificado com os dados (formato portátil)
+        // Isso permite que o link funcione em qualquer dispositivo, sem depender do localStorage
+        const encodedData = this.encodeWhatsAppData(fullNumber, message);
+        
+        // Usar código codificado se disponível, senão usar código simples (retrocompatibilidade)
+        const whatsappCode = encodedData || this.generateWhatsAppCode();
         
         // Criar URL curta do WhatsApp
         const shortWhatsappUrl = `${window.location.origin}${window.location.pathname}?w=${whatsappCode}`;
 
-        // CORREÇÃO: Salvar link do WhatsApp com validade de 1 ano (data válida garantida)
+        // Salvar link no localStorage para estatísticas e histórico (opcional)
+        // O link funciona SEMPRE porque os dados estão codificados no código
+        // LINKS NUNCA EXPIREM - são permanentes
         const now = Date.now();
-        const oneYearInMs = 365 * 24 * 60 * 60 * 1000;
-        const expirationDate = new Date(now + oneYearInMs);
         
         const linkData = {
             id: whatsappCode,
@@ -1107,22 +1208,20 @@ class WhatsAppLinkGenerator {
             customLink: customLink,
             createdAt: new Date(now).toISOString(),
             clicks: 0,
-            expiresAt: expirationDate.toISOString() // 1 ano
+            isEncoded: !!encodedData, // Marcar se é link codificado
+            permanent: true // Links são permanentes - nunca expiram
         };
 
-        console.log('Salvando link com expiração:', linkData.expiresAt);
-        
-        this.whatsappLinks[whatsappCode] = linkData;
-        const saved = this.saveWhatsAppLinks();
-        
-        // CORREÇÃO: Verificar se salvou com sucesso
-        if (!saved) {
-            console.warn('Falha ao salvar no localStorage - link pode não persistir');
-            this.showMessage('Link gerado, mas pode não ser salvo permanentemente no dispositivo.', 'warning');
+        // Salvar no localStorage para estatísticas (não crítico - link funciona sem isso)
+        try {
+            this.whatsappLinks[whatsappCode] = linkData;
+            this.saveWhatsAppLinks();
+            console.log('Link salvo no localStorage para estatísticas');
+        } catch (error) {
+            console.warn('Não foi possível salvar no localStorage - link ainda funcionará:', error);
         }
 
-        // Calcular data de expiração para exibição
-        const expirationDateFormatted = new Date(linkData.expiresAt).toLocaleDateString('pt-BR');
+        // Links são permanentes - nunca expiram
         const createdDate = new Date(linkData.createdAt).toLocaleDateString('pt-BR');
 
         // Exibir resultado
@@ -1139,9 +1238,9 @@ class WhatsAppLinkGenerator {
                     <p><strong>Número:</strong> ${countryCode} ${number}</p>
                     <p><strong>Mensagem:</strong> ${message || 'Nenhuma mensagem'}</p>
                     <p><strong>Criado em:</strong> ${createdDate}</p>
-                    <p><strong>Validade:</strong> <span class="expiration-ok">1 ano (expira em ${expirationDateFormatted})</span></p>
+                    <p><strong>Validade:</strong> <span class="expiration-ok">✓ Permanente - Nunca expira</span></p>
                     <p><strong>Cliques:</strong> 0</p>
-                    <p><strong>Status:</strong> <span class="expiration-ok">✓ Link ativo</span></p>
+                    <p><strong>Status:</strong> <span class="expiration-ok">✓ Link ativo permanentemente</span></p>
                 </div>
                 <div class="whatsapp-actions">
                     <a href="${shortWhatsappUrl}" target="_blank" class="whatsapp-btn">
@@ -1232,25 +1331,12 @@ class WhatsAppLinkGenerator {
         }, 5000);
     }
 
-    // Limpar links do WhatsApp expirados
+    // DESABILITADO: Limpeza de links expirados
+    // LINKS NUNCA EXPIREM - são permanentes e funcionam para sempre
     cleanupExpiredWhatsAppLinks() {
-        const now = new Date();
-        let expiredCount = 0;
-
-        Object.keys(this.whatsappLinks).forEach(code => {
-            const linkData = this.whatsappLinks[code];
-            const expirationDate = new Date(linkData.expiresAt);
-
-            if (now > expirationDate) {
-                delete this.whatsappLinks[code];
-                expiredCount++;
-            }
-        });
-
-        if (expiredCount > 0) {
-            this.saveWhatsAppLinks();
-            console.log(`${expiredCount} links do WhatsApp expirados foram removidos`);
-        }
+        // Função desabilitada - links nunca expiram
+        console.log('Limpeza de links expirados desabilitada - links são permanentes');
+        return;
     }
 
     // Obter estatísticas de um link do WhatsApp
@@ -1258,18 +1344,16 @@ class WhatsAppLinkGenerator {
         const linkData = this.whatsappLinks[whatsappCode];
         if (!linkData) return null;
 
-        const expirationDate = new Date(linkData.expiresAt);
-        const now = new Date();
-        const isExpired = now > expirationDate;
-
+        // LINKS NUNCA EXPIREM - sempre retornam como ativos
         return {
             phoneNumber: linkData.phoneNumber,
             message: linkData.message,
-            clicks: linkData.clicks,
+            clicks: linkData.clicks || 0,
             createdAt: linkData.createdAt,
-            expiresAt: linkData.expiresAt,
-            isExpired: isExpired,
-            daysUntilExpiration: isExpired ? 0 : Math.ceil((expirationDate - now) / (1000 * 60 * 60 * 24))
+            expiresAt: null, // Links não expiram mais
+            isExpired: false, // Sempre false - links nunca expiram
+            daysUntilExpiration: null, // Ilimitado
+            permanent: true // Links são permanentes
         };
     }
 }
@@ -1301,10 +1385,11 @@ document.addEventListener('DOMContentLoaded', function () {
     else if (currentPath.includes('/whatsapp/') || currentPath.includes('/whatsapp')) {
         console.log('Inicializando WhatsAppLinkGenerator...');
         window.whatsappGenerator = new WhatsAppLinkGenerator();
-        // Limpar links do WhatsApp expirados a cada 24 horas
-        setInterval(() => {
-            window.whatsappGenerator.cleanupExpiredWhatsAppLinks();
-        }, 24 * 60 * 60 * 1000); // A cada 24 horas
+        // DESABILITADO: Limpeza automática de links expirados
+        // LINKS NUNCA EXPIREM - são permanentes e funcionam para sempre
+        // setInterval(() => {
+        //     window.whatsappGenerator.cleanupExpiredWhatsAppLinks();
+        // }, 24 * 60 * 60 * 1000); // Desabilitado
     }
     // Página principal ou outras páginas
     else {
